@@ -1,0 +1,28 @@
+.TabsPages  {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+
+    .slideWrapper {
+        position: relative;
+        transition: left 0.5s ease;
+
+        height: 100%;
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+
+        .TabPage {
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+
+            &>* {
+                display:flex;
+                flex-direction: column;
+            }
+        }
+    }
+}

@@ -1,0 +1,54 @@
+.RemoveModal {
+  position: relative;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  padding: 1rem;
+
+  .Task {
+    max-width: 15rem;
+  }
+
+  .rightContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: stretch;
+
+    height: 90%;
+
+    margin-left: 1rem;
+
+    p {}
+
+    .CheckBox {
+      display: flex;
+      flex-direction: row;
+      justify-self: flex-end;
+
+      input {
+        order: 1;
+      }
+
+      label {
+        order: 2;
+      }
+    }
+
+    .removeModalButtons {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: flex-end;
+
+      .Button {
+        &.confirmButton {
+          margin-left: 1rem;
+        }
+      }
+    }
+  }
+}

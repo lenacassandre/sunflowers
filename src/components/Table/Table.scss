@@ -1,0 +1,188 @@
+@import "../../oldColors.scss";
+
+// Element principal
+div.Table {
+	position: relative;
+	box-sizing: border-box;
+	border-radius: 2px;
+
+	padding: 1rem;
+
+	overflow: auto;
+
+	//
+	div.wrapper {
+		overflow: auto;
+		height: 100%;
+		flex: 1;
+		padding-left: 40px;
+
+		table {
+			display: flex;
+			flex-direction: column;
+
+			table-layout: fixed;
+
+			tr {
+				display: flex;
+				flex-direction: row;
+				min-width: 100% !important;
+			}
+
+			thead,
+			tbody {
+				display: flex;
+				flex-direction: column;
+				min-width: 100% !important;
+			}
+
+			th,
+			td {
+				box-sizing: border-box;
+
+				margin: 0;
+
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				justify-content: flex-start;
+				align-content: center;
+				text-align: left;
+
+				&:not(.input) {
+					padding: 1rem;
+				}
+
+				&.fixed {
+					position: -webkit-sticky;
+					position: sticky;
+				}
+			}
+
+			thead {
+				height: 4rem;
+				position: sticky;
+				top: 0;
+				order: 1;
+
+				&,
+				* {
+					-webkit-touch-callout: none;
+					-webkit-user-select: none;
+					-khtml-user-select: none;
+					-moz-user-select: none;
+					-ms-user-select: none;
+					user-select: none;
+				}
+
+				tr {
+					height: 100%;
+
+					th {
+						top: 0;
+						justify-content: flex-start;
+
+						&.sortable {
+							cursor: pointer;
+						}
+
+						.icon {
+							padding-left: 0.5rem;
+							display: flex;
+							flex-direction: column;
+							justify-content: flex-start;
+							align-items: flex-start;
+							text-align: left;
+						}
+					}
+				}
+			}
+
+			tbody {
+				height: calc(100% - 4rem);
+				order: 2;
+
+				tr {
+					height: 4rem;
+					position: relative;
+
+					&.valid {
+						th,
+						td {
+							box-shadow: inset 0 0 0 3rem rgba($validation, 0.2) !important;
+						}
+					}
+
+					&.warning {
+						th,
+						td {
+							box-shadow: inset 0 0 0 3rem rgba($yellow, 0.2) !important;
+						}
+					}
+
+					&.error {
+						th,
+						td {
+							box-shadow: inset 0 0 0 3rem rgba($error, 0.2) !important;
+						}
+					}
+
+					&.clickable {
+						cursor: pointer;
+					}
+
+					&.sub {
+						height: 3rem;
+						font-size: 0.9em;
+
+						th:first-of-type {
+							padding-left: 0.5rem;
+						}
+					}
+
+					& > * {
+						font-weight: normal;
+					}
+
+					// Actions icon
+					.Actions {
+						position: absolute;
+						height: 100%;
+						width: 40px;
+						left: -40px;
+
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+						justify-content: center;
+
+						opacity: 0;
+
+						font-size: 1.2em;
+
+						svg {
+							color: $grey;
+						}
+					}
+
+					&:hover .Actions {
+						opacity: 1;
+					}
+
+					td,
+					th {
+						flex-wrap: wrap;
+						input {
+							padding: 1rem !important;
+
+							&[type="number"] {
+								padding-right: 0 !important;
+								padding-left: 0.25rem !important;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

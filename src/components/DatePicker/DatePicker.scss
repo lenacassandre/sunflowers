@@ -1,0 +1,57 @@
+.DatePicker {
+	position: relative;
+
+	p {
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		line-height: 1.1em;
+	}
+
+	.Button {
+		width: 100%;
+	}
+
+	.miniCalendarContainer {
+		position: absolute;
+		top: 1rem;
+		left: 0;
+
+		height: 16rem;
+		padding: 1rem;
+
+		border-radius: 0.25rem;
+
+		overflow: hidden;
+
+		transition: all 0.2s ease;
+
+		&.hidden {
+			height: 0;
+			padding: 0 1rem;
+		}
+	}
+
+	label {
+		margin-bottom: 0.2rem;
+	}
+}
+
+.datePickerModal {
+	position: relative;
+
+	form {
+		margin-bottom: 0 !important;
+
+		.Input {
+			width: 100%;
+			margin-bottom: 2rem;
+			margin-top: -1rem;
+		}
+
+		.buttonsRow {
+			justify-content: flex-end;
+			width: 100%;
+		}
+	}
+}

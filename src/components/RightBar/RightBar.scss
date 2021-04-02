@@ -1,0 +1,23 @@
+.RightBar {
+	position: relative;
+
+	box-sizing: border-box;
+	padding: 1rem 2rem 2rem 2rem;
+	width: 18rem;
+
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: flex-start;
+
+	margin-right: -18rem;
+	transition: all 0.2s ease, margin-right 0.5s ease;
+
+	.DarkThemeSwitch {
+		margin-top: 2rem;
+	}
+
+	&.active {
+		margin-right: 0;
+	}
+}

@@ -1,0 +1,92 @@
+.Input {
+	position: relative;
+
+	font-family: fira-sans, sans-serif;
+	font-weight: 300;
+	font-style: normal;
+
+	box-sizing: border-box;
+
+	label {
+		position: absolute;
+		top: 1.275em;
+		left: 0.625em;
+		padding: 0 0.375em;
+		cursor: text;
+		transition: all 0.2s ease;
+	}
+
+	input {
+		box-sizing: border-box;
+		width: 100%;
+
+		border: none;
+		outline: none;
+		background-color: transparent !important;
+
+		font-family: fira-sans, sans-serif;
+		font-weight: 400;
+		font-style: normal;
+		font-size: inherit;
+
+		border-radius: 2px;
+		height: 3.5em;
+		padding: 0.5em 1em 0.7em 1em;
+
+		+label {
+			top: 1.2em;
+		}
+
+		&:focus,
+		&:not(:placeholder-shown),
+		&.valid {
+			border-width: 0.125em;
+
+			+label {
+				font-size: 0.75rem;
+				top: -0.4rem;
+				left: 1em;
+			}
+		}
+
+		//On focus or when input is not empty
+		&:focus,
+		&:not(:placeholder-shown) {
+			border-width: 0.125rem !important;
+		}
+
+		//When valid
+		&.valid {
+			border-width: 0.125rem !important;
+		}
+
+		&.error {
+			border-width: 0.125rem !important;
+		}
+	}
+
+	&.cell {
+		height: 100%;
+		width: 100%;
+		margin: 0 !important;
+
+		input {
+			height: 100%;
+			margin: 0 !important;
+
+			border: none;
+		}
+	}
+
+	p {
+		text-align: left;
+		margin: 0.125em 0 0 1em;
+		font-size: 0.75em;
+		opacity: 1;
+		transition: all 0.2s ease;
+
+		&.hidden {
+			opacity: 0;
+		}
+	}
+  }

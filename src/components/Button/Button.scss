@@ -1,0 +1,53 @@
+.Button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+
+    border-radius: 2px;
+
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    height: 3em;
+    padding: 0.1em 1em 0 1em;
+    text-transform: uppercase;
+    font-family: 'Raleway';
+    font-weight: 900;
+    font-style: normal;
+    font-size: 0.8rem;
+
+    background-color: transparent;
+
+    transition: all 0.1s ease;
+
+    svg {
+      margin-right: 0.5rem;
+    }
+
+    &.onlyIcon {
+        justify-content: center;
+        text-align: center;
+
+        svg {
+           margin: 0;
+        }
+    }
+
+    &.active {
+        cursor: default;
+    }
+
+    &.outlined {
+        transition: box-shadow 0.2s ease;
+    }
+
+    &.filled {
+        border: none;
+    }
+
+    &.disabled {
+        cursor: default;
+    }
+}

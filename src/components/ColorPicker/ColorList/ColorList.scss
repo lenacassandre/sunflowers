@@ -1,0 +1,18 @@
+.ColorList {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  border-radius: 2px;
+  overflow: hidden;
+
+  .tint {
+    display: flex;
+    flex-direction: column;
+
+    .shade {
+      height: 1rem;
+      width: 0.5rem;
+      cursor: pointer;
+    }
+  }
+}

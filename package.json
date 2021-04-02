@@ -1,0 +1,110 @@
+{
+	"name": "sunflowers",
+	"version": "0.1.52",
+	"main": "./lib/cjs/index.js",
+	"module": "./lib/esm/index.js",
+	"types": "./lib/cjs/index.d.ts",
+	"files": [
+		"lib/"
+	],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/lenacassandre/sunflowers"
+    },
+	"scripts": {
+		"watch": "node watch.js",
+		"tsc": "echo \"Remove lib folder\" && rm -rf lib && echo \"Compile Native TSX files for CJS\" && tsc -p tsconfig-cjs-native.json  && echo \"Compile Web TSX files ans TS files for CJS\" && tsc -p tsconfig-cjs-dom.json && echo \"Compile Native TSX files for ESM\" && tsc -p tsconfig-esm-native.json  && echo \"Compile Web TSX files ans TS files for ESM\" && tsc -p tsconfig-esm-dom.json && echo \"Checking TS files with ESLINT\" && eslint --ext ts,tsx,js src ; echo \"Done.\"",
+		"tsc-windows": "echo \"Remove lib folder\" && del /s /F /Q lib && echo \"Compile Native TSX files for CJS\" && tsc -p tsconfig-cjs-native.json  && echo \"Compile Web TSX files ans TS files for CJS\" && tsc -p tsconfig-cjs-dom.json && echo \"Compile Native TSX files for ESM\" && tsc -p tsconfig-esm-native.json  && echo \"Compile Web TSX files ans TS files for ESM\" && tsc -p tsconfig-esm-dom.json && echo \"Checking TS files with ESLINT\" && eslint --ext ts,tsx,js src ; echo \"Done.\"",
+		"commit": "git add . && yarn run tsc && git cz",
+		"commit-windows": "git add . && yarn run tsc-windows & git cz",
+		"release": "standard-version && git push --follow-tags origin main"
+	},
+	"dependencies": {
+		"@fortawesome/fontawesome-svg-core": "^1.2.30",
+		"@fortawesome/free-brands-svg-icons": "^5.14.0",
+		"@fortawesome/free-regular-svg-icons": "^5.14.0",
+		"@fortawesome/free-solid-svg-icons": "^5.14.0",
+		"@fortawesome/react-fontawesome": "^0.1.11",
+		"@types/react-native": "^0.63.25",
+		"@types/styled-components": "^5.1.4",
+		"dotenv": "^8.2.0",
+		"path": "^0.12.7",
+		"react": "17.0.1",
+		"react-dom": "17.0.1",
+		"react-native": "^0.63.3",
+		"react-router-dom": "^5.2.0",
+		"react-scripts": "3.4.3",
+		"react-syntax-highlighter": "^13.5.3",
+		"react-transition-group": "^4.4.1",
+		"save": "^2.4.0",
+		"socket.io": "3.1.1",
+		"socket.io-client": "3.1.1",
+		"styled-components": "^5.2.0"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.11.6",
+		"@babel/eslint-plugin": "^7.12.1",
+		"@babel/preset-env": "^7.11.5",
+		"@babel/preset-react": "^7.10.4",
+		"@commitlint/cli": "^11.0.0",
+		"@commitlint/config-conventional": "^11.0.0",
+		"@craco/craco": "^5.6.4",
+		"@fullhuman/postcss-purgecss": "^2.3.0",
+		"@testing-library/jest-dom": "^4.2.4",
+		"@testing-library/react": "^9.5.0",
+		"@testing-library/user-event": "^7.2.1",
+		"@types/jest": "^26.0.10",
+		"@types/node": "^14.11.2",
+		"@types/password-hash": "^1.2.20",
+		"@types/react": "^16.9.47",
+		"@types/react-dom": "^16.9.8",
+		"@types/react-router-dom": "^5.1.7",
+		"@types/react-syntax-highlighter": "^11.0.5",
+		"@types/react-transition-group": "^4.4.0",
+		"@types/socket.io-client": "^1.4.35",
+		"@typescript-eslint/eslint-plugin": "^4.14.0",
+		"@typescript-eslint/parser": "^4.14.0",
+		"babel-loader": "^8.1.0",
+		"concurrently": "^5.3.0",
+		"crypto-browserify": "^3.12.0",
+		"cz-conventional-changelog": "^3.3.0",
+		"eslint": "^7.18.0",
+		"eslint-config-prettier": "^7.2.0",
+		"eslint-plugin-import": "^2.22.1",
+		"eslint-plugin-node": "^11.1.0",
+		"eslint-plugin-react": "^7.22.0",
+		"eslint-plugin-react-hooks": "^4.2.0",
+		"husky": "^4.3.0",
+		"prettier": "^2.2.1",
+		"standard-version": "^9.0.0",
+		"typescript": "^4.2.3"
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	},
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog"
+		}
+	},
+	"husky": {
+		"hooks": {
+			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+		}
+	},
+	"engines": {
+		"node": ">=8.10.0"
+	},
+	"browser": {
+		"crypto": false
+	}
+}

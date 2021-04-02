@@ -1,0 +1,98 @@
+@import "../../oldColors.scss";
+
+.Select {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+
+	.Button {
+		overflow: hidden;
+
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+
+		&.multiple {
+			font-size: 0.7em;
+		}
+
+		&.active:hover {
+			cursor: pointer;
+		}
+	}
+}
+
+.SelectModal {
+	>.background {
+		background-color: rgba(0, 0, 0, 0) !important;
+	}
+
+	ul {
+		background-color: white;
+		position: absolute;
+		z-index: 2;
+		max-height: 45vh;
+
+		border-radius: 2px;
+
+		box-sizing: border-box;
+		border: solid 1px lightgray;
+
+		overflow-y: auto;
+
+		box-shadow: 2px 2px 32px rgba(0, 0, 0, 0.1);
+
+		li {
+			cursor: pointer;
+
+			box-sizing: border-box;
+
+			height: 2em;
+			padding: 0.3em 0.5em 0.2em 0.5em;
+
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+
+			background-color: white;
+
+			font-weight: bold;
+
+			&.active {
+				font-weight: bolder;
+				color: skyblue;
+
+				&:hover {
+					color: white;
+				}
+			}
+
+			&:hover {
+				color: white;
+				background-color: skyblue;
+			}
+		}
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	// TRANSITIONS
+	&.enter {
+		opacity: 0;
+	}
+
+	&.enter-active, &.enter-done {
+		opacity: 1;
+		transition: all 0s ease;
+	}
+
+	&.exit {
+		opacity: 1;
+	}
+
+	&.exit-active, &.exit-done {
+		opacity: 0;
+		transition: all 0s ease;
+	}
+	///////////////////////////////////////////////////////////////////////////////////////::::
+}

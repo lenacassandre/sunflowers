@@ -1,0 +1,38 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"display": "Node 12",
+	"compilerOptions": {
+		"target": "es2015",
+		"module": "ES2020",
+		"outDir": "./lib/esm",
+		"jsx": "preserve",
+		"lib": [
+			"dom",
+			"dom.iterable",
+			"esnext",
+			"es2019",
+			"es2020.promise",
+			"es2020.bigint",
+			"es2020.string"
+		],
+		"allowJs": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"declaration": true,
+		"declarationMap": true,
+		"inlineSourceMap": true,
+		"inlineSources": true,
+		"allowUnreachableCode": true,
+		"noUnusedLocals": false
+	},
+	"include": [
+		"./src/*.ts",
+		"./src/**/*.ts"
+, "src/components/ViewComposer/useRouter.ts", "src/components/DropDownSelect/DropDownSelect.tsx", "src/components/DatePicker/DatePicker.tsx", "src/components/MiniCalendar/MiniDay/MiniDay.tsx", "src/components/MiniCalendar/MiniDaysBar/MiniDaysBar.tsx", "src/components/MiniCalendar/MiniWeek/MiniWeek.tsx", "src/components/MiniCalendar/MonthNav/MonthNav.tsx", "src/components/MiniCalendar/MiniCalendar.tsx", "src/utils/generateNewID.js", "src/components/Search/Search.tsx"	]
+}

@@ -1,0 +1,40 @@
+.LinkModal {
+    position: relative;
+    max-width: 50rem;
+    max-height: 30rem;
+
+    display: flex;
+    flex-direction: column;
+
+    .items {
+        position: relative;
+        flex: 1;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-wrap: wrap;
+
+        .Task {
+            position: relative !important;
+            width: 15rem;
+            margin: 0 0 1rem 1rem;
+        }
+    }
+
+    .keys {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: flex-end;
+
+        .DropDownSelect {
+            width: 11rem;
+        }
+
+        .saveButton {
+            margin-left: 2rem;
+        }
+    }
+}

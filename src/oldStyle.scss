@@ -1,0 +1,73 @@
+@import "./oldColors.scss";
+
+html {
+	color: $darkgrey;
+	font-family: Univers;
+	font-weight: normal;
+	line-height: 1;
+}
+
+body {
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: 0;
+	width: 100%;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+@media screen and (min-width: 2001px) {
+	html {
+		font-size: 18px;
+	}
+}
+
+@media screen and (min-width: 1701px) and (max-width: 2000px) {
+	html {
+		font-size: 16px;
+	}
+}
+
+@media screen and (min-width: 1301px) and (max-width: 1700px) {
+	html {
+		font-size: 14px;
+	}
+}
+
+@media screen and (min-width: 1001px) and (max-width: 1300px) {
+	html {
+		font-size: 12px;
+	}
+}
+
+@media screen and (max-width: 1000px) {
+	html {
+		font-size: 12px;
+	}
+}
+
+.column {
+	display: flex;
+	flex-direction: column;
+}
+
+.f1 {
+	flex: 1;
+}
+
+.f2 {
+	flex: 2;
+}
+
+.f3 {
+	flex: 3;
+}
+
+.f4 {
+	flex: 4;
+}
+
+.f5 {
+	flex: 5;
+}

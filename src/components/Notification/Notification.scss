@@ -1,0 +1,43 @@
+.Notification {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+
+	box-sizing: border-box;
+	height: 3rem;
+	padding: 1rem;
+	margin-bottom: 0.5rem;
+
+	border-radius: 2px;
+
+	transition: all 1s ease;
+
+	color: white;
+
+	.notificationChildrenContainer {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		font-size: 1rem;
+		height: 1rem;
+	}
+
+	.closeNotificationIcon {
+		margin-left: 1rem;
+		cursor: pointer;
+	}
+
+	&.blue {
+		background-color: blue;
+	}
+
+	&.green {
+		background-color: green;
+	}
+
+	&.red {
+		background-color: red;
+	}
+}

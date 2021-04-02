@@ -1,0 +1,19 @@
+.LeftBar {
+	position: relative;
+
+	box-sizing: border-box;
+	padding: 1rem 2rem 2rem 2rem;
+	width: 18rem;
+
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: flex-start;
+
+	margin-left: -18rem;
+	transition: all 0.2s ease, margin-left 0.5s ease;
+
+	&.active {
+		margin-left: 0;
+	}
+}

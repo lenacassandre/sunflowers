@@ -1,0 +1,57 @@
+@import 'src/constants/colors.scss';
+
+.RepeatModal {
+  position: relative;
+  padding: 2rem;
+
+  display: flex;
+  flex-direction: column;
+
+  >* {
+    display: flex;
+    flex-direction: row;
+  }
+
+  h2 {
+    margin-bottom: 2rem;
+  }
+
+  p.error {
+    margin-bottom: 2rem;
+  }
+
+  .inputs {
+    align-items: center;
+    justify-content: flex-start;
+
+    margin-bottom: 2rem;
+
+    .Input {
+      width: 5.25rem;
+      margin: 0.5rem;
+      margin-top: -0.18rem;
+
+      input {
+        padding-left: 0.25rem;
+      }
+
+      label {
+        left: 0.25rem;
+        padding: 0;
+      }
+    }
+
+    .DropDownSelect {
+      width: 6rem;
+    }
+  }
+
+  .buttons {
+    justify-content: flex-end;
+
+    .repeatButton,
+    .repeatLinkButton {
+      margin-left: 2rem;
+    }
+  }
+}

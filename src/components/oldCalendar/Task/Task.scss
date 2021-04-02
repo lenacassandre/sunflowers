@@ -1,0 +1,576 @@
+@import "src/constants/colors.scss";
+
+.Task {
+	position: absolute;
+	margin: 0;
+	box-sizing: border-box;
+
+	border-style: solid;
+
+	cursor: pointer;
+
+	border-radius: 2px;
+
+	font-size: 0.75rem;
+	padding-left: 0.25rem;
+	padding-right: 0.25rem;
+	box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.2);
+
+	transition: all 0.1s ease, box-shadow 0.2s ease, left 0.2s ease, width 0.2s ease, font-size 0.2s ease,
+		opacity 0.2s ease, color 0.2s ease, background-color 0.5s ease, border-color 0.5s ease;
+
+	opacity: 1;
+	overflow: hidden;
+
+	&:hover,
+	&.edition {
+		.background {
+			filter: brightness(1.1);
+
+			&.dark {
+				filter: brightness(1) !important;
+			}
+		}
+	}
+
+	// En train d'effectuer une action sur la tâche
+	&.edition {
+		box-shadow: 0rem 0rem 1rem rgba(0, 0, 0, 0.1);
+	}
+
+	// En train de drag une copie
+	&.clone {
+		opacity: 0.5;
+	}
+
+	// Créée par quelqu'un d'autre, ne peut pas y toucher
+	&.otherUser {
+		opacity: 0.2;
+	}
+
+	&.overlapingTask {
+		opacity: 0.5;
+		cursor: default !important;
+	}
+
+	&.deadline {
+		.background {
+			border-top: dashed 2px rgba($white, 0.7);
+		}
+
+		&.template {
+			.background {
+				border: dashed 3px rgba($white, 1);
+			}
+		}
+	}
+
+	&.locked {
+		cursor: default !important;
+
+		&:hover {
+			.background {
+				filter: none;
+			}
+		}
+	}
+
+	// Pour le thème sombre, on assombrie un peu les couleurs pour éviter un effet de rayonnement, ou un éblouissement
+	.background {
+		box-sizing: border-box;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		transition: all 0.5s ease;
+		filter: brightness(1);
+
+		overflow: hidden;
+
+		border-radius: 2px;
+
+		.lockIcon {
+			position: absolute;
+			top: 0.25rem;
+			right: 0.25rem;
+		}
+
+		&.dark {
+			filter: brightness(0.9) !important;
+		}
+	}
+
+	&.cancelled {
+		opacity: 0.5;
+
+		.background {
+			filter: grayscale(20%);
+		}
+	}
+
+	svg {
+		margin: 0;
+	}
+
+	&.template {
+		position: relative !important;
+		padding-bottom: 1rem;
+
+		&.link {
+			&.edition {
+				.background {
+					box-shadow: inset 0 0 0 0.5rem rgba(255, 255, 255, 0.3) !important;
+				}
+			}
+
+			&:hover {
+				.background {
+					box-shadow: inset 0 0 0 0.25rem rgba(255, 255, 255, 0.3);
+				}
+			}
+		}
+	}
+
+	// CHILDREN //////////////////////////////////////////////////////////////////////
+
+	.linkIcon {
+		position: absolute;
+		top: 0;
+		right: -0.5rem;
+		font-size: 0.5rem;
+	}
+
+	.titleRowTask {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		padding-top: 1rem;
+		transition: all 0.1s ease;
+
+		.Title {
+			position: relative;
+			top: 0;
+			font-family: Raleway;
+			font-weight: 900;
+			font-size: 1.1em;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			font-style: normal;
+		}
+
+		.tarif {
+			position: relative;
+			margin-top: -0.75em;
+			margin-right: 0;
+			font-family: Raleway;
+			font-weight: 900;
+			font-size: 1em;
+			color: $white;
+			padding: 0em 0 0.1em 0.5em;
+			align-self: flex-start;
+			background-color: $white;
+			border-radius: 2px;
+			transition: all 0.1s ease;
+		}
+	}
+
+	.taskMain {
+		position: relative;
+		top: 0;
+		overflow: hidden;
+		width: 100%;
+		height: 100%;
+		padding-bottom: 1rem;
+		box-sizing: border-box;
+		transition: all 0.1s ease;
+
+		> * {
+			width: 100%;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			font-style: normal;
+			transition: all 0.1s ease;
+		}
+
+		.infos {
+			margin-bottom: 1.5rem;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			font-style: normal;
+
+			span {
+				height: 1.1rem;
+				font-size: 0.9em;
+				font-family: Univers;
+				font-weight: 900;
+				font-style: italic;
+			}
+		}
+
+		.Teacher,
+		.Date,
+		.Hour,
+		.Duration {
+			height: 1.1rem;
+			margin: 1rem 0 0 0;
+			font-family: Univers;
+			font-weight: 500;
+			font-size: 1em;
+		}
+	}
+
+	// SIZING ////////////////////////////////////////////////////////////////
+
+	&.d120:not(.tremplate) {
+		.titleRowTask {
+			margin-bottom: 0.25em;
+		}
+
+		.infos {
+			margin-bottom: 1em;
+		}
+	}
+
+	&.d105:not(.tremplate) {
+		.Teacher,
+		.Date,
+		.Hour,
+		.Duration {
+			margin-top: 0.75rem;
+		}
+
+		.sizer {
+			height: 1rem;
+		}
+	}
+
+	&.d90:not(.tremplate) {
+		.Teacher,
+		.Date,
+		.Hour,
+		.Duration {
+			margin-top: 0.25rem;
+		}
+	}
+
+	&.d75:not(.tremplate) {
+		.Duration {
+			height: 0;
+			margin: 0;
+		}
+	}
+
+	&.d60:not(.tremplate) {
+		.titleRowTask {
+			padding-top: 0.5rem;
+
+			.tarif {
+				margin-top: -0.25em;
+			}
+		}
+
+		.taskMain {
+			padding-bottom: 0.5rem;
+		}
+
+		.Date {
+			height: 0;
+			margin: 0;
+		}
+
+		.linkIcon {
+			top: 0.5rem;
+		}
+	}
+
+	&.d45:not(.tremplate) {
+		.Hour {
+			height: 0;
+			margin: 0;
+		}
+	}
+
+	&.d30:not(.tremplate) {
+		.Teacher {
+			height: 0;
+			margin: 0;
+		}
+	}
+
+	&.d15:not(.tremplate) {
+		.linkIcon {
+			top: calc(50% - 0.5rem);
+			right: -0.75rem;
+		}
+
+		.lockIcon {
+			height: 0.8rem;
+			top: calc(50% - 0.4rem);
+		}
+
+		.titleRowTask {
+			padding-top: 0rem;
+			margin: 0;
+
+			.Title {
+				font-size: 0.9em;
+				margin: 0;
+			}
+
+			.tarif {
+				font-size: 0.9em;
+				margin-top: 0.25em;
+				margin-bottom: -0.5em;
+			}
+		}
+
+		.taskMain {
+			padding-bottom: 0rem;
+
+			.infos {
+				font-size: 0.6em;
+			}
+		}
+
+		.sizer {
+			height: 0.5rem;
+
+			&.szTop {
+				top: 0rem;
+			}
+
+			&.szBtm {
+				bottom: 0rem;
+			}
+		}
+	}
+
+	&.div2,
+	&.template {
+		font-size: 0.8rem;
+		padding-left: 0.5rem;
+		padding-right: 0.5rem;
+
+		.tarif {
+			margin-right: -0.25em;
+		}
+
+		svg {
+			margin-right: 0.25rem;
+			max-width: 1rem;
+		}
+	}
+
+	&.div1,
+	&.template {
+		font-size: 0.9rem;
+		padding-left: 1rem;
+		padding-right: 1rem;
+
+		.tarif {
+			margin-right: -0.75em;
+		}
+
+		svg {
+			margin-right: 0.5rem;
+			max-width: 1rem;
+		}
+	}
+
+	// SIZERS /////////////////////////////////////////////////////////////////////
+
+	.sizer {
+		position: absolute;
+		left: 0rem;
+		cursor: row-resize;
+		width: 100%;
+		height: 1.5rem;
+
+		&.szTop {
+			top: -2px;
+		}
+
+		&.szBtm {
+			bottom: -2px;
+		}
+	}
+
+	.watermark {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		white-space: nowrap;
+		text-overflow: ellipsis;
+
+		font-family: "Raleway";
+		font-size: 10rem;
+		font-weight: 900;
+
+		opacity: 0.1;
+
+		p {
+			position: absolute;
+			transform: translateX(-50%);
+		}
+	}
+
+	.animate .watermark {
+		p {
+			&.watermarkTransition-enter,
+			&.watermarkTransition-appear {
+				opacity: 0;
+			}
+
+			&.watermarkTransition-enter-active,
+			&.watermarkTransition-enter-done {
+				opacity: 1;
+				transition: all 1s ease;
+			}
+
+			&.watermarkTransition-exit {
+				opacity: 1;
+			}
+
+			&.watermarkTransition-exit-active {
+				opacity: 0;
+				transition: all 1s ease;
+			}
+
+			&.even {
+				// Before entering
+				&.watermarkTransition-enter,
+				&.watermarkTransition-appear {
+					transform: translateX(-150%) !important;
+				}
+
+				// Entering
+				&.watermarkTransition-enter-active,
+				&.watermarkTransition-enter-done {
+					transform: translateX(-50%) !important;
+				}
+
+				// Before exiting
+				&.watermarkTransition-exit {
+					transform: translateX(-50%) !important;
+				}
+
+				//Exiting
+				&.watermarkTransition-exit-active {
+					transform: translateX(50%) !important;
+				}
+			}
+
+			&.odd {
+				&.watermarkTransition-enter,
+				&.watermarkTransition-appear {
+					transform: translateX(50%) !important;
+				}
+
+				&.watermarkTransition-enter-active,
+				&.watermarkTransition-enter-done {
+					transform: translateX(-50%) !important;
+				}
+
+				&.watermarkTransition-exit {
+					transform: translateX(-50%) !important;
+				}
+
+				&.watermarkTransition-exit-active {
+					transform: translateX(-150%) !important;
+				}
+			}
+		}
+	}
+}
+
+.taskTransition-enter {
+}
+
+.taskTransition-enter-active {
+	//animation: bounceIn 0.2s ease forwards;
+}
+
+.taskTransition-exit {
+	opacity: 1;
+}
+
+.taskTransition-exit-active {
+	opacity: 0;
+	transition: opacity 0.2s ease;
+	//animation: bounceOut 0.2s ease forwards;
+}
+
+.noAnimation .Task {
+	transition: all 0s ease, box-shadow 0s ease, left 0s ease, width 0s ease, font-size 0s ease, opacity 0s ease,
+		color 0s ease, background-color 0.5s ease, border-color 0.5s ease;
+}
+
+@keyframes bounceIn {
+	from,
+	20%,
+	40%,
+	60%,
+	80%,
+	to {
+		-webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+		animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+	}
+
+	0% {
+		opacity: 0;
+		-webkit-transform: scale3d(0.3, 0.3, 0.3);
+		transform: scale3d(0.3, 0.3, 0.3);
+	}
+
+	20% {
+		-webkit-transform: scale3d(1.1, 1.1, 1.1);
+		transform: scale3d(1.1, 1.1, 1.1);
+	}
+
+	40% {
+		-webkit-transform: scale3d(0.9, 0.9, 0.9);
+		transform: scale3d(0.9, 0.9, 0.9);
+	}
+
+	60% {
+		opacity: 1;
+		-webkit-transform: scale3d(1.03, 1.03, 1.03);
+		transform: scale3d(1.03, 1.03, 1.03);
+	}
+
+	80% {
+		-webkit-transform: scale3d(0.97, 0.97, 0.97);
+		transform: scale3d(0.97, 0.97, 0.97);
+	}
+
+	to {
+		opacity: 1;
+		-webkit-transform: scale3d(1, 1, 1);
+		transform: scale3d(1, 1, 1);
+	}
+}
+
+@keyframes bounceOut {
+	20% {
+		-webkit-transform: scale3d(0.9, 0.9, 0.9);
+		transform: scale3d(0.9, 0.9, 0.9);
+	}
+
+	50%,
+	55% {
+		opacity: 1;
+		-webkit-transform: scale3d(1.1, 1.1, 1.1);
+		transform: scale3d(1.1, 1.1, 1.1);
+	}
+
+	to {
+		opacity: 0;
+		-webkit-transform: scale3d(0.3, 0.3, 0.3);
+		transform: scale3d(0.3, 0.3, 0.3);
+	}
+}

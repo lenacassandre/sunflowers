@@ -1,0 +1,206 @@
+@import "../../oldColors.scss";
+
+@mixin subClasses(
+	$n: 5,
+	$heightBasis: 4rem,
+	$heightDecrement: 0.5rem,
+	$marginBasis: 1rem,
+	$marginIncrement: 1rem,
+	$fontBasis: 1em,
+	$fontDecrement: 0.05em
+) {
+	@for $i from 1 through $n {
+		&.sub#{$i} {
+			height: $heightBasis - ($heightDecrement * $i);
+
+			* {
+				font-size: $fontBasis - ($fontDecrement * $i);
+
+				&.Button {
+					font-size: $fontBasis * 0.9 - ($fontDecrement * $i * 2);
+				}
+			}
+
+			> td:first-child {
+				margin-left: $marginBasis + ($marginIncrement * $i);
+			}
+		}
+	}
+}
+
+div.Table {
+	position: relative;
+	box-sizing: border-box;
+	border-radius: 2px;
+
+	padding: 1rem;
+
+	overflow: auto;
+
+	div.wrapper {
+		overflow: auto;
+		height: 100%;
+		flex: 1;
+
+		table {
+			display: flex;
+			flex-direction: column;
+
+			table-layout: fixed;
+
+			tr {
+				display: flex;
+				flex-direction: row;
+				min-width: 100% !important;
+
+				@include subClasses(5, 4.5rem, 0.5rem, 0rem, 1rem, 1.05em, 0.05em)
+			}
+
+			thead,
+			tbody {
+				display: flex;
+				flex-direction: column;
+				min-width: 100% !important;
+			}
+
+			th,
+			td {
+				box-sizing: border-box;
+
+				margin: 0;
+
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				justify-content: flex-start;
+				align-content: center;
+				text-align: left;
+
+				&:not(.input) {
+					padding: 1rem;
+				}
+
+				&.fixed {
+					position: -webkit-sticky;
+					position: sticky;
+				}
+			}
+
+			thead {
+				height: 4rem;
+				position: sticky;
+				top: 0;
+				order: 1;
+
+				&,
+				* {
+					-webkit-touch-callout: none;
+					-webkit-user-select: none;
+					-khtml-user-select: none;
+					-moz-user-select: none;
+					-ms-user-select: none;
+					user-select: none;
+				}
+
+				tr {
+					height: 100%;
+
+					th {
+						top: 0;
+						justify-content: flex-start;
+
+						&.sortable {
+							cursor: pointer;
+						}
+
+						.icon {
+							padding-left: 0.5rem;
+							display: flex;
+							flex-direction: column;
+							justify-content: flex-start;
+							align-items: flex-start;
+							text-align: left;
+						}
+					}
+				}
+			}
+
+			tbody {
+				height: calc(100% - 4rem);
+				order: 2;
+
+				tr {
+					height: 4rem;
+
+					&.valid {
+						th,
+						td {
+							box-shadow: inset 0 0 0 3rem rgba($validation, 0.2) !important;
+						}
+					}
+
+					&.warning {
+						th,
+						td {
+							box-shadow: inset 0 0 0 3rem rgba($yellow, 0.2) !important;
+						}
+					}
+
+					&.error {
+						th,
+						td {
+							box-shadow: inset 0 0 0 3rem rgba($error, 0.2) !important;
+						}
+					}
+
+					&.clickable {
+						cursor: pointer;
+					}
+
+					&.sub {
+						height: 3rem;
+						font-size: 0.9em;
+
+						th:first-of-type {
+							padding-left: 0.5rem;
+						}
+					}
+
+					& > * {
+						font-weight: normal;
+					}
+
+					td,
+					th {
+						flex-wrap: wrap;
+						input {
+							padding: 1rem !important;
+
+							&[type="number"] {
+								padding-right: 0 !important;
+								padding-left: 0.25rem !important;
+							}
+						}
+
+						.ActionDots {
+							width: 100%;
+						}
+
+						.removeRowButton {
+							background-color: $error;
+							color: $white;
+
+							&:hover {
+								background-color: lighten($error, 10);
+							}
+						}
+
+						svg.true {
+							color: $validation;
+						}
+					}
+				}
+			}
+		}
+	}
+}

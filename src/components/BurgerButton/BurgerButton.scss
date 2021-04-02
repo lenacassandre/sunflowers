@@ -1,0 +1,74 @@
+.BurgerButton {
+	width: 3rem;
+	height: 3rem;
+	border-radius: 1.5rem;
+
+	margin: 0.5rem;
+
+	cursor: pointer;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	transition: all 0.2s ease;
+	z-index: 100;
+
+	.icon {
+		position: relative;
+		width: 1.5rem;
+		height: 1.25rem;
+
+		div {
+			position: absolute;
+			height: 0.25rem;
+			width: 100%;
+			transition: all 0.5s ease;
+			border-radius: 0.125rem;
+
+			&:nth-child(1) {
+				top: 0;
+				transform: scaleX(1);
+			}
+
+			&:nth-child(2) {
+				top: 0.5rem;
+				transform: rotate(0deg);
+			}
+
+			&:nth-child(3) {
+				top: 0.5rem;
+				transform: rotate(0deg);
+			}
+
+			&:nth-child(4) {
+				top: 1rem;
+				transform: scaleX(1);
+			}
+		}
+	}
+
+	&.active .icon {
+		div {
+			&:nth-child(1) {
+				top: 0rem;
+				transform: scaleX(0);
+			}
+
+			&:nth-child(2) {
+				top: 0.5rem;
+				transform: rotate(45deg);
+			}
+
+			&:nth-child(3) {
+				top: 0.5rem;
+				transform: rotate(-45deg);
+			}
+
+			&:nth-child(4) {
+				top: 1rem;
+				transform: scaleX(0);
+			}
+		}
+	}
+}

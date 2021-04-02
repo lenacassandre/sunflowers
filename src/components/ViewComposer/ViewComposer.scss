@@ -1,0 +1,52 @@
+.View {
+	display: flex;
+	flex-direction: row;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+
+	transition: filter 0.2s ease;
+
+	.notificationsContainer {
+		position: fixed;
+		bottom: 0rem;
+		right: 0.5rem;
+
+		.Notification {
+			position: absolute;
+			right: 0;
+			width: 20rem;
+
+			&.notificationTransition-enter {
+				margin-bottom: -3rem;
+			}
+
+			&.notificationTransition-enter-active,
+			&.notificationTransition-enter-done {
+				margin-bottom: 0.5rem;
+				transition: all 0.5s ease-out;
+			}
+
+			&.notificationTransition-exit {
+				opacity: 1;
+
+				&.manual {
+					transform: translateX(0%);
+				}
+			}
+
+			&.notificationTransition-exit-active {
+				opacity: 0;
+				transition: all 0.5s ease;
+
+				&.manual {
+					transform: translateX(100%);
+					transition: all 0.2s ease-out;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,15 @@
+@import "../../oldColors.scss";
+
+.Middle {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: align-center;
+
+    flex: 1;
+    overflow: hidden;
+
+    transition: background-color 0.2s ease;
+}

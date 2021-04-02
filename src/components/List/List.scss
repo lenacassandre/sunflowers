@@ -1,0 +1,12 @@
+.List {
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    background-color: inherit;
+    min-width: 100px;
+
+    display: flex;
+    flex-direction: column;
+}

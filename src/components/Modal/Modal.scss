@@ -1,0 +1,179 @@
+@import "../../oldColors.scss";
+
+.Modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	z-index: 999999999999999999;
+
+	overflow: visible;
+
+	.background {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+
+		z-index: 1;
+
+		background-color: rgba(0, 0, 0, 0.15);
+	}
+
+	// CHILDREN ///////////////////////////////////////////////////////////////////////////////////
+	.modalContent {
+		position: relative;
+
+		z-index: 2;
+
+		box-sizing: border-box;
+		border-radius: 8px;
+    	padding: 24px;
+		max-height: 90vh;
+
+		overflow-y: auto;
+
+		box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.15);
+
+		background-color: white;
+
+		overflow: visible;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: stretch;
+		align-items: stretch;
+
+		form {
+			display: flex;
+			flex-direction: column;
+			justify-content: stretch;
+			align-items: stretch;
+			flex: 1;
+			margin: 0;
+		}
+
+		.row {
+			display: flex;
+			flex-direction: row;
+		}
+
+		.quitIcon {
+			position: absolute;
+			top: 1rem;
+			right: 1rem;
+			font-size: 1.2rem;
+			transform: rotate(0deg);
+
+			transition: all 0.2s ease;
+
+			&:hover {
+				color: $action;
+				cursor: pointer;
+				transform: rotate(90deg);
+			}
+		}
+
+		h2 {
+			margin-bottom: 2rem;
+			margin-right: 1rem;
+		}
+
+		p.message {
+			margin-bottom: 1rem;
+		}
+
+		p.modalError {
+			margin-bottom: 1rem;
+			color: $error;
+			text-decoration: underline;
+		}
+
+		.buttonsRow {
+			justify-content: flex-end;
+			margin-top: 1.5rem;
+
+			.Button.rejectButton {
+				border: none !important;
+			}
+
+			.Button.resolveButton {
+				margin-left: 1rem;
+				color: white;
+				background-color: $validation;
+
+				&:hover {
+					background-color: lighten($validation, 10);
+				}
+			}
+		}
+	}
+
+	// TRANSITION ////////////////////////////////////////////////////////////////////////////////////
+	// Enter ///////////////////////////////////////////////////////////////////
+	&.enter {
+		opacity: 0;
+
+		> .modalContent {
+			opacity: 0;
+			-webkit-transform: scale(5);
+			transform: scale(5);
+		}
+	}
+
+	&.enter-active,
+	&.enter-done {
+		opacity: 1;
+		transition: all 0.2s ease;
+
+		> .modalContent {
+			opacity: 1;
+			-webkit-transform: scale(1);
+			transform: scale(1);
+			transition: transform 0.1s ease, opacity 0.4s ease;
+		}
+	}
+
+	// Exit default /////////////////////////////////////////////////:///////////////
+	&.exit {
+		opacity: 1;
+
+		> .modalContent {
+			-webkit-transform: translate3d(0, 0, 0);
+			transform: translate3d(0, 0, 0);
+		}
+	}
+
+	&.exit-active:not(.resolving) {
+		opacity: 0;
+		transition: all 0.2s ease;
+
+		> .modalContent {
+			-webkit-transform: translate3d(10rem, 0, 0);
+			transform: translate3d(10rem, 0, 0);
+			transition: all 0.2s ease;
+		}
+	}
+
+	// Exit resolving ///////////////////////////////////////////////////////////////////////////////////
+	&.exit-active.resolving {
+		opacity: 0;
+		transition: all 0.5s ease;
+
+		> .modalContent {
+			opacity: 0;
+			-webkit-transform: translate3d(0, -10rem, 0);
+			transform: translate3d(0, -10rem, 0);
+			transition: all 0.3s cubic-bezier(.74,-0.39,.83,.67); // Bounce
+		}
+	}
+}
+

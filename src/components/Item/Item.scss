@@ -1,0 +1,31 @@
+.Item {
+    position: relative;
+
+    box-sizing: border-box;
+    column-width: 100%;
+    padding: 0 0.5rem;
+
+    height: 2.5rem;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    list-style: none;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    background-color: inherit;
+
+
+    width: 100%;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &.disabled:hover {
+        cursor: default;
+    }
+}

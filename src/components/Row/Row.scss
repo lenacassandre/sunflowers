@@ -1,0 +1,17 @@
+.Row {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+
+	&.autoflex > *{
+		flex: 1; // toutes les colonnes sont égales si la prop flex est donnée
+	}
+
+	& > *:not(:last-child) {
+		margin-right: 1em; // Marge horizontale par défaut
+	}
+
+	&:not(:last-child) {
+		margin-bottom: 1em; // Marge vertical par défaut
+	}
+}

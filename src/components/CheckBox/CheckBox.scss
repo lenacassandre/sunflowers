@@ -1,0 +1,100 @@
+@import "../../oldColors.scss";
+
+.CheckBox {
+	padding: 0.5rem;
+	border-radius: 2px;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+
+	height: auto;
+
+	cursor: pointer;
+
+	&.wrap {
+		label {
+			white-space: normal !important;
+			text-overflow: "" !important;
+		}
+	}
+
+	&:hover {
+		background-color: rgba($action, 0.2);
+
+		transition: all 0.1s ease;
+
+		div.square {
+			border: solid 0.125rem $action;
+		}
+
+		label {
+			color: $action;
+		}
+	}
+
+	&.checked {
+		label {
+			font-weight: bold;
+		}
+
+		div.square {
+			border: solid 0.125rem $action;
+			background-color: $action;
+		}
+	}
+
+	input {
+		display: none;
+	}
+
+	div.square {
+		position: relative;
+		box-sizing: border-box;
+		min-height: 1em;
+		max-height: 1em;
+		min-width: 1em;
+		max-width: 1em;
+		border: solid 0.125rem $darkgrey;
+		background-color: transparent;
+		border-radius: 2px;
+		margin-right: 1rem;
+
+		transition: all 0.1s ease;
+
+		svg {
+			color: $white;
+			font-size: 0.8em;
+			position: absolute;
+			top: -0.05em;
+			left: -0.05em;
+
+			&.enter {
+				transform: scale(0);
+			}
+
+			&.enter-active,
+			&.enter-done {
+				transition: all 0.1s ease-out;
+				transform: scale(1);
+			}
+
+			&.exit {
+				transform: scale(1);
+			}
+
+			&.exit-active,
+			&.exit.done {
+				transform: scale(0);
+				transition: all 0.1s ease-out;
+			}
+		}
+	}
+
+	label {
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+}

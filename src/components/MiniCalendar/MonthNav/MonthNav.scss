@@ -1,0 +1,34 @@
+.MonthNav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+
+  .monthNavIcon {
+    transition: color 0.2s ease;
+    cursor: pointer;
+    font-size: 1rem;
+
+    &:hover {}
+
+    // faFastBackward
+    &:first-child {
+      margin-right: 1rem;
+    }
+
+    // faFastForward
+    &:last-child {
+      margin-left: 1rem;
+    }
+  }
+
+  p {
+    font-size: 0.875rem;
+    font-weight: 200;
+    margin: 0 1rem;
+    width: 7rem;
+    text-align: center;
+    transition: color 0.2s ease;
+  }
+}

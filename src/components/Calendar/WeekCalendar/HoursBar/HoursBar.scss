@@ -1,0 +1,54 @@
+.HoursBar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: calc(100% + 4rem);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: stretch;
+    align-items: stretch;
+
+    *::selection {
+        color: none !important;
+        background: none !important;
+    }
+
+    *::-moz-selection {
+        color: none !important;
+        background: none !important;
+    }
+
+    * {
+        -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Safari */
+         -khtml-user-select: none; /* Konqueror HTML */
+           -moz-user-select: none; /* Old versions of Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+                user-select: none; /* Non-prefixed version, currently */
+    }
+
+    .Hour {
+        position: relative;
+        left: -1rem;
+        background-color: transparent;
+        flex: 1;
+        transition: border-top 0.2s ease;
+
+        &.border {
+            border-top: solid 1px lightgrey;
+        }
+
+        span {
+            position: absolute;
+            font-size: 0.75rem;
+            top: -0.38rem;
+            left: -2rem;
+            width: 1rem;
+            text-align: right;
+            transition: color 0.2s ease;
+        }
+    }
+}

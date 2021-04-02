@@ -1,0 +1,600 @@
+@import "./oldColors.scss";
+
+.App {
+	background-color: $white;
+	color: $darkgrey;
+
+	*::selection {
+		background-color: rgba($action, 0.8);
+		color: $white;
+	}
+
+	*::-moz-selection {
+		background-color: rgba($action, 0.8);
+		color: $white;
+	}
+
+	.SideBar {
+		background-color: $white;
+	}
+
+	.Middle {
+
+		.TopBar {
+			.DropDownSelect .Button {
+				background-color: $white !important;
+			}
+
+			.Search {
+				flex: 1;
+				margin-left: 2rem;
+				margin-right: 2rem;
+
+				input {
+					height: 2.5rem !important;
+					padding: 0.25rem 0.5rem !important;
+				}
+
+				label {
+					background-color: $lightgrey;
+					top: 0.75rem;
+				}
+
+				&:focus,
+				&:not(:placeholder-shown),
+				&.valid {
+					& + label {
+						top: 0em;
+						left: 1em;
+					}
+				}
+
+				&.outlined {
+					input {
+						+ label {
+							top: 0.75em;
+						}
+
+						&:focus,
+						&:not(:placeholder-shown),
+						&.valid {
+							+ label {
+								top: -0.4rem;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		.Main {
+		}
+	}
+
+	// BURGER BUTTON ////////////////////////////////////////////////////////////////////////////////////////////////////
+	.BurgerButton {
+		box-shadow: inset 0 0 0 1.5rem white;
+		background-color: $lightgrey;
+
+		.icon {
+			div {
+				background-color: $darkgrey;
+			}
+		}
+
+		&:hover {
+			box-shadow: inset 0 0 0 0 white;
+
+			.icon div {
+				background-color: $action;
+			}
+		}
+	}
+
+	// BUTTON ////////////////////////////////////////////////////////////////////////////////////////////////////
+	.Button {
+		color: $darkgrey;
+
+		&:hover {
+			color: $action;
+		}
+
+		&.outlined {
+			color: $darkgrey;
+			border: solid 1px $lightgrey;
+
+			&:hover:not(.disabled) {
+				color: $action;
+			}
+
+			&.active:not(.disabled),
+			&:active:not(.disabled) {
+				color: $action;
+				border: solid 1px $action;
+			}
+		}
+
+		&.filled {
+			color: $lightgrey;
+
+			&:hover:not(.disabled) {
+				color: $white;
+			}
+
+			&.active:not(.disabled),
+			&:active:not(.disabled) {
+				color: $white;
+				background-color: $action;
+			}
+		}
+
+		&.disabled {
+			background-color: $lightgrey !important;
+		}
+	}
+
+	// CLIENT////////////////////////////////////////////////////////////////////////////////////////////////////
+	.Client {
+		.logo {
+			> div {
+				background-color: $red;
+			}
+		}
+
+		.text {
+			color: $darkgrey;
+		}
+	}
+
+	// COLOR PICKER ////////////////////////////////////////////////////////////////////////////////////////////////////
+	.colorPickerButton {
+		color: $white;
+	}
+
+	.ColorPicker {
+		.colorGroupsContainer {
+			h2 {
+				color: $white;
+			}
+		}
+
+		h3 {
+			color: $white;
+			text-shadow: 0.125rem 0.125rem 0.5rem rgba($darkblack, 0.2);
+		}
+	}
+
+	// DATE PICKER ////////////////////////////////////////////////////////////////////////////////////////////////////
+	.DatePicker {
+		.miniCalendarContainer {
+			background-color: $white;
+		}
+	}
+
+	// DATE SEPARATOR ////////////////////////////////////////////////////////////////////////////////////////////////////
+	.DateSeparator {
+		span {
+			background-color: $white;
+			color: $darkgrey;
+		}
+
+		div {
+			border-top: solid 1px $lightgrey;
+		}
+	}
+
+	// DISCONNECT BUTTON ////////////////////////////////////////////////////////////////////////////////////////////////////
+	.DisconnectButton {
+		border: solid 1px $grey;
+		background-color: $lightgrey;
+		color: $darkgrey;
+
+		&:hover,
+		&:active {
+			color: $action;
+		}
+
+		&:active {
+			border: solid 2px $action;
+		}
+	}
+
+	// DROP DOWN SEARCH ////////////////////////////////////////////////////////////////////////////////////////////////////
+	.DropDownSearch {
+		position: relative;
+
+		input {
+			border: solid 0.0625rem $darkgrey;
+			color: $darkgrey;
+
+			&:focus {
+				border-color: $action !important;
+
+				& + label {
+					color: $action !important;
+				}
+			}
+
+			& + label {
+				color: $lightgrey;
+				background-color: $white;
+			}
+		}
+
+		.List {
+			border: solid 0.125rem $action;
+			background-color: $white;
+		}
+	}
+
+	// DROP DOWN SELECT ////////////////////////////////////////////////////////////////////////////////////////////////////
+	.Select {
+		.List {
+			background-color: $white;
+			box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+
+			.Item {
+				color: $darkgrey;
+				background-color: $white;
+
+				&:active {
+					color: $action;
+				}
+
+				&:hover {
+					background-color: rgba($lightgrey, 0.5);
+
+					.iconItemMultipleDropDownSelect:not(.hidden) {
+						div {
+							background-color: $action;
+						}
+					}
+				}
+
+				// icone
+				.iconItemMultipleDropDownSelect {
+					div {
+						background-color: $darkgrey;
+					}
+				}
+			}
+		}
+	}
+
+	// INPUT ////////////////////////////////////////////////////////////////////////////////////////////////////
+	::placeholder,
+	:-ms-input-placeholder,
+	::-ms-input-placeholder {
+		color: $lightgrey;
+	}
+
+	.Input {
+		input {
+			border: solid 0.0625em $darkgrey;
+			color: $darkgrey;
+
+			//On focus or when input is not empty
+			&:focus,
+			&:not(:placeholder-shown) {
+				border-color: $action !important;
+
+				& + label {
+					color: $action;
+				}
+			}
+
+			//When valid
+			&.valid {
+				border-color: $validation !important;
+				border-width: 0.125rem !important;
+
+				& + label {
+					color: $validation;
+				}
+			}
+
+			&.error {
+				border-color: $error !important;
+
+				& + label {
+					color: $error;
+				}
+			}
+		}
+
+		p {
+			color: $error;
+		}
+	}
+
+	// ITEM ////////////////////////////////////////////////////////////////////////////////////////////////////
+	.Item {
+		color: $darkgrey;
+
+		&:hover {
+			background-color: $action;
+			color: $white;
+			border-right-color: $action;
+		}
+
+		&.valid {
+			color: $validation;
+
+			&:hover {
+				background-color: $validation;
+				color: $white;
+			}
+		}
+
+		&.error {
+			color: $error;
+
+			&:hover {
+				background-color: $validation;
+				color: $white;
+			}
+		}
+
+		&.disabled:hover {
+			background-color: $lightgrey;
+			color: $darkgrey;
+		}
+	}
+
+	// MINI CALENDAR ////////////////////////////////////////////////////////////////////////////////////////////////////
+	.MiniCalendar,
+	.MiniCalendarNew {
+		span.MiniDay {
+			span.dayNumber {
+				color: $darkgrey;
+			}
+
+			&:not(.outCalendar):not(.active):hover {
+				span.dayNumber {
+					color: $white;
+				}
+
+				div.dayBackground {
+					background-color: $grey;
+				}
+			}
+
+			&.gotTask {
+				span.dayNumber {
+					color: $white !important;
+				}
+
+				div.dayBackground {
+					background-color: $darkgrey;
+				}
+			}
+
+			&.today:not(.active) {
+				span.dayNumber {
+					color: $white !important;
+				}
+
+				div.dayBackground {
+					background-color: $validation;
+				}
+			}
+
+			&.outMonth,
+			&.outCalendar {
+				span.dayNumber {
+					color: rgba($darkgrey, 0.5);
+				}
+			}
+
+			&.active {
+				div.dayBackground {
+					background-color: $action;
+				}
+
+				span.dayNumber {
+					color: $white;
+				}
+			}
+		}
+
+		div.MiniDaysBar {
+			span.miniWeekDay {
+				color: $darkgrey;
+			}
+		}
+
+		.MonthNav {
+			.monthNavIcon {
+				color: $darkgrey;
+
+				&:hover {
+					color: $action;
+				}
+			}
+
+			p {
+				color: $darkgrey;
+			}
+		}
+	}
+
+	// MODAL ////////////////////////////////////////////////////////////////////////////////////////////////////
+	.Modal {
+		.background {
+			background-color: rgba($lightblack, 0.8);
+		}
+
+		.rejectButton {
+			color: $darkgrey;
+		}
+	}
+
+	// SAVING WINDOW ////////////////////////////////////////////////////////////////////////////////////////////////////
+	.Notification {
+		color: $white;
+
+		&.red {
+			background-color: $red;
+		}
+
+		&.green {
+			background-color: $validation;
+		}
+
+		&.blue {
+			background-color: $action;
+		}
+	}
+
+	// SAVING WINDOW ////////////////////////////////////////////////////////////////////////////////////////////////////
+	.SavingModal,
+	.LinkModal,
+	.RemoveModal,
+	.RepeatModal {
+		background-color: $white;
+
+		.error {
+			color: $error;
+		}
+	}
+
+	// SWITCH ////////////////////////////////////////////////////////////////////////////////////////////////////
+	.Switch {
+		> div {
+			background-color: $lightgrey;
+			box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.2);
+
+			> div {
+				background-color: $white;
+				box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+			}
+		}
+
+		&.active > div {
+			background-color: $validation !important;
+		}
+	}
+
+	// TABLE ////////////////////////////////////////////////////////////////////////////////////////////////////
+	div.Table {
+		background-color: $white;
+
+		table {
+			th,
+			td {
+				background-color: $white;
+
+				&.lastFixed {
+					border-right: solid 0.0625rem $lightgrey;
+				}
+
+				&.first {
+				}
+			}
+
+			thead {
+				tr {
+					border-bottom: solid 0.0625rem $lightgrey;
+
+					th {
+						background-color: $white;
+
+						&.sortable {
+							&:hover {
+								color: $action;
+							}
+						}
+					}
+				}
+			}
+
+			tbody {
+				tr {
+					&:not(:last-child) {
+						border-bottom: solid 0.0625rem $lightgrey;
+					}
+
+					td,
+					th {
+						input:focus {
+							background-color: lighten($action, 50) !important;
+							border: solid $action 0.125rem !important;
+						}
+					}
+
+					&:hover {
+						td,
+						th {
+							box-shadow: inset 0 0 0 2rem rgba($action, 0.2) !important;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// TABLENEW ////////////////////////////////////////////////////////////////////////////////////////////////////
+	div.TableNew {
+		background-color: $white;
+
+		table {
+			th,
+			td {
+				background-color: $white;
+
+				&.lastFixed {
+					border-right: solid 0.0625rem $lightgrey;
+				}
+
+				&.first {
+				}
+			}
+
+			thead {
+				tr {
+					border-bottom: solid 0.0625rem $lightgrey;
+
+					th {
+						background-color: $white;
+
+						&.sortable {
+							&:hover {
+								color: $action;
+							}
+						}
+					}
+				}
+			}
+
+			tbody {
+				tr {
+					&:not(:last-child) {
+						border-bottom: solid 0.0625rem $lightgrey;
+					}
+
+					td,
+					th {
+						input:focus {
+							background-color: lighten($action, 50) !important;
+							border: solid $action 0.125rem !important;
+						}
+					}
+
+					&:hover {
+						td,
+						th {
+							box-shadow: inset 0 0 0 3rem rgba($action, 0.2);
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+
+	// USER ////////////////////////////////////////////////////////////////////////////////////////////////////
+	.User {
+		color: $darkgrey;
+	}
+}

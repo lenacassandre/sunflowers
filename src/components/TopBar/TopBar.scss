@@ -1,0 +1,31 @@
+.TopBar {
+	position: relative;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+
+	order: 1;
+
+	height: 4rem;
+	padding-right: 2rem;
+	transition: all 0.2s ease, padding-left 0.5s ease;
+
+	z-index: 1;
+
+	.childrenContainer {
+		position: relative;
+		flex: 1;
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+
+		height: 100%;
+
+		*:not(:last-child) {
+			margin-right: 1rem;
+		}
+	}
+}
