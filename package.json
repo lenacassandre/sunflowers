@@ -1,6 +1,6 @@
 {
 	"name": "sunflowers",
-	"version": "0.1.53",
+	"version": "0.1.54",
 	"main": "./lib/cjs/index.js",
 	"module": "./lib/esm/index.js",
 	"types": "./lib/cjs/index.d.ts",
@@ -20,7 +20,7 @@
 		"commit-windows": "git add . && yarn run tsc-windows & git cz",
 		"release": "standard-version && git push --follow-tags origin main"
 	},
-    "license": "MIT",
+	"license": "MIT",
 	"dependencies": {
 		"@fortawesome/fontawesome-svg-core": "^1.2.30",
 		"@fortawesome/free-brands-svg-icons": "^5.14.0",
