@@ -1,16 +1,16 @@
 {
 	"name": "sunflowers",
-	"version": "0.1.52",
+	"version": "0.1.53",
 	"main": "./lib/cjs/index.js",
 	"module": "./lib/esm/index.js",
 	"types": "./lib/cjs/index.d.ts",
 	"files": [
 		"lib/"
 	],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/lenacassandre/sunflowers"
-    },
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/lenacassandre/sunflowers"
+	},
 	"scripts": {
 		"watch": "node watch.js",
 		"tsc": "echo \"Remove lib folder\" && rm -rf lib && echo \"Compile Native TSX files for CJS\" && tsc -p tsconfig-cjs-native.json  && echo \"Compile Web TSX files ans TS files for CJS\" && tsc -p tsconfig-cjs-dom.json && echo \"Compile Native TSX files for ESM\" && tsc -p tsconfig-esm-native.json  && echo \"Compile Web TSX files ans TS files for ESM\" && tsc -p tsconfig-esm-dom.json && echo \"Checking TS files with ESLINT\" && eslint --ext ts,tsx,js src ; echo \"Done.\"",
