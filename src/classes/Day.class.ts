@@ -17,9 +17,10 @@ export default class DayModel {
 
   // Lors de la déclaration d'un jour dans une semaine, on lui fourni une date qui
   // va être traitée de façon à en extraire toute les données.
-  constructor(date) {
+  constructor(date: Date) {
     this.date = new Date(date);
 
+    //@ts-ignore
     const dayFR = date.toLocaleDateString("fr", dateFormatFR).split(" ");
     this.weekDay = dayFR[0];
     this.day = dayFR[1];
@@ -28,7 +29,7 @@ export default class DayModel {
     this.visible = undefined;
 
     // unique identifier
-    this.key = date.getFullYear() + date.getMonth() + date.getDate();
+    this.key = String(date.getFullYear() + date.getMonth() + date.getDate());
 
     // SET START
     const navDate = new Date(date);
@@ -44,7 +45,7 @@ export default class DayModel {
     this.end = new Date(navDate);
   }
 
-  includes = (date) =>
+  includes = (date: Date) =>
     this.start.getTime() <= date.getTime() &&
     date.getTime() <= this.end.getTime();
 }

@@ -14,8 +14,9 @@
 	},
 	"scripts": {
 		"watch": "node watch.js",
-		"tsc": "echo \"Remove lib folder\" && rm -rf lib && echo \"Compile Web TSX files ans TS files for CJS\" && tsc -p tsconfig-cjs-dom.json && echo \"Compile Web TSX files ans TS files for ESM\" && tsc -p tsconfig-esm-dom.json && echo \"Checking TS files with ESLINT\" && eslint --ext ts,tsx,js src ; echo \"Done.\"",
-		"tsc-windows": "echo \"Remove lib folder\" && del /s /F /Q lib && echo \"Compile Web TSX files ans TS files for CJS\" && tsc -p tsconfig-cjs-dom.json && echo \"Compile Web TSX files ans TS files for ESM\" && tsc -p tsconfig-esm-dom.json && echo \"Checking TS files with ESLINT\" && eslint --ext ts,tsx,js src ; echo \"Done.\"",
+		"copy": "copyfiles -u 1 \"./src/**/*.scss\" \"./lib/cjs\"",
+		"tsc": "echo \"Remove lib folder\" && rm -rf lib && echo \"Compile Web TSX files ans TS files for CJS\" && tsc -p tsconfig-cjs-dom.json && yarn copy && echo \"Done.\"",
+		"tsc-windows": "echo \"Remove lib folder\" && del /s /F /Q lib && echo \"Compile Web TSX files ans TS files for CJS\" && tsc -p tsconfig-cjs-dom.json && yarn copy && echo \"Done.\"",
 		"commit": "git add . && yarn run tsc && git cz",
 		"commit-windows": "git add . && yarn run tsc-windows & git cz",
 		"release": "standard-version && git push --follow-tags origin main"
@@ -68,6 +69,7 @@
 		"@typescript-eslint/parser": "^4.14.0",
 		"babel-loader": "^8.1.0",
 		"concurrently": "^5.3.0",
+		"copyfiles": "^2.4.1",
 		"crypto-browserify": "^3.12.0",
 		"cz-conventional-changelog": "^3.3.0",
 		"eslint": "^7.18.0",

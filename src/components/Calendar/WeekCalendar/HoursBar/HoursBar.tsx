@@ -3,7 +3,7 @@ import { BaseTaskType, CalendarConfig } from "../../Calendar";
 import "./HoursBar.scss";
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-const arePropsEqual = (prevProps, nextProps) =>
+const arePropsEqual = (prevProps: any, nextProps: any) =>
     prevProps.config.startHour === nextProps.config.startHour &&
     prevProps.config.endHour === nextProps.config.endHour;
 

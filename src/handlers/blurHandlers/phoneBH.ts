@@ -1,4 +1,4 @@
-export default function nameBH(value) {
+export default function nameBH(value: string) {
     if (value.length) {
         let string = value;
 

@@ -4,7 +4,7 @@
 
 import formatNumber from "../../utils/formatNumber";
 
-function replaceOccurrence(string, regex, n, replace) {
+function replaceOccurrence(string: string, regex: RegExp, n: number, replace: string) {
   let i = 0;
   return string.replace(regex, function (match) {
     i += 1;
@@ -14,7 +14,7 @@ function replaceOccurrence(string, regex, n, replace) {
 }
 
 export default function dateCH(string: string, backward: boolean) {
-  const [d, m, y] = string.split("/");
+  const [_d, _m, y] = string.split("/");
 
   // Limitation à 9 caractères
   string = string.slice(0, 10);
@@ -28,10 +28,10 @@ export default function dateCH(string: string, backward: boolean) {
   // Suppression des slashs en début de string
   string = string.replace(/^\//, "");
 
-  let monthInt;
+  let monthInt: number;
 
   // Limitation des mois
-  string = string.replace(/([0-9]+\/)([0-9]+)(.*)/g, (m, day, month, end) => {
+  string = string.replace(/([0-9]+\/)([0-9]+)(.*)/g, (_m, day, month, end) => {
     // Limitation à deux caractères
     month = month.slice(0, 2);
 
@@ -66,7 +66,7 @@ export default function dateCH(string: string, backward: boolean) {
   console.log("string after day control", string);
 
   // Formatage des nombre pour répondre
-  string = string.replace(/([0-9]+)(\/)/g, (m, number, slash) => {
+  string = string.replace(/([0-9]+)(\/)/g, (_m, number, slash) => {
     console.log(
       number,
       slash,

@@ -1,4 +1,4 @@
-export default function nameCH(value) {
+export default function nameCH(value: string) {
     if (value.length) {
         let string = value;
 
@@ -11,9 +11,9 @@ export default function nameCH(value) {
         //Espace tout les 2 chiffres
         string = string.replace(
             /^([0-9]{1}) ?([0-9]{2})? ?([0-9]{2})? ?([0-9]{2})? ?([0-9]{3})? ?([0-9]{3})? ?([0-9]{2})?/g,
-            (match, $1, $2, $3, $4, $5, $6, $7) => {
+            (_match, $1, $2, $3, $4, $5, $6, $7) => {
                 let tel = "";
-                [$1, $2, $3, $4, $5, $6, $7].forEach((number, index) => {
+                [$1, $2, $3, $4, $5, $6, $7].forEach((number) => {
                     tel += number ? number + " " : "";
                 });
 

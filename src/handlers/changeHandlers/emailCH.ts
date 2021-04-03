@@ -19,7 +19,7 @@
  * Le domaine peut être une IPv6 si cette dernière est entre crochets et écrite de la manière suivante : [IPv6:2001:db8::1]
  */
 
-export default function emailCH(value) {
+export default function emailCH(value: string) {
     if (value.length) {
         let string = value;
 
