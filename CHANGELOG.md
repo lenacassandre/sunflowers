@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.55](https://github.com/lenacassandre/sunflowers/compare/v0.1.54...v0.1.55) (2021-04-03)
+
+
+### Bug Fixes
+
+* **scss:** sCSS file were not included ([ec0564a](https://github.com/lenacassandre/sunflowers/commit/ec0564aafa67500435739148aae0a1bfcf38ab4d))
+
 ### [0.1.54](https://github.com/lenacassandre/sunflowers/compare/v0.1.53...v0.1.54) (2021-04-02)
 
 
