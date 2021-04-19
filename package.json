@@ -17,8 +17,8 @@
 		"copy": "copyfiles -u 1 \"./src/**/*.scss\" \"./lib/cjs\"",
 		"tsc": "echo \"Remove lib folder\" && rm -rf lib && echo \"Compile Web TSX files ans TS files for CJS\" && tsc -p tsconfig-cjs-dom.json && yarn copy && echo \"Done.\"",
 		"tsc-windows": "echo \"Remove lib folder\" && del /s /F /Q lib && echo \"Compile Web TSX files ans TS files for CJS\" && tsc -p tsconfig-cjs-dom.json && yarn copy && echo \"Done.\"",
-		"commit": "git add . && yarn run tsc && git cz",
-		"commit-windows": "git add . && yarn run tsc-windows & git cz",
+		"commit": "git add . && yarn tsc && git cz",
+		"commit-windows": "git add . && yarn tsc-windows & git cz",
 		"release": "standard-version && git push --follow-tags origin main"
 	},
 	"license": "MIT",

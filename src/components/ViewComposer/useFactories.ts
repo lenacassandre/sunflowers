@@ -37,7 +37,6 @@ function loadFactories(socket: Socket, factories: Factories): Promise<Factories>
 
 		Promise.all(getAllPromises) // Toutes les requêtes doivent être acceptées
 			.then((factoriesArray) => {
-				console.log("RESOLVE",factoriesArray)
 				if(factoriesArray.every(fa => Array.isArray(fa))) { // Le résultat doit être un tableau des tableaux des documents.
 					const newFactoriesObject: {[factoryName: string]: Factory<any, any>} = {}
 

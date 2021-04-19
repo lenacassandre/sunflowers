@@ -27,9 +27,6 @@ export default class Document {
         // Si le document n'a pas d'id, un temporaire est créé
         this._id = doc._id || randomId();
 
-        console.log(doc.created_at)
-        console.log(typeof doc.created_at)
-
         this.created_at = new Date(doc.created_at)
         this.updated_at = new Date(doc.updated_at)
 
@@ -69,8 +66,6 @@ export default class Document {
      */
     public patch(patchObject: Partial<this>): FactoryPromise<PatchResponse<this>>;
     public patch(arg1: Partial<this> | keyof this, value?: any): FactoryPromise<PatchResponse<this>> {
-        console.log("document patch", this.__factoryName, arg1, value)
-
         if (typeof arg1 === "string") {
             const patches = [{ [arg1]: value, _id: this._id }] as (Partial<this> & { _id: string; })[] ;
             return useFactoryCallbacks.forwardPatch<this>(this.__factoryName, patches);
@@ -94,8 +89,6 @@ export default class Document {
      * @param mode Suppression en cascade ?
      */
     public delete(cascade?: true) {
-        console.log("document delete", this.__factoryName)
-
         return useFactoryCallbacks.forwardDelete(this.__factoryName, [this._id]);
     }
 
