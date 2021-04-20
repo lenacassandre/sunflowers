@@ -41,6 +41,8 @@ const Main: ViewComponent<User, StoreType> = (view): JSX.Element => {
                     balance
                     before={2}
                     after={3}
+                    primarySeparator="-"
+                    secondarySeparator="..."
                 />
                 <Table
                     flex

@@ -19,6 +19,9 @@ export const Pagination = (props: {
     previousButton?: string, // Button to go to the previous page
     nextButton?: string, // Button to go to the next page
 
+    primarySeparator?: string;
+    secondarySeparator?: string;
+
     onClick: (page: number) => void,
 }) => {
     // Default "before" et "after" props
@@ -60,22 +63,36 @@ export const Pagination = (props: {
         <Row className="Pagination">
             {
                 props.previousButton && (
-                    <Button
-                        className="previous"
-                        name={props.previousButton}
-                        onClick={() => !(props.page === 1) && props.onClick(props.page - 1)}
-                        disabled={props.page === 1}
-                    />
+                    <>
+                        <Button
+                            className="previous"
+                            name={props.previousButton}
+                            onClick={() => !(props.page === 1) && props.onClick(props.page - 1)}
+                            disabled={props.page === 1}
+                        />
+                        {
+                            props.primarySeparator && (
+                                <span className="separator primary">{props.primarySeparator}</span>
+                            )
+                        }
+                    </>
                 )
             }
             {
                 props.firstButton && (
-                    <Button
-                        className="number first"
-                        name={"1"}
-                        onClick={() => props.onClick(1)}
-                        disabled={pages.includes(1)}
-                    />
+                    <>
+                        <Button
+                            className="number first"
+                            name={"1"}
+                            onClick={() => props.onClick(1)}
+                            disabled={pages.includes(1)}
+                        />
+                        {
+                            props.secondarySeparator && (
+                                <span className={`separator secondary ${pages.includes(1) ? "disabled" : ""}`}>{props.secondarySeparator}</span>
+                            )
+                        }
+                    </>
                 )
             }
             {
@@ -90,22 +107,36 @@ export const Pagination = (props: {
             }
             {
                 props.lastButton && (
-                    <Button
-                        className="number last"
-                        name={String(props.pageAmount)}
-                        onClick={() => props.onClick(props.pageAmount)}
-                        disabled={pages.includes(props.pageAmount)}
-                    />
+                    <>
+                        {
+                            props.secondarySeparator && (
+                                <span className={`separator secondary ${pages.includes(props.pageAmount) ? "disabled" : ""}`}>{props.secondarySeparator}</span>
+                            )
+                        }
+                        <Button
+                            className="number last"
+                            name={String(props.pageAmount)}
+                            onClick={() => props.onClick(props.pageAmount)}
+                            disabled={pages.includes(props.pageAmount)}
+                        />
+                    </>
                 )
             }
             {
                 props.nextButton && (
-                    <Button
-                        className="next"
-                        name={props.nextButton}
-                        onClick={() => !(props.page === props.pageAmount) && props.onClick(props.page + 1)}
-                        disabled={props.page === props.pageAmount}
-                    />
+                    <>
+                        {
+                            props.primarySeparator && (
+                                <span className="separator primary">{props.primarySeparator}</span>
+                            )
+                        }
+                        <Button
+                            className="next"
+                            name={props.nextButton}
+                            onClick={() => !(props.page === props.pageAmount) && props.onClick(props.page + 1)}
+                            disabled={props.page === props.pageAmount}
+                        />
+                    </>
                 )
             }
         </Row>
