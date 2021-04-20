@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.60](https://github.com/lenacassandre/sunflowers/compare/v0.1.59...v0.1.60) (2021-04-20)
+
+
+### Bug Fixes
+
+* **pagination:** new Pagination component + Example project ([b80b839](https://github.com/lenacassandre/sunflowers/commit/b80b8393471555a1454db84720ce15d733df183f))
+
 ### [0.1.59](https://github.com/lenacassandre/sunflowers/compare/v0.1.58...v0.1.59) (2021-04-20)
 
 
