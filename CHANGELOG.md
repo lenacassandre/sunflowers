@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.58](https://github.com/lenacassandre/sunflowers/compare/v0.1.57...v0.1.58) (2021-04-20)
+
+
+### Features
+
+* **datepicker:** no longer need modal prop ([73666ae](https://github.com/lenacassandre/sunflowers/commit/73666aef348274448516ed3b409849091a5701e0))
+
 ### [0.1.57](https://github.com/lenacassandre/sunflowers/compare/v0.1.56...v0.1.57) (2021-04-20)
 
 
