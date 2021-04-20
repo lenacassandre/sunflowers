@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.57](https://github.com/lenacassandre/sunflowers/compare/v0.1.56...v0.1.57) (2021-04-20)
+
+
+### Features
+
+* **calendar:** handling deadlines ([30af02e](https://github.com/lenacassandre/sunflowers/commit/30af02e3ef21b09714f1ef66f2f7119719be9537))
+
 ### [0.1.56](https://github.com/lenacassandre/sunflowers/compare/v0.1.55...v0.1.56) (2021-04-19)
 
 
