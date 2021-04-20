@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import { MiniCalendar, Button, RequiredSymbol, Input } from "..";
 
@@ -10,10 +10,10 @@ import { dateCH, dateBH } from "../../handlers";
 import formatNumber from "../../utils/formatNumber";
 import { CallModal } from "../../types";
 import "./DatePicker.scss";
+import { Context } from "../ViewComposer/ViewComposer";
 
 export const DatePicker: React.FC<{
 	value?: Date,
-	modal: CallModal,
 	onChange?: (date: Date) => void,
 	label: string,
 	name: string,
@@ -25,6 +25,8 @@ export const DatePicker: React.FC<{
 	top?: boolean,
 	middle?: boolean,
 }> = (props): JSX.Element => {
+	const context = useContext(Context)
+
 	const [date, setDate] = useState<Date>(
 		props.value && isValidDate(props.value) ? props.value : props.end ? props.end : new Date()
 	);
@@ -66,7 +68,7 @@ export const DatePicker: React.FC<{
 				onClick={(event) => {
 					event.preventDefault();
 					event.stopPropagation();
-					props.modal<{date: Date}>({
+					context.modal && context.modal<{date: Date}>({
 						title: props.label,
 						form: (resolve, reject) => (
 							<DatePickerForm
