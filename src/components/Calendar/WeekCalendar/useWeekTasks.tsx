@@ -9,6 +9,7 @@ import {Editor} from './Editor/Editor'
 // Par exemple, on pourrait éviter de recréer le tableau des jours (days) à chaque fois,
 // et le recréer uniquement si certains paramètres de config changent.
 
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Return an array of absolutly positionned Task JSX Elements, from the tasks array and the config object.
 export function useWeekTasks<TaskType extends BaseTaskType, IdKey extends keyof TaskType>(
@@ -277,7 +278,9 @@ export function useWeekTasks<TaskType extends BaseTaskType, IdKey extends keyof 
                     const taskStartMinutes = taskContainer.start.getHours() * 60 + taskContainer.start.getMinutes();
 
                     const top = (taskStartMinutes / dayDurationMinutes - delta) * 100;
-                    const height = (taskContainer.taskObject.duration / dayDurationMinutes) * 100;
+
+                    const duration = taskContainer.taskObject.deadline ? config.deadlineDurationReplacer : taskContainer.taskObject.duration;
+                    const height = (duration / dayDurationMinutes) * 100;
 
                     // Positionnement X dans le jour
                     const innerLeft = columnWidth * columnIndex;
@@ -334,6 +337,8 @@ export function useWeekTasks<TaskType extends BaseTaskType, IdKey extends keyof 
             navigateDay.setDate(navigateDay.getDate() + 1);
         }
 
+        const duration = draggedTask.deadline ? config.deadlineDurationReplacer : draggedTask.duration;
+
         ////////////////////////////////////////////////////////
         // PUSH
         positionnedTasksContainers.push({
@@ -343,7 +348,7 @@ export function useWeekTasks<TaskType extends BaseTaskType, IdKey extends keyof 
             left: dayIndex * dayWidth,
             top: (taskStartMinutes / dayDurationMinutes - delta) * 100,
             width: dayWidth,
-            height: (draggedTask.duration / dayDurationMinutes) * 100
+            height: (duration / dayDurationMinutes) * 100
         })
     }
 
@@ -431,7 +436,6 @@ export function useWeekTasks<TaskType extends BaseTaskType, IdKey extends keyof 
                     </Editor>
                 </CSSTransition>
             )
-
         }
     }
 

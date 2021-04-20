@@ -7,6 +7,7 @@ import {WeekCalendar} from './WeekCalendar/WeekCalendar'
 export declare type BaseTaskType = {
     date: Date;
     duration: number; // if 0 : c'est un évènement affiché mais qui ne dure pas dans le temps
+    deadline?: boolean; // if true, the task will be displayed as if it has 0 duration
 }
 
 export declare type OnPost<TaskType extends BaseTaskType, IdKey extends keyof TaskType> = (newTask: Partial<TaskType> & BaseTaskType, forwardId: (newId: TaskType[IdKey]) => void) => TaskType | void;
@@ -70,7 +71,8 @@ export declare type CalendarConfig<TaskType extends BaseTaskType, IdKey extends 
     ghost: boolean; // Show the previous state of the currently dragged task
     lazyPatch: boolean; // Does the onPatch event is dispatched whenever a change is done, or when the changes are finished ? true = wait, false = dispatch each time.
     focusLayer: boolean; // Display focus layer ? Focus layer is display behind the currently edited task, and above other tasks. Its style can be edited, and it change some clicks behaviors.
-    firstDayOfWeek: "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday"
+    firstDayOfWeek: "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday";
+    deadlineDurationReplacer: number; // La durée que doit prendre en compte le calendrier pour afficher une tâches qui n'a techniquement pas de durée
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,6 +105,7 @@ export function Calendar<TaskType extends BaseTaskType, IdKey extends keyof Task
     config.lazyPatch = config.lazyPatch === false ? false : true;
     config.focusLayer = config.focusLayer === false ? false : true;
     config.firstDayOfWeek ||= "monday";
+    config.deadlineDurationReplacer ||= 15;
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     return (
