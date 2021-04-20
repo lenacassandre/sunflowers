@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.59](https://github.com/lenacassandre/sunflowers/compare/v0.1.58...v0.1.59) (2021-04-20)
+
+
+### Bug Fixes
+
+* **calendar:** removed event listeners for drag to & bottom for deadlined tasks ([935cbb7](https://github.com/lenacassandre/sunflowers/commit/935cbb7401bfa2a8f4b00c214f619c2c65009897))
+
 ### [0.1.58](https://github.com/lenacassandre/sunflowers/compare/v0.1.57...v0.1.58) (2021-04-20)
 
 
