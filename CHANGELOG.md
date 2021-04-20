@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.61](https://github.com/lenacassandre/sunflowers/compare/v0.1.60...v0.1.61) (2021-04-20)
+
+
+### Features
+
+* **pagination:** primary and seconday separators ([4f3e951](https://github.com/lenacassandre/sunflowers/commit/4f3e951162b4de7313b10b23afa4b397a088f1e4))
+
 ### [0.1.60](https://github.com/lenacassandre/sunflowers/compare/v0.1.59...v0.1.60) (2021-04-20)
 
 
