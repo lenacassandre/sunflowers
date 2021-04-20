@@ -72,9 +72,9 @@ export function TaskContainer<TaskType extends BaseTaskType, IdKey extends keyof
                 {props.children}
 
                 <div className="eventListeners" draggable={false} onMouseUp={mouseUp}>
-                    <div className="eventListener top" onMouseDown={mouseDownTop} draggable={false} />
+                    {!props.task.deadline && <div className="eventListener top" onMouseDown={mouseDownTop} draggable={false} />}
                     <div className="eventListener mid" onMouseDown={mouseDownMid} draggable={false} />
-                    <div className="eventListener bot" onMouseDown={mouseDownBot} draggable={false} />
+                    {!props.task.deadline && <div className="eventListener bot" onMouseDown={mouseDownBot} draggable={false} />}
                 </div>
             </div>
     )
