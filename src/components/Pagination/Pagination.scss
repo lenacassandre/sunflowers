@@ -1,0 +1,38 @@
+@import "../../constants/colors.scss";
+
+.Row.Pagination {
+    text-align: center;
+
+    .Button {
+        margin: 0;
+    }
+
+    .Button.next, .Button.previous {
+
+    }
+
+    .Button.first, .Button.last {
+        &.disabled {
+            opacity: 0;
+        }
+    }
+
+    .Button.number {
+        margin: 0;
+        width: 3em;
+        text-align: center;
+        display: inline-block;
+        padding: 0;
+
+        border: none;
+        color: $darkgrey;
+
+        &:hover {
+            border: solid 1px lighten($action, 20);
+        }
+
+        .active {
+            color: $action;
+        }
+    }
+}

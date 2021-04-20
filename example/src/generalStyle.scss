@@ -1,0 +1,133 @@
+@import "./constants/colors.scss";
+
+html {
+    background-color: $brightgrey;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1em;
+}
+
+h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1em;
+}
+
+h4 {
+    font-size: 1.5em;
+    font-weight: 500;
+    margin-bottom: 0.5em;
+}
+
+h5 {
+    font-size: 1.2em;
+    font-weight: 500;
+    margin-bottom: 0.5em;
+}
+
+h6 {
+    font-size: 1em;
+    font-weight: 500;
+    margin-bottom: 0.5em;
+}
+
+section {
+    background-color: $white;
+    border-radius: 8px;
+    padding: 24px;
+    margin: 0 24px;
+
+    max-height: 100vh;
+
+    flex:1;
+    overflow-y: auto;;
+
+    &:first-child {
+        margin-top: 24px;
+    }
+
+    &:not(:last-child) {
+        margin-bottom: 16px;
+    }
+
+    &:last-child {
+        margin-bottom: 24px;
+    }
+}
+
+.Main {
+    background-color: $brightgrey !important;
+}
+
+.addButton {
+    background-color: $validation;
+    color: $white !important;
+
+    transition: all 0.1s ease;
+
+    &:hover {
+        background-color: lighten($validation, 20);
+    }
+}
+
+.deleteButton {
+    background-color: $error;
+    color: $white !important;
+
+    transition: all 0.1s ease;
+
+    &:hover {
+        background-color: lighten($error, 20);
+    }
+}
+
+.Button.dangerouslyDeleteButton {
+    color: $error !important;
+    align-self: center;
+    transition: all 0.1s ease;
+
+    &:hover {
+        background-color: $error;
+        color: $white !important;
+    }
+}
+
+.LeftBar {
+    background-color: $white;
+    box-shadow: 4px 4px 32px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+    margin-left: -15em;
+    width: 15em;
+    padding: 1em;
+}
+
+.TopBar {
+    background: $white;
+    box-shadow: 4px 4px 32px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.Table {
+    background-color: $white !important;
+
+    max-height: 100vh;
+
+    overflow: hidden;
+
+    .wrapper {
+        max-height: 100vh;
+    }
+
+    th, td {
+        background-color: $white !important;
+    }
+}
+
+.Input {
+    label {
+        background-color: white;
+    }
+}

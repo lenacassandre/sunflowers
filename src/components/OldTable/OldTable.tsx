@@ -7,8 +7,6 @@ import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { faSortUp } from "@fortawesome/free-solid-svg-icons";
 import { faSortDown } from "@fortawesome/free-solid-svg-icons";
 
-import { CallModal} from "../../types";
-
 import "./Table.scss"
 
 export declare type Column<RowType = any> = {
@@ -37,9 +35,10 @@ export function Table<DocType>(props: {
 	withoutMemo?: boolean;
 	flex?: boolean;
 
-	modal?: CallModal;
-
 	maxChildrenLevel?: number; // Le nombre maximum de sous niveau possible dans le tableau
+
+	page?: number, // Numéro de la page s'il y a pagination
+	rowPerPage?: number, // Amount of row per page
 
 	rowChildren?: (row: DocType) => DocType[] | undefined; // Permet de chercher les enfants d'une ligne
 
@@ -150,7 +149,7 @@ export function Table<DocType>(props: {
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////
-	// RENDER /////////////////////////////////////////////////////////////////////////////
+	// WIDTH AND COLUMNS /////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////
 
 	// Définir la largeur totale d'une ligne du tableau
@@ -171,17 +170,34 @@ export function Table<DocType>(props: {
 	const freeColumns = head.filter((col) => !col.fixed);
 	const sortedColumns = [...freeColumns, ...fixedColumns]
 
+	///////////////////////////////////////////////////////////////////////////////////////
+	// PAGINATION /////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////
+
+	const page = (props.page || 1) - 1;
+	let firstRowIndex = !props.rowPerPage ? 1 : page * props.rowPerPage
+	let lastRowIndex = firstRowIndex + (props.rowPerPage || props.array.length)
+
+	firstRowIndex = firstRowIndex > props.array.length ? props.array.length : firstRowIndex;
+	lastRowIndex = lastRowIndex > props.array.length ? props.array.length : lastRowIndex;
+
+	const slicedArray = sortedArray.slice(firstRowIndex, lastRowIndex);
+
+	///////////////////////////////////////////////////////////////////////////////////////
+	// RENDER /////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////
+
 	return (
 		<div className={`Table${props.className ? " " + props.className : ""}`} style={props.style}>
 			<div className="wrapper">
 				<table style={rowStyle}>
-					{head && sortedArray ? (
+					{head && slicedArray ? (
 						<React.Fragment>
 							{/******************************************************************************/
 							/* BODY ************************************************************************/
 							/******************************************************************************/}
 							<tbody style={rowStyle}>
-								{sortedArray.map((row, rowIndex) => (
+								{slicedArray.map((row, rowIndex) => (
 									<Row<DocType>
 										key={rowIndex}
 										head={head}

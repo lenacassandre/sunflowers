@@ -28,6 +28,7 @@ export * from './Search/Search';
 export * from './SearchSelect/SearchSelect';
 export * from './Select/Select';
 export * from './OldTable/OldTable';
+export * from './Pagination/Pagination'
 //export * from './Table/Table';
 //export * from './Table/types'
 export * from './TabsButtons/TabsButtons';
