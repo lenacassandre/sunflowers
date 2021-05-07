@@ -6,7 +6,6 @@ type BurgerButtonProps = {
 	onClick?: (event: React.MouseEvent) => void;
 }
 
-import './BurgerButton.scss'
 
 export const BurgerButton: React.FC<BurgerButtonProps> = (props) => {
 	return (

@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from "react";
-import { View, Notify, CallModal, SessionSystem, Dispatch, Update, Navigate, RouterSystem, BaseActionsType, Factories } from "../../types";
+import { View, Notify, CallModal, SessionSystem, Dispatch, Update, Navigate, RouterSystem, BaseActionsType, Repositories } from "../../types";
 
 import Socket from "../../service/socket";
 
-import Factory from "./classes/factory.class"
+import Repository from "./classes/repository.class"
 
 import log from "../../utils/log";
 import User from "./classes/user.class";
@@ -14,7 +14,7 @@ export default function useStore<CustomUserDocument extends User>(
 	socket: Socket,
 	currentView: View<CustomUserDocument, any>,
 	session: SessionSystem<CustomUserDocument>,
-	factoriesRef: React.MutableRefObject<Factories>,
+	repositoriesRef: React.MutableRefObject<Repositories>,
 	notify: Notify,
 	modal: CallModal,
 	router: RouterSystem<CustomUserDocument>
@@ -53,7 +53,7 @@ export default function useStore<CustomUserDocument extends User>(
 			try {
 				updates = currentView.reducer(type, action, {
 					store: storeRef.current,
-					factories: factoriesRef.current,
+					repositories: repositoriesRef.current,
 					notify,
 					dispatch: (type2, action2) => setTimeout(() => dispatch(type2, action2)),
 					emit: socket.emit,

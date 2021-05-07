@@ -1,6 +1,9 @@
 import io from "socket.io-client";
 import log from '../utils/log'
 
+import { Promise } from '../classes/Promise'
+
+import { SocketError } from '../types'
 
 export default class Socket {
 	url: string;
@@ -22,27 +25,27 @@ export default class Socket {
 		}
 	}
 
-	public emit = <ResponseType = {}>(action: string, data?: any, sendWithToken?: boolean): Promise<ResponseType> => {
+	public emit = <ResponseType = {}, ErrorType = {}>(action: string, data?: any, sendWithToken?: boolean): Promise<ResponseType, SocketError<ErrorType>> => {
 		const requestId = log.request(action, action, data);
-		let state: {current: boolean} = {current : false};
+		let state: {resolved: boolean} = {resolved : false};
 
 		//
-		const socketPromise = new Promise<ResponseType>((resolve, reject) => {
-			if (!this.io && !state.current) {
-				state.current = true;
+		const socketPromise = new Promise<ResponseType, SocketError<ErrorType>>((resolve, reject) => {
+			if (!this.io && !state.resolved) {
+				state.resolved = true;
 				log.response(action, requestId, {}, false, "No socket connection.");
-				reject("No socket connection.");
+				reject(<SocketError<ErrorType>>{error:"No socket connection."});
 			} else {
-				this.io.emit(action, sendWithToken ? this.sendWithToken(data) : data, (response: any) => {
-					if(!state.current) {
-						state.current = true;
+				this.io.emit(action, sendWithToken ? this.sendWithToken(data) : data, (response: ResponseType | SocketError<ErrorType>) => {
+					if(!state.resolved) {
+						state.resolved = true;
 
-						if (response.error) {
+						if ("error" in response) {
 							log.response(action, requestId, response, false, response.error);;
 							reject(response);
 						} else {
 							log.response(action, requestId, response, true);
-							resolve(response);
+							resolve(<ResponseType>response);
 						}
 					}
 				});
@@ -50,12 +53,12 @@ export default class Socket {
 		})
 
 		// Timeout after 10 seconds
-		const timeoutPromise = new Promise<ResponseType>((_, reject) => {
+		const timeoutPromise = new Promise<ResponseType, SocketError<ErrorType>>((_, reject) => {
 			setTimeout(() => {
-				if(!state.current) {
-					state.current = true;
+				if(!state.resolved) {
+					state.resolved = true;
 					log.response(action, requestId, "Error: Request timed out.", false);
-					reject("Error: Request timed out.")
+					reject(<SocketError<ErrorType>>{error: "Error: Request timed out."})
 				}
 			}, 10 * 1000);
 		})

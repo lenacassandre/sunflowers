@@ -1,8 +1,10 @@
 import { useState, useRef } from "react";
-import { ModalObject, Modals, CallModal, ModalForm, ModalDeclaration } from "../../types";
+import { Promise } from "../../classes/Promise";
+import {  Modals, CallModal, ModalForm, ModalDeclaration } from "../../types";
 
 import log from "../../utils/log";
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
 export default function useModals(): [Modals, CallModal] {
 	log.useModalsGroup();
 
@@ -18,7 +20,7 @@ export default function useModals(): [Modals, CallModal] {
 	 * @param modalObject Un ModalObject, un React.FC<{resolve, reject}>, ou un JSX.Element
 	 * @returns
 	 */
-	function modal<FormType = {}>(modalArg: ModalDeclaration | ModalForm): Promise<FormType> {
+	function modal<FormType = {}>(modalArg: ModalDeclaration | ModalForm): Promise<FormType, void> {
 		const newModalIndex = modalListRef.current.length;
 		let newModal: ModalDeclaration;
 
@@ -57,14 +59,17 @@ export default function useModals(): [Modals, CallModal] {
 
 		let modalObject;
 
-		const promise = new Promise<any>((resolve, reject) => {
+		const promise = new Promise<FormType, void>((resolve, reject) => {
 			modalObject = {
 				...newModal,
 				close: (resolving?: boolean) => closeModal(newModalIndex, resolving),
 				resolve,
 				reject,
 			};
-		});
+		})
+
+		// Default handling function
+		promise.then(()=>{}).catch(()=>{});
 
 		setModalList([...modalListRef.current, modalObject]);
 

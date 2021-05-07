@@ -11,9 +11,9 @@ export default function App() {
         <ViewComposer<User>
             views={views}
             defaultView={views[0]}
-            factories={models}
+            repositories={models}
             UserModel={User}
-            socketURL=""
+            socketURL="http://127.0.0.1:3001"
         />
     )
 }

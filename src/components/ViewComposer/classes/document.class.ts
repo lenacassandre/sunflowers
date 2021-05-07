@@ -1,8 +1,10 @@
+import { RCArguments, RCReturn } from "../../../types";
 import randomId from "../../../utils/randomId";
-import {FactoryPromise, useFactoryCallbacks, PatchResponse, DeleteResponse} from "../useFactories"
+import {RepositoryPromise, useRepositoryCallbacks, } from "../useRepositories"
+import Repository from "./repository.class";
 
 export default class Document {
-    private __factoryName: string;
+    private __repositoryName: string;
     public _id: string;
     public dev?: true; // Can only be seen on the dev version
 	public order?: number;
@@ -10,6 +12,7 @@ export default class Document {
 	public color?: string;
     public created_at: Date;
     public updated_at: Date
+    public organizations: string[]; // foreign keys oragnization
 
     // Cache. Le cache peut êtrre
     private _cache: {
@@ -21,14 +24,16 @@ export default class Document {
 
     //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
     //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
-    constructor(factoryName: string, doc: {[prop: string]: any}) {
-        this.__factoryName = factoryName
+    constructor(repositoryName: string, doc: {[prop: string]: any}) {
+        this.__repositoryName = repositoryName
 
         // Si le document n'a pas d'id, un temporaire est créé
         this._id = doc._id || randomId();
 
         this.created_at = new Date(doc.created_at)
         this.updated_at = new Date(doc.updated_at)
+
+        this.organizations = doc.organizations || [];
 
         // if() pour que la propriété n'aparaisse pas si elle n'existe pas
         if (doc.dev) {
@@ -59,26 +64,31 @@ export default class Document {
      * @param prop Propriété que l'on souhaite modifier
      * @param value Nouvelle valeur de la propriété que l'on souhaite modifier
      */
-    public patch(prop: keyof this, value: any): FactoryPromise<PatchResponse<this>>;
+    public patch(prop: keyof this, value: any): RepositoryPromise<RCReturn<this>["patch"]>;
     /**
      * Modifie le document selon le patch donné sur le serveur et le client.
      * @param patchObject Modifications que l'on souhaite apporter au document
      */
-    public patch(patchObject: Partial<this>): FactoryPromise<PatchResponse<this>>;
-    public patch(arg1: Partial<this> | keyof this, value?: any): FactoryPromise<PatchResponse<this>> {
+    public patch(patchObject: Partial<this>): RepositoryPromise<RCReturn<this>["patch"]>;
+    public patch(arg1: Partial<this> | keyof this, value?: any): RepositoryPromise<RCReturn<this>["patch"]> {
+        let patches: RCArguments<this>["patch"];
+
         if (typeof arg1 === "string") {
-            const patches = [{ [arg1]: value, _id: this._id }] as (Partial<this> & { _id: string; })[] ;
-            return useFactoryCallbacks.forwardPatch<this>(this.__factoryName, patches);
+            //@ts-ignore TODO: corriger cette erreur
+            patches = [{ [arg1]: value, _id: this._id }];
         }
         else if (typeof arg1 === "object") {
-            const patches =  [{ ...arg1, _id: this._id }]
-            return useFactoryCallbacks.forwardPatch<this>(this.__factoryName, patches);
+            patches =  [{ ...arg1, _id: this._id }]
         }
         else {
             throw new Error(
                 `No overload match this call (document.patch(prop|patch: ${typeof arg1}, value: ${typeof value})).`
             );
         }
+
+        // FIXME
+        // @ts-ignore
+        return useRepositoryCallbacks.forwardPatch(this.__repositoryName, patches);
     }
 
     //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
@@ -86,10 +96,49 @@ export default class Document {
 
     /**
      * Supprime le document
-     * @param mode Suppression en cascade ?
      */
-    public delete(cascade?: true) {
-        return useFactoryCallbacks.forwardDelete(this.__factoryName, [this._id]);
+    public remove() {
+        return useRepositoryCallbacks.forwardRemove(this.__repositoryName, [this._id]);
+    }
+
+    //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
+    //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+
+    /**
+     * Restaure le document
+     */
+     public restore() {
+        return useRepositoryCallbacks.forwardRestore(this.__repositoryName, [this._id]);
+    }
+
+    //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
+    //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+
+    /**
+     * Supprime définitivement le document
+     */
+     public destroy() {
+        return useRepositoryCallbacks.forwardDestroy(this.__repositoryName, [this._id]);
+    }
+
+    //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
+    //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+
+    /**
+     * Archive le document
+     */
+     public archive() {
+        return useRepositoryCallbacks.forwardArchive(this.__repositoryName, [this._id]);
+    }
+
+    //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
+    //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+
+    /**
+     * Désarchive le document
+     */
+     public unarchive() {
+        return useRepositoryCallbacks.forwardUnarchive(this.__repositoryName, [this._id]);
     }
 
     //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
@@ -149,7 +198,7 @@ export default class Document {
     public toObject(includeId?: boolean): Omit<this, "v"> {
         const objectInstance: any = {...this};
 
-        delete objectInstance.__factoryName;
+        delete objectInstance.__repositoryName;
         delete objectInstance.created_at;
         delete objectInstance.updated_at;
 

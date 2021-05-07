@@ -5,8 +5,8 @@ export default class User extends Document {
     hasPassword: boolean; // Par défaut, automaton envoie toujours cette propriété pour indiquer si un mdp a été enregistré
     roles: number[]
 
-    constructor(factoryName: string, user: Partial<User>) {
-        super(factoryName, user)
+    constructor(repositoryName: string, user: Partial<User>) {
+        super(repositoryName, user)
         this.userName = user.userName || "";
         this.hasPassword = user.hasPassword ? true : false;
         this.roles = user.roles || [];

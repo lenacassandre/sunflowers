@@ -18,8 +18,9 @@ import timeoutPromise from "./utils/timeoutPromise";
 import randomId from "./utils/randomId";
 
 import Document from "./components/ViewComposer/classes/document.class"
-import Factory from "./components/ViewComposer/classes/factory.class"
+import Repository from "./components/ViewComposer/classes/repository.class"
 import User from "./components/ViewComposer/classes/user.class"
+import {Promise} from "./classes/Promise"
 
 // Types
 export * from "./types";
@@ -47,7 +48,8 @@ export {
 	randomId,
 
 	// Classes
-	Factory,
+	Repository,
 	Document,
-	User
+	User,
+	Promise
 };

@@ -10,6 +10,7 @@ child.on('exit', function (code, signal) {
 
     concurrently(
         [
+            { name: 'SASS', command: 'yarn copy' },
             { name: 'CJS/DOM', command: 'tsc -w -p tsconfig-cjs-dom.json' },
             { name: 'ESM/DOM', command: 'tsc -w -p tsconfig-esm-dom.json' },
             { name: 'CJS/NAT', command: 'tsc -w -p tsconfig-cjs-native.json' },

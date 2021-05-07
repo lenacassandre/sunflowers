@@ -175,7 +175,7 @@ export function Table<DocType>(props: {
 	///////////////////////////////////////////////////////////////////////////////////////
 
 	const page = (props.page || 1) - 1;
-	let firstRowIndex = !props.rowPerPage ? 1 : page * props.rowPerPage
+	let firstRowIndex = !props.rowPerPage ? 0 : page * props.rowPerPage
 	let lastRowIndex = firstRowIndex + (props.rowPerPage || props.array.length)
 
 	firstRowIndex = firstRowIndex > props.array.length ? props.array.length : firstRowIndex;

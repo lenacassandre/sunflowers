@@ -1,26 +1,24 @@
 import { faTintSlash } from '@fortawesome/free-solid-svg-icons';
 import { ThemeProvider } from 'styled-components';
-import {User as UserBaseModel, Factory} from '../../../src'
+import {User as UserBaseModel, Repository} from '../../../src'
 
-const factoryName = "user"
+const repositoryName = "user"
 
 
 export class User extends UserBaseModel {
     firstName: string;
     lastName: string;
-    roles: number[]; // 1 = superadmin. 2 = admin. 3 = responsable pédagogique. 4 = gestionnaire de salle. 5 = formateru référent. Les droits peuvent être accumulés. C'est pourquoi il y a un tableau.
-
     constructor(user: Partial<User> & {userName: string}) {
-        super(factoryName, user)
+        super(repositoryName, user)
         this.firstName = user.firstName || "";
         this.lastName = user.lastName || "";
-        this.roles = user.roles || [];
     }
 }
 
-export class Users extends Factory<Users, User> {
+// @ts-ignore
+export class Users extends Repository<Users, User> {
     constructor(docs?: User[]) {
-        super(factoryName, Users, User, docs)
+        super(repositoryName, Users, User, docs)
     }
 }
 

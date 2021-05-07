@@ -45,7 +45,7 @@ const styles: { [style: string]: string } = {
 		font-weight: bold;
 	`,
 	// Jaune
-	useFactories: `
+	useRepositories: `
 		background: rgb(247,206,59);
 		background: linear-gradient(315deg, rgba(247,206,59,1) 0%, rgba(215,180,53,1) 100%);
 		border-left: solid 4px #f7ce3b;
@@ -424,7 +424,7 @@ const log: {
 export default log;
 
 // TODO : Réécrire les fonctions de log dans une seule classe
-// Le code ci dessous est un début de refactoring du système de logs
+// Le code ci dessous est un début de rerepositoring du système de logs
 /*
 
 const hookStyle = `
@@ -442,7 +442,7 @@ const hookStyle = `
 `;
 
 const hookStyles = {
-	useFactories: ["#F94144"],
+	useRepositories: ["#F94144"],
 	useModals: ["#F3722C"],
 	useNotifications: ["#F8961E"],
 	useRouter: ["#F9C74F"],

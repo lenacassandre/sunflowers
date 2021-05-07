@@ -1,27 +1,28 @@
-import Document from './document.class'
-import {useFactoryCallbacks, FactoryPromise, PostResponse, PatchResponse, DeleteResponse} from "../useFactories"
+import {Document} from '../../../'
+import {useRepositoryCallbacks, RepositoryPromise } from "../useRepositories"
+import { RCError, RCReturn } from '../../../types';
 
-// TODO : intégrer le getAll à la classe factory
+// TODO : intégrer le getAll à la classe repository
 
-// Constructeur de factory à passer
-type FactoryClass<
-    FactoryType extends Factory<FactoryType, DocType>,
+// Constructeur de repository à passer
+type RepositoryClass<
+    RepositoryType extends Repository<RepositoryType, DocType>,
     DocType extends Document
 > = {
-    new(docs?: DocType[]): FactoryType
+    new(docs?: DocType[]): RepositoryType
 }
 
 // Constructeur de document à passer
 type DocumentClass<DocType extends Document> = { new(documentProps: DocType) : DocType }
 
-// Toutes les factories crées par l'utilisateur devront obligatoirement
+// Toutes les repositories crées par l'utilisateur devront obligatoirement
 // S'étendre depuis cette classe pour pouvoir communiquer avoir le serveur
-export default class Factory<
-    FactoryType extends Factory<FactoryType, DocType>,
+export default class Repository<
+    RepositoryType extends Repository<RepositoryType, DocType>,
     DocType extends Document
 > extends Array<DocType> {
-    private __factoryName: string;
-    private __FactoryClass: FactoryClass<FactoryType, DocType>;
+    private __repositoryName: string;
+    private __RepositoryClass: RepositoryClass<RepositoryType, DocType>;
     private __DocumentClass: DocumentClass<DocType>;
 
     // Cache. Le cache peut êtrre
@@ -32,14 +33,17 @@ export default class Factory<
         }
     }
 
-    public loaded: boolean; // Does the factory reveived an array ?
+    public archives: DocType[]
+    public removed: DocType[]
+
+    public loaded: boolean; // Does the repository reveived an array ?
 
     [index: number]: DocType; // Array's elements
 
     /////////////////////////////////////////////////////////////////////////////////////
     constructor(
-        factoryName: string,
-        FactoryClass: FactoryClass<FactoryType, DocType>,
+        repositoryName: string,
+        RepositoryClass: RepositoryClass<RepositoryType, DocType>,
         DocumentClass: DocumentClass<DocType>,
         docs?: DocType[]
     ) {
@@ -51,8 +55,11 @@ export default class Factory<
             this.loaded = false;
         }
 
-        this.__factoryName = factoryName;
-        this.__FactoryClass = FactoryClass;
+        this.archives = [];
+        this.removed = [];
+
+        this.__repositoryName = repositoryName;
+        this.__RepositoryClass = RepositoryClass;
         this.__DocumentClass = DocumentClass;
 
         this._cache = {};
@@ -63,15 +70,33 @@ export default class Factory<
     // Set
 
     /**
-     * La méthode set renvoie un nouveau de tableau de Factory, en gardant ses propriétés modèle et name.
+     * La méthode set renvoie un nouveau de tableau de Repository, en gardant ses propriétés modèle et name.
      * @param array Tableau des documents
      */
-    public set(docs: Array<DocType> | FactoryType) {
-        return new this.__FactoryClass(docs);
+    public set(docs: Array<DocType> | RepositoryType) {
+        const newInstance = new this.__RepositoryClass(docs);
+        newInstance.archives = this.archives;
+        newInstance.removed = this.removed;
+        return newInstance;
     }
 
-    public clone() {
-        return new this.__FactoryClass([...this])
+    public setArchives(docs: Array<DocType> | RepositoryType) {
+        const newInstance = this.clone();
+        newInstance.archives = docs.map(doc => new this.__DocumentClass(doc));
+        return newInstance;
+    }
+
+    public setRemoved(docs: Array<DocType> | RepositoryType) {
+        const newInstance = this.clone();
+        newInstance.removed = docs.map(doc => new this.__DocumentClass(doc));
+        return newInstance;
+    }
+
+    public clone(): RepositoryType {
+        const newInstance = new this.__RepositoryClass([...this]);
+        newInstance.archives = this.archives;
+        newInstance.removed = this.removed;
+        return newInstance;
     }
 
     public document(doc: DocType) {
@@ -80,15 +105,15 @@ export default class Factory<
 
     //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
     //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
-    // Localy delete (post côté client)
+    // Localy remove (post côté client)
 
     /**
      * Supprime localement des documents
      * @param _ids
      */
-    private localyDelete(
+    private localyRemove(
         _ids: string[],
-    ): FactoryType {
+    ): RepositoryType {
         return this.set(this.filter(doc => !_ids.includes(doc._id)));
     }
 
@@ -132,22 +157,22 @@ export default class Factory<
      * Single post
      * @param docs
      */
-    public post(doc: DocType): FactoryPromise<PostResponse<DocType>>;
+    public post(doc: DocType): RepositoryPromise<RCReturn<DocType>["post"], RCError["post"]>;
     /**
      * Array post
      * @param docs
      */
-    public post(docs: DocType[]): FactoryPromise<PostResponse<DocType>>;
+    public post(docs: DocType[]): RepositoryPromise<RCReturn<DocType>["post"], RCError["post"]>;
     /**
      * Rest post
      * @param doc
      * @param docs
      */
-    public post(doc: DocType, ...docs: DocType[]): FactoryPromise<PostResponse<DocType>>;
+    public post(doc: DocType, ...docs: DocType[]): RepositoryPromise<RCReturn<DocType>["post"], RCError["post"]>;
     public post(
         doc_s: DocType | DocType[],
         ...moreDocs: DocType[]
-    ): FactoryPromise<PostResponse<DocType>> {
+    ): RepositoryPromise<RCReturn<DocType>["post"], RCError["post"]> {
         let docs: DocType[];
 
         // Overload 1
@@ -170,16 +195,16 @@ export default class Factory<
         // error
         else {
             throw new Error(
-                `No overload match this call (Factory ${this.__factoryName}.post(doc_s: ${typeof doc_s}, moreDocs: ${typeof moreDocs})).`
+                `No overload match this call (Repository ${this.__repositoryName}.post(doc_s: ${typeof doc_s}, moreDocs: ${typeof moreDocs})).`
             );
         }
 
         docs = docs.map(doc => new this.__DocumentClass(doc))
 
-        // Envoie les données à la hook useFactory
-        return useFactoryCallbacks.applyPost<FactoryType, DocType>(
-            this.__factoryName,
-            {docs},
+        // Envoie les données à la hook useRepository
+        return useRepositoryCallbacks.applyPost<RepositoryType, DocType>(
+            this.__repositoryName,
+            docs,
         )
     }
 
@@ -188,21 +213,21 @@ export default class Factory<
     // Patch
 
     // 1. Un patch object contenant l'id va overwrite le document du même id.
-    public patch(patchObject: Partial<DocType> & {_id: string}): FactoryPromise<any>;
+    public patch(patchObject: Partial<DocType> & {_id: string}): RepositoryPromise<RCReturn<DocType>["patch"], RCError["patch"]>;
 
     // 2. Des patch object contenant un id vont overwrite les documents du même id. (c'est l'overload utilisé par le serveur)
-    public patch(patchObjects: Array<Partial<DocType> & {_id: string}>): FactoryPromise<any>;
+    public patch(patchObjects: Array<Partial<DocType> & {_id: string}>): RepositoryPromise<RCReturn<DocType>["patch"], RCError["patch"]>;
 
     // 3. Un id et un patch object vont update le document de l'id donné.
-    public patch(_id: string, patchObject: Partial<DocType>): FactoryPromise<any>;
+    public patch(_id: string, patchObject: Partial<DocType>): RepositoryPromise<RCReturn<DocType>["patch"], RCError["patch"]>;
 
     // 4. Plusieurs id et un patch object vont update tous les documents des ids donné avec le même patch.
-    public patch(_ids: string[], patchObject: Partial<DocType>): FactoryPromise<any>;
+    public patch(_ids: string[], patchObject: Partial<DocType>): RepositoryPromise<RCReturn<DocType>["patch"], RCError["patch"]>;
 
     public patch(
         arg1: string | string[] | (Partial<DocType> & {_id: string}) | Array<Partial<DocType> & {_id: string}>,
         patchObject?: Partial<DocType> | Array<Partial<DocType>>
-    ): FactoryPromise<PatchResponse<DocType>> {
+    ): RepositoryPromise<RCReturn<DocType>["patch"], RCError["patch"]> {
         let patches: Array<Partial<DocType> & {_id: string}>;
 
         // 1. Un patch object contenant l'id va overwrite le document du même id.
@@ -220,7 +245,7 @@ export default class Factory<
             typeof arg1 === "string" &&
             typeof patchObject === "object" &&
             !(patchObject instanceof Array) &&
-            !(patchObject instanceof Factory)
+            !(patchObject instanceof Repository)
         ) {
             const _id = arg1;
             patches = [{_id, ...patchObject}];
@@ -233,35 +258,34 @@ export default class Factory<
         // Error
         else {
             throw new Error(
-                `No overload match this call (Factory ${this.__factoryName}.patch(arg1: ${typeof arg1}, patchObject: ${typeof patchObject})).`
+                `No overload match this call (Repository ${this.__repositoryName}.patch(arg1: ${typeof arg1}, patchObject: ${typeof patchObject})).`
             );
         }
 
-        // Envoie les données à la hook useFactory
-        return useFactoryCallbacks.applyPatch<FactoryType, DocType>(
-            this.__factoryName,
-            {patches},
+        // Envoie les données à la hook useRepository
+        return useRepositoryCallbacks.applyPatch<RepositoryType, DocType>(
+            this.__repositoryName,
+            patches,
         );
     }
 
     //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
     //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
-    // Delete
+    // Remove
 
     /**
      *
      * @param id _id du document que l'on souhaite supprimer
      * @param cascade Suppression en cascade ?
      */
-    public delete(_id: string, cascade?: true): FactoryPromise<any>;
+    public remove(_id: string): RepositoryPromise<RCReturn<DocType>["remove"], RCError["remove"]>;
     /**
      *
      * @param ids Tableau d'_ids des documents que l'on souhaite supprimer
      * @param cascade Suppression en cascade ?
      */
-    public delete(_ids: string[], cascade?: true): FactoryPromise<any>;
-    public delete(arg: {_ids: string[], cascade?: true}): FactoryPromise<any>;
-    public delete(_id_s: string | string[] | {_ids: string[], cascade?: true}, cascade?: true): FactoryPromise<DeleteResponse> {
+    public remove(_ids: string[]): RepositoryPromise<RCReturn<DocType>["remove"], RCError["remove"]>;
+    public remove(_id_s: string | string[]): RepositoryPromise<RCReturn<DocType>["remove"], RCError["remove"]> {
         let ids: string[];
 
         // Overload 1
@@ -273,27 +297,181 @@ export default class Factory<
         else if (_id_s instanceof Array) {
             ids = _id_s
         }
-        // Overload 3 - socketRequestData form
-        else if(!Array.isArray(_id_s) && typeof _id_s === "object" && _id_s._ids && Array.isArray(_id_s._ids)){
-            ids = _id_s._ids
-        }
         else {
             throw new Error(
-                `No overload match this call (Factory ${this.__factoryName}.delete(_id_s: ${typeof _id_s}, cascade: ${typeof cascade}))`
+                `No overload match this call (Repository ${this.__repositoryName}.remove(_id_s: ${typeof _id_s}))`
             );
         }
 
         // Propose d'envoyer la suppression au server
-        return useFactoryCallbacks.applyDelete<FactoryType, DocType>(
-            this.__factoryName,
-            {
-                ids,
-                cascade: typeof _id_s === "object" && !Array.isArray(_id_s) && _id_s.cascade
-                    ? _id_s.cascade
-                    : cascade
-            },
+        return useRepositoryCallbacks.applyRemove<RepositoryType, DocType>(
+            this.__repositoryName,
+            ids,
         )
+    }
 
+    //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
+    //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+    // Remove
+
+    /**
+     *
+     * @param id _id du document que l'on souhaite supprimer
+     * @param cascade Suppression en cascade ?
+     */
+     public restore(_id: string): RepositoryPromise<RCReturn<DocType>["restore"], RCError["restore"]>;
+     /**
+      *
+      * @param ids Tableau d'_ids des documents que l'on souhaite supprimer
+      * @param cascade Suppression en cascade ?
+      */
+     public restore(_ids: string[]): RepositoryPromise<RCReturn<DocType>["restore"], RCError["restore"]>;
+     public restore(_id_s: string | string[]): RepositoryPromise<RCReturn<DocType>["restore"], RCError["restore"]> {
+         let ids: string[];
+
+         // Overload 1
+         if (typeof _id_s === "string") {
+             // Retire l'élement
+             ids = [_id_s]
+         }
+         //Overload 2
+         else if (_id_s instanceof Array) {
+             ids = _id_s
+         }
+         else {
+             throw new Error(
+                 `No overload match this call (Repository ${this.__repositoryName}.remove(_id_s: ${typeof _id_s}))`
+             );
+         }
+
+         // Propose d'envoyer la suppression au server
+         return useRepositoryCallbacks.applyRestore<RepositoryType, DocType>(
+             this.__repositoryName,
+             ids,
+         )
+     }
+
+         //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
+    //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+    // Remove
+
+    /**
+     *
+     * @param id _id du document que l'on souhaite supprimer
+     * @param cascade Suppression en cascade ?
+     */
+    public destroy(_id: string): RepositoryPromise<RCReturn<DocType>["destroy"], RCError["destroy"]>;
+    /**
+     *
+     * @param ids Tableau d'_ids des documents que l'on souhaite supprimer
+     * @param cascade Suppression en cascade ?
+     */
+    public destroy(_ids: string[]): RepositoryPromise<RCReturn<DocType>["destroy"], RCError["destroy"]>;
+    public destroy(_id_s: string | string[]): RepositoryPromise<RCReturn<DocType>["destroy"], RCError["destroy"]> {
+        let ids: string[];
+
+        // Overload 1
+        if (typeof _id_s === "string") {
+            // Retire l'élement
+            ids = [_id_s]
+        }
+        //Overload 2
+        else if (_id_s instanceof Array) {
+            ids = _id_s
+        }
+        else {
+            throw new Error(
+                `No overload match this call (Repository ${this.__repositoryName}.remove(_id_s: ${typeof _id_s}))`
+            );
+        }
+
+        // Propose d'envoyer la suppression au server
+        return useRepositoryCallbacks.applyDestroy<RepositoryType, DocType>(
+            this.__repositoryName,
+            ids,
+        )
+    }
+
+        //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
+    //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+    // Remove
+
+    /**
+     *
+     * @param id _id du document que l'on souhaite supprimer
+     * @param cascade Suppression en cascade ?
+     */
+     public archive(_id: string): RepositoryPromise<RCReturn<DocType>["archive"], RCError["archive"]>;
+     /**
+      *
+      * @param ids Tableau d'_ids des documents que l'on souhaite supprimer
+      * @param cascade Suppression en cascade ?
+      */
+     public archive(_ids: string[]): RepositoryPromise<RCReturn<DocType>["archive"], RCError["archive"]>;
+     public archive(_id_s: string | string[]): RepositoryPromise<RCReturn<DocType>["archive"], RCError["archive"]> {
+         let ids: string[];
+
+         // Overload 1
+         if (typeof _id_s === "string") {
+             // Retire l'élement
+             ids = [_id_s]
+         }
+         //Overload 2
+         else if (_id_s instanceof Array) {
+             ids = _id_s
+         }
+         else {
+             throw new Error(
+                 `No overload match this call (Repository ${this.__repositoryName}.remove(_id_s: ${typeof _id_s}))`
+             );
+         }
+
+         // Propose d'envoyer la suppression au server
+         return useRepositoryCallbacks.applyArchive<RepositoryType, DocType>(
+             this.__repositoryName,
+             ids,
+         )
+     }
+
+         //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
+    //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+    // Remove
+
+    /**
+     *
+     * @param id _id du document que l'on souhaite supprimer
+     * @param cascade Suppression en cascade ?
+     */
+    public unarchive(_id: string): RepositoryPromise<RCReturn<DocType>["unarchive"], RCError["unarchive"]>;
+    /**
+     *
+     * @param ids Tableau d'_ids des documents que l'on souhaite supprimer
+     * @param cascade Suppression en cascade ?
+     */
+    public unarchive(_ids: string[]): RepositoryPromise<RCReturn<DocType>["unarchive"], RCError["unarchive"]>;
+    public unarchive(_id_s: string | string[]): RepositoryPromise<RCReturn<DocType>["unarchive"], RCError["unarchive"]> {
+        let ids: string[];
+
+        // Overload 1
+        if (typeof _id_s === "string") {
+            // Retire l'élement
+            ids = [_id_s]
+        }
+        //Overload 2
+        else if (_id_s instanceof Array) {
+            ids = _id_s
+        }
+        else {
+            throw new Error(
+                `No overload match this call (Repository ${this.__repositoryName}.remove(_id_s: ${typeof _id_s}))`
+            );
+        }
+
+        // Propose d'envoyer la suppression au server
+        return useRepositoryCallbacks.applyUnarchive<RepositoryType, DocType>(
+            this.__repositoryName,
+            ids,
+        )
     }
 
     //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
@@ -307,7 +485,32 @@ export default class Factory<
     //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
     //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
     //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
-    // GETTERs
+    // REMOTE GETTERs
+
+    public getAll(): RepositoryPromise<RCReturn<DocType>["getAll"], RCError["getAll"]> {
+        return useRepositoryCallbacks.applyGetAll<RepositoryType, DocType>(this.__repositoryName, undefined)
+    }
+
+    public getArchives(): RepositoryPromise<RCReturn<DocType>["getArchives"], RCError["getAll"]> {
+        return useRepositoryCallbacks.applyGetArchives<RepositoryType, DocType>(this.__repositoryName, undefined)
+    }
+
+    public getRemoved(): RepositoryPromise<RCReturn<DocType>["getRemoved"], RCError["getAll"]> {
+        return useRepositoryCallbacks.applyGetRemoved<RepositoryType, DocType>(this.__repositoryName, undefined)
+    }
+
+    //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
+    //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+    //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+    //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+    //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+    //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+    //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+    //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+    //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+    //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+    //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+    // LOCAL GETTERs
 
     public findById(_id: string) {
         return this.find(doc => doc._id === _id);

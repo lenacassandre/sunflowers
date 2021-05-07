@@ -1,19 +1,19 @@
 /*import { useState, useRef } from "react";
-import { View, Factory } from "../../types";
+import { View, Repository } from "../../types";
 
 import log from "../../utils/log";
 
-export default function useViewModels(currentView: View, factories: any) {
+export default function useViewModels(currentView: View, repositories: any) {
 	log.useViewmodelGroup();
 
-	log.useViewmodel("Factories", factories);
+	log.useViewmodel("Repositories", repositories);
 
-	const viewModel: { [modelName: string]: Factory<any> } = {};
+	const viewModel: { [modelName: string]: Repository<any> } = {};
 
 	if (currentView.viewmodel) {
-		for (const requestedFactory in currentView.viewmodel) {
-			if (factories[requestedFactory]) {
-				viewModel[requestedFactory] = factories[requestedFactory];
+		for (const requestedRepository in currentView.viewmodel) {
+			if (repositories[requestedRepository]) {
+				viewModel[requestedRepository] = repositories[requestedRepository];
 			}
 		}
 	}

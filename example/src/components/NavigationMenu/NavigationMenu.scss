@@ -1,0 +1,55 @@
+@import "../../constants/colors.scss";
+
+.NavigationMenu {
+    display:flex;
+    flex-direction: column;
+
+    .Link {
+        color: $darkgrey;
+        font-size: 20px;
+        font-size: 1.1rem;
+        padding: 0.5em 0.8em;
+        border-radius: 8px;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: center;
+
+        text-decoration: none !important;
+
+        &:hover {
+            color: white;
+            background-color: lighten($action, 20);
+        }
+
+        &:active {
+            color: white;
+            background-color: $action;
+        }
+
+        &.active:not(:hover) {
+            color: $action;
+        }
+
+        .icon {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+
+            width: 1.5em;
+            height: 1.5em;
+
+            margin-right: 1em;
+
+            svg {
+            }
+        }
+
+        span {
+            text-decoration: none !important;
+            font-weight: 900;
+        }
+    }
+}

@@ -1,16 +1,20 @@
 import React from "react";
-import Factory from "./components/ViewComposer/classes/factory.class";
+import Repository from "./components/ViewComposer/classes/repository.class";
+import Document from "./components/ViewComposer/classes/document.class";
+import { Promise } from './classes/Promise'
 
 /**
  * N'importe quelle constructeur de classe
  */
 export declare type Class<T = any> = { new(...args: any[]): T; }
 
-export declare type Factories = { [factoryName: string] : Factory<any, any> }
+export declare type Repositories = { [repositoryName: string] : Repository<any, any> }
 
 export declare type Config = {
 	username: string;
 }
+
+export declare type SocketError<T = {}> = ({error: string} & T)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -28,7 +32,7 @@ export declare type BaseStoreType = {
 	[key: string]: any
 }
 
-export declare type BaseFactoriesType = {[factoryName: string]: Factory<any, any>}
+export declare type BaseRepositoriesType = {[repositoryName: string]: Repository<any, any>}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////:
 ////////////////////////////////////////////////////////////////////////////////////////////////////:
@@ -41,7 +45,7 @@ export declare type ViewsTree<UserClass> = Array<ViewDeclaration<UserClass, any,
 export declare type ViewDeclaration<
 	UserClass,
 	StoreType extends BaseStoreType = BaseStoreType,
-	FactoriesType extends BaseFactoriesType = BaseFactoriesType,
+	RepositoriesType extends BaseRepositoriesType = BaseRepositoriesType,
 	ActionsType extends BaseActionsType = BaseActionsType
 > = {
 	// URL
@@ -55,7 +59,7 @@ export declare type ViewDeclaration<
 	label?: string;
 
 	// Composant de la vue;
-	view: View<UserClass, StoreType, FactoriesType, ActionsType>,
+	view: View<UserClass, StoreType, RepositoriesType, ActionsType>,
 
 	// Une seule vue peut avoir cette propriété. Ce sera celle sur laquelle seront revoyés les utilisateurs pour
 	// lesquels le routeur ne trouve aucune vue.
@@ -80,16 +84,16 @@ export declare type ViewDeclaration<
  export declare type View<
 	customUserModel,
 	StoreType extends BaseStoreType = BaseStoreType,
-	FactoriesType extends BaseFactoriesType = BaseFactoriesType,
+	RepositoriesType extends BaseRepositoriesType = BaseRepositoriesType,
 	ActionsType extends BaseActionsType = BaseActionsType
 > = {
-	Main?: ViewComponent<customUserModel, StoreType, FactoriesType, ActionsType>;
-	LeftBar?: ViewComponent<customUserModel, StoreType, FactoriesType, ActionsType>;
-	TopBar?: ViewComponent<customUserModel, StoreType, FactoriesType, ActionsType>;
-	RightBar?: ViewComponent<customUserModel, StoreType, FactoriesType, ActionsType>;
-	BottomBar?: ViewComponent<customUserModel, StoreType, FactoriesType, ActionsType>;
+	Main?: ViewComponent<customUserModel, StoreType, RepositoriesType, ActionsType>;
+	LeftBar?: ViewComponent<customUserModel, StoreType, RepositoriesType, ActionsType>;
+	TopBar?: ViewComponent<customUserModel, StoreType, RepositoriesType, ActionsType>;
+	RightBar?: ViewComponent<customUserModel, StoreType, RepositoriesType, ActionsType>;
+	BottomBar?: ViewComponent<customUserModel, StoreType, RepositoriesType, ActionsType>;
 	store?: StoreType;
-	reducer?: Reducer<customUserModel, StoreType, FactoriesType, ActionsType>;
+	reducer?: Reducer<customUserModel, StoreType, RepositoriesType, ActionsType>;
 	actions?: {[actionName: string]: string}
 };
 
@@ -97,9 +101,9 @@ export declare type ViewDeclaration<
 export declare type ViewComponent<
 	customUserModel,
 	StoreType extends BaseStoreType = BaseStoreType,
-	FactoriesType extends BaseFactoriesType = BaseFactoriesType,
+	RepositoriesType extends BaseRepositoriesType = BaseRepositoriesType,
 	ActionsType extends BaseActionsType = BaseActionsType
-> = React.FC<ViewSystem<customUserModel, StoreType, FactoriesType, ActionsType>>;
+> = React.FC<ViewSystem<customUserModel, StoreType, RepositoriesType, ActionsType>>;
 
 /**
  * Le système de vue qui permet d'interagir avec l'app depuis le reducer ou les composants de vue
@@ -109,11 +113,12 @@ export declare type ViewComponent<
 export declare type ViewSystem<
 	customUserModel,
 	StoreType extends BaseStoreType = BaseStoreType,
-	FactoriesType extends BaseFactoriesType = BaseFactoriesType,
+	RepositoriesType extends BaseRepositoriesType = BaseRepositoriesType,
 	ActionsType extends BaseActionsType = BaseActionsType
 > = {
 	store: StoreType;
-	factories: FactoriesType;
+
+	repositories: RepositoriesType;
 
 	dispatch: Dispatch<ActionsType>;
 	update: Update<StoreType>;
@@ -139,7 +144,7 @@ export declare type SessionSystem<customUserModel> = {
 	token: string | null;
 
 	logout: () => void;
-	login: (userName: string, password: string) => Promise<void>;
+	login: (userName: string, password: string) => Promise<void, void>;
 
 	saveUser: (user: customUserModel) => void;
 	saveToken: (token: string) => void;
@@ -159,17 +164,17 @@ export declare type Dispatch<
 
 export declare type Update<StoreType> = (updates: {[key in keyof StoreType]?: StoreType[key] }) => void;
 
-export declare type Emit = <ResponseType = {}>(action: string, data?: any) => Promise<ResponseType>;
+export declare type Emit = <ResponseType = {}, ErrorType  = {}>(action: string, data?: any) => Promise<ResponseType, SocketError<ErrorType>>;
 
 export declare type Reducer<
 	customUserModel,
 	StoreType extends BaseStoreType = BaseStoreType,
-	FactoriesType extends BaseFactoriesType = BaseFactoriesType,
+	RepositoriesType extends BaseRepositoriesType = BaseRepositoriesType,
 	ActionsType extends BaseActionsType = BaseActionsType
 > = (
 	type: keyof ActionsType,
 	action: ActionsType[keyof ActionsType],
-	View: ViewSystem<customUserModel, StoreType, FactoriesType, ActionsType>
+	View: ViewSystem<customUserModel, StoreType, RepositoriesType, ActionsType>
 ) => Partial<StoreType> | undefined | void;
 
 export declare type Navigate = (path: string, params?: {[key: string]: string}) => void
@@ -234,3 +239,59 @@ export declare type Notifications = NotificationObject[];
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Repositiry Controller Type
+ */
+export declare type RCType = "post" | "patch" | "remove" | "archive" | "destroy" | "unarchive" | "restore" | "getAll" | "getArchives" | "getRemoved"
+
+// Type d'argument demandé pour appeler une fonction de repo/doc
+/**
+ * Repositiry Controller Arguments Types
+ */
+export declare type RCArguments<DocType extends Document> = {
+	getAll: undefined,
+	getArchives: undefined,
+	getRemoved: undefined,
+	archive: string[]
+	unarchive: string[]
+	remove: string[]
+	restore: string[]
+	destroy: string[]
+	patch: (Partial<DocType> & {_id: string})[]
+	post: (Partial<DocType> & {_id: string})[]
+}
+
+// Type de valeur retournée par une fonction de repo/doc
+/**
+ * Repositiry Controller Return Types
+ */
+export declare type RCReturn<DocType extends Document> = {
+	getAll: (Partial<DocType> & {_id: string})[],
+	getArchives: (Partial<DocType> & {_id: string})[],
+	getRemoved: (Partial<DocType> & {_id: string})[],
+	archive: string[],
+	unarchive: string[],
+	remove: string[],
+	restore: string[],
+	destroy: string[],
+	patch: (Partial<DocType> & {_id: string})[],
+	post: (Partial<DocType> & {_oldId: string, _id: string})[],
+}
+
+// Type d'erreur renvoyé par une fonction de repo/doc
+/**
+ * Repositiry Controller Error Types
+ */
+export declare type RCError<DocType extends Document = Document> = {
+	getAll: SocketError,
+	getArchives: SocketError,
+	getRemoved: SocketError,
+	archive: SocketError,
+	unarchive: SocketError,
+	remove: SocketError,
+	restore: SocketError,
+	destroy: SocketError,
+	patch: SocketError,
+	post: SocketError,
+}

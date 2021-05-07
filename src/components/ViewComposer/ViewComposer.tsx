@@ -17,7 +17,7 @@ import Socket from "../../service/socket";
 // HOOKS
 import useSession from "./useSession";
 import useRouter from "./useRouter";
-import useFactories from "./useFactories";
+import useRepositories from "./useRepositories";
 import useViewModels from "./useViewModels";
 import useModals from "./useModals";
 import useNotifications from "./useNotifications";
@@ -26,7 +26,7 @@ import useStore from "./useStore";
 
 import log from "../../utils/log";
 
-import { Factories } from '../../types'
+import { Repositories } from '../../types'
 import User from "./classes/user.class";
 
 console.clear()
@@ -51,7 +51,7 @@ export const Context = React.createContext<{
 type ViewComposerBasePropType<UserDocumentClass> = {
 	views: any;
 	defaultView: ViewDeclaration<UserDocumentClass, any>;
-	factories: Factories;
+	repositories: Repositories;
 	socket: Socket;
 	UserModel: { new(user: UserDocumentClass): UserDocumentClass };
 }
@@ -83,11 +83,11 @@ function ViewComposerBase<UserDocumentClass extends User>(props: ViewComposerBas
 
 	// App level - même si leur chargement peut être affecté par les vues
 	// Gestion des données persistentes - reliées au serveur
-	const factoriesRef = useFactories<UserDocumentClass>(props.socket, props.factories, session);
+	const repositoriesRef = useRepositories<UserDocumentClass>(props.socket, props.repositories, session);
 
 	// Vue level
 	// Traitement des données qui viennent de fa
-	//const viewModel = useViewModels(currentViewDeclaration, factories);
+	//const viewModel = useViewModels(currentViewDeclaration, repositories);
 
 	// Vue level
 	// Gestion des données non percistentes nécessaires à l'UI.
@@ -95,7 +95,7 @@ function ViewComposerBase<UserDocumentClass extends User>(props: ViewComposerBas
 		props.socket,
 		router._currentViewDeclaration.view,
 		session,
-		factoriesRef,
+		repositoriesRef,
 		notify,
 		callModal,
 		router
@@ -117,7 +117,7 @@ function ViewComposerBase<UserDocumentClass extends User>(props: ViewComposerBas
 		return (
 			<ViewComponent
 				store={store}
-				factories={factoriesRef.current}
+				repositories={repositoriesRef.current}
 				dispatch={dispatch}
 				update={update}
 				emit={props.socket.emit}
@@ -135,16 +135,18 @@ function ViewComposerBase<UserDocumentClass extends User>(props: ViewComposerBas
 
 	log.title("\nDURING RENDER");
 
+	const contextValue = {
+		emit: props.socket.emit,
+		notify,
+		modal: callModal,
+		session,
+		router
+	}
+
 	let view = (
 		<div className={`App${router._currentViewDeclaration.className ? ` ${router._currentViewDeclaration.className}` : ""}`}>
 			<Context.Provider // Permet aux composants de la bibliothèque d'accéder aux méthodes de hook
-				value={{
-					emit: props.socket.emit,
-					notify,
-					modal: callModal,
-					session,
-					router
-				}}
+				value={contextValue}
 			>
 				<div className={`View${store.className ? " " + store.className : ""}${LeftBarState ? " menu" : ""}`}>
 					{router._currentViewDeclaration.view.LeftBar && <LeftBar active={LeftBarState}>{flux(router._currentViewDeclaration.view.LeftBar)}</LeftBar>}
@@ -152,6 +154,14 @@ function ViewComposerBase<UserDocumentClass extends User>(props: ViewComposerBas
 						<Middle>
 							{router._currentViewDeclaration.view.Main && (
 								<Main>
+									<Context.Consumer>
+										{
+											(context) => {
+												console.log("VIEW COMPOSER context",context)
+												return <div></div>
+											}
+										}
+									</Context.Consumer>
 									{flux(router._currentViewDeclaration.view.Main)}
 									<div className="notificationsContainer">
 										<TransitionGroup className="notificationsTransitionGroup">
@@ -189,7 +199,7 @@ function ViewComposerBase<UserDocumentClass extends User>(props: ViewComposerBas
 							)}
 						</Middle>
 					)}
-					<RightBar active={RightBarState}>{router._currentViewDeclaration.view.RightBar && flux(router._currentViewDeclaration.view.RightBar)}</RightBar>
+					{router._currentViewDeclaration.view.RightBar && <RightBar active={RightBarState}>{router._currentViewDeclaration.view.RightBar && flux(router._currentViewDeclaration.view.RightBar)}</RightBar>}
 				</div>
 				<TransitionGroup className="viewModals">
 					{modals &&
@@ -229,11 +239,17 @@ function ViewComposerBase<UserDocumentClass extends User>(props: ViewComposerBas
 //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
 //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
 //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+//◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+//◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+//◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+//◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+//◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+//◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
 
 type ViewComposerPropType<UserDocumentClass> = {
 	views: ViewsTree<UserDocumentClass>;
 	defaultView: ViewDeclaration<UserDocumentClass, any>;
-	factories: Factories;
+	repositories: Repositories;
 	socketURL: string
 	UserModel: { new(user: UserDocumentClass): UserDocumentClass }
 }

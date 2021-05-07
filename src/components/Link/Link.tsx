@@ -11,13 +11,16 @@ export const Link: React.FC<{
     const context = useContext(Context)
 
 	return (
-		<a
+        <a
             className={`Link${props.className ? ` ${props.className}`: ""}`}
             style={props.style}
             href="javascript:;"
-            onClick={() => context.router?.navigate(props.href)}
-		>
-			{props.children}
-		</a>
+            onClick={() => {
+                console.log(props.href, context)
+                context.router?.navigate(props.href)
+            }}
+        >
+            {props.children}
+        </a>
 	);
 };
