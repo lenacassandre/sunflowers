@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/lenacassandre/sunflowers/compare/v0.1.62...v0.2.0) (2021-05-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* **arhives & organizations:** Factories are renamed Repositories
+
+### Features
+
+* **arhives & organizations:** arhives, trash system, organizations, superadmin, roles ([fe74335](https://github.com/lenacassandre/sunflowers/commit/fe743355f665a739cab7f97c881355f6c63c4b5f))
+
 ### [0.1.62](https://github.com/lenacassandre/sunflowers/compare/v0.1.61...v0.1.62) (2021-04-20)
 
 
