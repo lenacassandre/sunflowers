@@ -1,4 +1,4 @@
-import { RCArguments, RCReturn } from "../../../types";
+import { RCArguments, RCError, RCReturn } from "../../../types";
 import randomId from "../../../utils/randomId";
 import {RepositoryPromise, useRepositoryCallbacks, } from "../useRepositories"
 import Repository from "./repository.class";
@@ -70,13 +70,13 @@ export default class Document {
      * @param prop Propriété que l'on souhaite modifier
      * @param value Nouvelle valeur de la propriété que l'on souhaite modifier
      */
-    public patch(prop: keyof this, value: any): RepositoryPromise<RCReturn<this>["patch"]>;
+    public patch(prop: keyof this, value: any): RepositoryPromise<RCReturn<this>["patch"], RCError["patch"]>;
     /**
      * Modifie le document selon le patch donné sur le serveur et le client.
      * @param patchObject Modifications que l'on souhaite apporter au document
      */
-    public patch(patchObject: Partial<this>): RepositoryPromise<RCReturn<this>["patch"]>;
-    public patch(arg1: Partial<this> | keyof this, value?: any): RepositoryPromise<RCReturn<this>["patch"]> {
+    public patch(patchObject: Partial<this>): RepositoryPromise<RCReturn<this>["patch"], RCError["patch"]>;
+    public patch(arg1: Partial<this> | keyof this, value?: any): RepositoryPromise<RCReturn<this>["patch"], RCError["patch"]> {
         let patches: RCArguments<this>["patch"];
 
         if (typeof arg1 === "string") {
@@ -103,7 +103,7 @@ export default class Document {
     /**
      * Supprime le document
      */
-    public remove() {
+    public remove(): RepositoryPromise<RCReturn<this>["remove"], RCError["remove"]> {
         return useRepositoryCallbacks.forwardRemove(this.__repositoryName, [this._id]);
     }
 
@@ -113,7 +113,7 @@ export default class Document {
     /**
      * Restaure le document
      */
-     public restore() {
+     public restore(): RepositoryPromise<RCReturn<this>["restore"], RCError["restore"]> {
         return useRepositoryCallbacks.forwardRestore(this.__repositoryName, [this._id]);
     }
 
@@ -123,7 +123,7 @@ export default class Document {
     /**
      * Supprime définitivement le document
      */
-     public destroy() {
+     public destroy(): RepositoryPromise<RCReturn<this>["destroy"], RCError["destroy"]> {
         return useRepositoryCallbacks.forwardDestroy(this.__repositoryName, [this._id]);
     }
 
@@ -133,7 +133,7 @@ export default class Document {
     /**
      * Archive le document
      */
-     public archive() {
+     public archive(): RepositoryPromise<RCReturn<this>["archive"], RCError["archive"]> {
         return useRepositoryCallbacks.forwardArchive(this.__repositoryName, [this._id]);
     }
 
@@ -143,7 +143,7 @@ export default class Document {
     /**
      * Désarchive le document
      */
-     public unarchive() {
+     public unarchive(): RepositoryPromise<RCReturn<this>["unarchive"], RCError["unarchive"]> {
         return useRepositoryCallbacks.forwardUnarchive(this.__repositoryName, [this._id]);
     }
 
