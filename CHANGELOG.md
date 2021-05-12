@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/lenacassandre/sunflowers/compare/v0.2.0...v0.2.1) (2021-05-12)
+
+
+### Features
+
+* **remotechanges:** remoteChanges on every controllers exept destroy ([10f5557](https://github.com/lenacassandre/sunflowers/commit/10f5557966b009aa3e8618cd6897b2a1d9135f9c))
+
 ## [0.2.0](https://github.com/lenacassandre/sunflowers/compare/v0.1.62...v0.2.0) (2021-05-07)
 
 
