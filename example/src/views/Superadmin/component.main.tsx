@@ -27,8 +27,6 @@ const orgaForm = (orga?: Organization) => (
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const Main: ViewComponent<User, StoreType, RepositoriesType> = (view): JSX.Element => {
-	console.log("ORGA",view.repositories.organization)
-
 	// ORGANISATION HEADS
 	const orgaMainHead: Column<Organization>[] = [
 		...orgaHead,
@@ -52,7 +50,6 @@ const Main: ViewComponent<User, StoreType, RepositoriesType> = (view): JSX.Eleme
 							resolveButton: "Archiver"
 						})
 							.then(() => {
-								console.log("ARCHIVE ORGA", orga)
 								orga.archive()
 									.send()
 									.then(() => view.notify("Organisation archivée."))
@@ -87,7 +84,6 @@ const Main: ViewComponent<User, StoreType, RepositoriesType> = (view): JSX.Eleme
 									.then(() => view.notify("Organisation supprimée."))
 									.catch(() => view.notify("Erreur", "red"))
 							})
-							.catch(() => {})
 					}}
 				/>
 			)
@@ -116,13 +112,11 @@ const Main: ViewComponent<User, StoreType, RepositoriesType> = (view): JSX.Eleme
 							resolveButton: "Désarchiver"
 						})
 							.then(() => {
-								console.log("UNARCHIVE ORGA", orga)
 								orga.unarchive()
 									.send()
 									.then(() => view.notify("Organisation désarchivée."))
 									.catch(() => view.notify("Erreur", "red"))
 							})
-							.catch(() => {})
 					}}
 				/>
 			)
@@ -152,7 +146,6 @@ const Main: ViewComponent<User, StoreType, RepositoriesType> = (view): JSX.Eleme
 									.then(() => view.notify("Organisation supprimée."))
 									.catch(() => view.notify("Erreur", "red"))
 							})
-							.catch(() => {})
 					}}
 				/>
 			)
@@ -181,13 +174,11 @@ const Main: ViewComponent<User, StoreType, RepositoriesType> = (view): JSX.Eleme
 							resolveButton: "Restaurer"
 						})
 							.then(() => {
-								console.log("UNARCHIVE ORGA", orga)
 								orga.restore()
 									.send()
 									.then(() => view.notify("Organisation restaurée."))
 									.catch(() => view.notify("Erreur", "red"))
 							})
-							.catch(() => {})
 					}}
 				/>
 			)
@@ -217,7 +208,6 @@ const Main: ViewComponent<User, StoreType, RepositoriesType> = (view): JSX.Eleme
 									.then(() => view.notify("Organisation définitivement supprimée."))
 									.catch(() => view.notify("Erreur", "red"))
 							})
-							.catch(() => {})
 					}}
 				/>
 			)
@@ -260,6 +250,195 @@ const Main: ViewComponent<User, StoreType, RepositoriesType> = (view): JSX.Eleme
 				return `${string}${orga.name}${i < a.length -1 ? ", " : ""}
 			`}, "")
 		},
+	]
+
+	// Users HEADS
+	const userMainHead: Column<User>[] = [
+		...userHead,
+		{
+			label: "",
+			type: 'function',
+			key: "",
+			size: 4,
+			function: (user) => (
+				<Button
+					className="actionButton"
+					filled
+					icon={faArchive}
+					onClick={(event) => {
+						event.stopPropagation();
+
+						view.modal({
+							title: "Archiver un utilisateur",
+							message: `Souhaitez vous archiver l'utilisateur ${user.firstName} ${user.lastName} <${user.userName}> ?`,
+							rejectButton: "Annuler",
+							resolveButton: "Archiver"
+						})
+							.then(() => {
+								user.archive()
+									.send()
+									.then(() => view.notify("Utilisateur archivée."))
+									.catch(() => view.notify("Erreur", "red"))
+							})
+					}}
+				/>
+			)
+		},
+		{
+			label: "",
+			type: 'function',
+			key: "",
+			size: 4,
+			function: (user) => (
+				<Button
+					className="removeButton"
+					filled
+					icon={faTrash}
+					onClick={(event) => {
+						event.stopPropagation();
+
+						view.modal({
+							title: "Supprimer une utilisateur",
+							message: `Souhaitez vous supprimer l'utilisateur ${user.firstName} ${user.lastName} <${user.userName}> ?`,
+							rejectButton: "Annuler",
+							resolveButton: "Supprimer"
+						})
+							.then(() => {
+								user.remove()
+									.send()
+									.then(() => view.notify("Utilisateur supprimée."))
+									.catch(() => view.notify("Erreur", "red"))
+							})
+					}}
+				/>
+			)
+		}
+	]
+
+	const userArchivesHead: Column<User>[] = [
+		...userHead,
+		{
+			label: "",
+			type: 'function',
+			key: "",
+			size: 4,
+			function: (user) => (
+				<Button
+					className="actionButton"
+					filled
+					icon={faBoxOpen}
+					onClick={(event) => {
+						event.stopPropagation();
+
+						view.modal({
+							title: "Désarchiver une utilisateur",
+							message: `Souhaitez vous désarchiver l'utilisateur ${user.firstName} ${user.lastName} <${user.userName}> ?`,
+							rejectButton: "Annuler",
+							resolveButton: "Désarchiver"
+						})
+							.then(() => {
+								console.log("UNARCHIVE ORGA", user)
+								user.unarchive()
+									.send()
+									.then(() => view.notify("Utilisateur désarchivée."))
+									.catch(() => view.notify("Erreur", "red"))
+							})
+					}}
+				/>
+			)
+		},
+		{
+			label: "",
+			type: 'function',
+			key: "",
+			size: 4,
+			function: (user) => (
+				<Button
+					className="removeButton"
+					filled
+					icon={faTrash}
+					onClick={(event) => {
+						event.stopPropagation();
+
+						view.modal({
+							title: "Supprimer une utilisateur",
+							message: `Souhaitez vous supprimer l'utilisateur ${user.firstName} ${user.lastName} <${user.userName}> ?`,
+							rejectButton: "Annuler",
+							resolveButton: "Supprimer"
+						})
+							.then(() => {
+								user.remove()
+									.send()
+									.then(() => view.notify("Utilisateur supprimée."))
+									.catch(() => view.notify("Erreur", "red"))
+							})
+					}}
+				/>
+			)
+		}
+	]
+
+	const userRemovedHead: Column<User>[] = [
+		...userHead,
+		{
+			label: "",
+			type: 'function',
+			key: "",
+			size: 4,
+			function: (user) => (
+				<Button
+					className="actionButton"
+					filled
+					icon={faTrashRestore}
+					onClick={(event) => {
+						event.stopPropagation();
+
+						view.modal({
+							title: "Restaurer une utilisateur",
+							message: `Souhaitez vous restaurer l'utilisateur ${user.firstName} ${user.lastName} <${user.userName}> ?`,
+							rejectButton: "Annuler",
+							resolveButton: "Restaurer"
+						})
+							.then(() => {
+								console.log("UNARCHIVE ORGA", user)
+								user.restore()
+									.send()
+									.then(() => view.notify("Utilisateur restaurée."))
+									.catch(() => view.notify("Erreur", "red"))
+							})
+					}}
+				/>
+			)
+		},
+		{
+			label: "",
+			type: 'function',
+			key: "",
+			size: 4,
+			function: (user) => (
+				<Button
+					className="removeButton"
+					filled
+					icon={faBurn}
+					onClick={(event) => {
+						event.stopPropagation();
+
+						view.modal({
+							title: "Supprimer définitivement une utilisateur",
+							message: `Souhaitez vous supprimer définitivement l'utilisateur ${user.firstName} ${user.lastName} <${user.userName}> ?`,
+							rejectButton: "Annuler",
+							resolveButton: "Supprimer définitivement"
+						})
+							.then(() => {
+								user.destroy()
+									.send()
+									.then(() => view.notify("Utilisateur définitivement supprimée."))
+									.catch(() => view.notify("Erreur", "red"))
+							})
+					}}
+				/>
+			)
+		}
 	]
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -342,7 +521,6 @@ const Main: ViewComponent<User, StoreType, RepositoriesType> = (view): JSX.Eleme
 										})
 										.catch((e) => view.notify("erreur", "red"))
 								})
-								.catch(() => {})
 						}}
 					/>
 					<Table<Organization>
@@ -364,12 +542,11 @@ const Main: ViewComponent<User, StoreType, RepositoriesType> = (view): JSX.Eleme
 										})
 										.catch((e) => view.notify("red", "erreur"))
 								})
-								.catch(() => {})
 						}}
 					/>
 				</section>
 
-				{/**ARCHIVES */}
+				{/**ARCHIVES *******************************************************************/}
 				<section>
 					<Button
 						name="Demander les archives des organisations"
@@ -388,7 +565,7 @@ const Main: ViewComponent<User, StoreType, RepositoriesType> = (view): JSX.Eleme
 					/>
 				</section>
 
-				{/**REMOVED */}
+				{/**REMOVED ************************************************************************/}
 				<section>
 					<Button
 						name="Demander les oragnisations supprimées"
@@ -440,12 +617,11 @@ const Main: ViewComponent<User, StoreType, RepositoriesType> = (view): JSX.Eleme
 										})
 										.catch((e) => view.notify("red", "erreur"))
 								})
-								.catch(() => {})
 						}}
 					/>
 					<Table<User>
 						array={view.repositories.user}
-						head={userHead}
+						head={userMainHead}
 						flex
 						onClick={(user) => {
 							view.modal<User>({
@@ -462,104 +638,45 @@ const Main: ViewComponent<User, StoreType, RepositoriesType> = (view): JSX.Eleme
 										})
 										.catch((e) => view.notify("red", "erreur"))
 								})
-								.catch(() => {})
 						}}
 					/>
 				</section>
 
-				{/**ARCHIVES */}
+				{/**ARCHIVES **********************************************************************/}
 				<section>
 					<Button
-						name="Nouvel utilisateur"
+						name="Demander les archives"
 						className="addButton"
-						icon={faPlus}
-						onClick={() => {
-							view.modal<User>({
-								title: "Nouvel utilisateur",
-								rejectButton: "Annuler",
-								resolveButton: "Ajouter",
-								form: userForm()
-							})
-								.then((user) => {
-									view.repositories.user.post(new User(user))
-										.send()
-										.then(() => {
-											view.notify("green", "Ok")
-										})
-										.catch((e) => view.notify("red", "erreur"))
-								})
-								.catch(() => {})
-						}}
+						icon={faArchive}
+						onClick={() => view.repositories.user.getArchives()
+							.send()
+							.then(() => view.notify("Archives reçue.", "green"))
+							.catch(() => view.notify("Erreur.", "red"))
+						}
 					/>
 					<Table<User>
-						array={view.repositories.user}
-						head={userHead}
+						array={view.repositories.user.archives}
+						head={userArchivesHead}
 						flex
-						onClick={(user) => {
-							view.modal<User>({
-								title: "Modifier l'utilisateur",
-								rejectButton: "Annuler",
-								resolveButton: "Modifier",
-								form: userForm(user)
-							})
-								.then((patch) => {
-									user.patch(patch)
-										.send()
-										.then(() => {
-											view.notify("green", "Ok")
-										})
-										.catch((e) => view.notify("red", "erreur"))
-								})
-								.catch(() => {})
-						}}
 					/>
 				</section>
 
-				{/**REMOVED */}
+				{/**REMOVED **********************************************************************/}
 				<section>
 					<Button
-						name="Nouvel utilisateur"
+						name="Demander la corbeille"
 						className="addButton"
-						icon={faPlus}
-						onClick={() => {
-							view.modal<User>({
-								title: "Nouvel utilisateur",
-								rejectButton: "Annuler",
-								resolveButton: "Ajouter",
-								form: userForm()
-							})
-								.then((user) => {
-									view.repositories.user.post(new User(user))
-										.send()
-										.then(() => {
-											view.notify("green", "Ok")
-										})
-										.catch((e) => view.notify("red", "erreur"))
-								})
-								.catch(() => {})
-						}}
+						icon={faTrash}
+						onClick={() => view.repositories.user.getRemoved()
+							.send()
+							.then(() => view.notify("Corbeille reçue.", "green"))
+							.catch(() => view.notify("Erreur.", "red"))
+						}
 					/>
 					<Table<User>
-						array={view.repositories.user}
-						head={userHead}
+						array={view.repositories.user.removed}
+						head={userRemovedHead}
 						flex
-						onClick={(user) => {
-							view.modal<User>({
-								title: "Modifier l'utilisateur",
-								rejectButton: "Annuler",
-								resolveButton: "Modifier",
-								form: userForm(user)
-							})
-								.then((patch) => {
-									user.patch(patch)
-										.send()
-										.then(() => {
-											view.notify("green", "Ok")
-										})
-										.catch((e) => view.notify("red", "erreur"))
-								})
-								.catch(() => {})
-						}}
 					/>
 				</section>
 			</>

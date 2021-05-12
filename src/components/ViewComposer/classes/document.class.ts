@@ -9,6 +9,7 @@ export default class Document {
     public dev?: true; // Can only be seen on the dev version
 	public order?: number;
 	public archived?: boolean;
+    public removed?: boolean;
 	public color?: string;
     public created_at: Date;
     public updated_at: Date
@@ -48,6 +49,11 @@ export default class Document {
 		// if() pour que la propriété n'aparaisse pas si elle n'existe pas
         if (doc.archived) {
             this.archived = doc.archived;
+		}
+
+        // if() pour que la propriété n'aparaisse pas si elle n'existe pas
+        if (doc.removed) {
+            this.removed = doc.removed;
 		}
 
 		// if() pour que la propriété n'aparaisse pas si elle n'existe pas

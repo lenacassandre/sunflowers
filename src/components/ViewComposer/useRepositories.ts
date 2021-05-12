@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useRef} from "react";
 import { SessionSystem, Repositories, RCArguments, RCType, RCReturn, RCError, SocketError } from "../../types";
-import log from "../../utils/log";
+import log, { response } from "../../utils/log";
 
 import Repository from './classes/repository.class'
 import Document from './classes/document.class'
@@ -8,6 +8,14 @@ import User from './classes/user.class'
 import Socket from "../../service/socket";
 
 import { Promise } from '../../classes/Promise'
+import { remove } from "./controllers/remove";
+import { post } from "./controllers/post";
+import { patch } from "./controllers/patch";
+import { restore } from "./controllers/restore";
+import { archive } from "./controllers/archive";
+import { unarchive } from "./controllers/unarchive";
+import { destroy } from "./controllers/destroy";
+import { disconnect } from "process";
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 export type RepositoryPromise<ReturnType = any, CatchType = void> = {send: () => Promise<ReturnType, CatchType>}
@@ -288,7 +296,7 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 	// Apply post
 	const applyPost = useCallback(getApplyFunction<"post">(
 		"post",
-		(repo, docs) => repo.set([...repo, ...docs]),
+		post,
 		(reapplyChanges, _cancelChanges, _oldRepo, currentRepo, requestData, responseData) => {
 			// Les documents qui avaient été envoyés mais ne sont pas dans la réponse.
 			const refusedDocs = requestData
@@ -297,9 +305,26 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 				)
 
 			// On retire les documents qui ont été refusés à partir de l'instance actuelle du repo
+			// et on remplace les id temporaire par ceux envoyés par le serveur
 			const newerRepositoryInstance = currentRepo.set(
-				currentRepo.filter((doc) => !refusedDocs.some((d) => d._id === doc._id))
+				currentRepo
+					.filter((doc) => !refusedDocs.some((d) => d._id === doc._id))
+					.map(doc => {
+						const responseDoc = responseData.find(d => d._oldId === doc._id)
+
+						console.log("========================================")
+						console.log("RESPONSE DOC ", responseDoc, doc, responseData)
+						console.log("========================================")
+
+						if(responseDoc) {
+							doc._id = responseDoc._id;
+						}
+
+						return doc
+					})
 			)
+
+
 
 			reapplyChanges(newerRepositoryInstance, responseData);
 		}
@@ -310,26 +335,7 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 	// TODO : mieux faire le tri sur les patch qui ont été refusés ou non.
 	const applyPatch = useCallback(getApplyFunction<"patch">(
 		"patch",
-		(repo, patches) => {
-			const newRepoInstance = repo.clone(); // Clone the current instance
-
-			// For each document to patch
-			patches.forEach(patch => {
-				if(patch._id) {
-					const docIndex = newRepoInstance.findIndex((doc: Document) => doc._id === patch._id);
-
-					if(docIndex >= 0) {
-						// For each property to patch in the document
-						for(const patchKey in patch) {
-							const key = patchKey as keyof typeof patch;
-							newRepoInstance[docIndex][key] = patch[key];
-						}
-					}
-				}
-			})
-
-			return newRepoInstance;
-		},
+		patch,
 		(reapplyChanges, _cancelChanges, _oldRepo, currentRepo, _requestData, responseData) => {
 			reapplyChanges(currentRepo, responseData);
 		}
@@ -341,22 +347,7 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 	// Retire les documents du tableau du répo et les met à la corbeille
 	const applyRemove = useCallback(getApplyFunction<"remove">(
 		"remove",
-		(repo, ids) => {
-			const newRepoArray: Document[] = [];
-			const newRepoRemovedDocuments: Document[] = [];
-
-			repo.forEach(doc => {
-				if(ids.includes(doc._id)) {
-					newRepoRemovedDocuments.push(doc);
-				} else {
-					newRepoArray.push(doc)
-				}
-			})
-
-			const newRepoInstance = repo.set(newRepoArray);
-			newRepoInstance.removed.push(...newRepoRemovedDocuments)
-			return newRepoInstance;
-		},
+		remove,
 		//@ts-ignore je sais pas d'où vient ce bug
 		(reapplyChanges, _cancelChanges, _oldRepo, currentRepo, _requestData, responseData) => {
 			reapplyChanges(currentRepo, responseData);
@@ -368,28 +359,7 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 	// Retire les documents de la corbeille et les rajoute au tableau du repo
 	const applyRestore = useCallback(getApplyFunction<"restore">(
 		"restore",
-		(repo, ids) => {
-			const newRepoDocuments: Document[] = [];
-			const newRepoArchives: Document[] = [];
-			const newRepoRemovedArray: Document[] = [];
-
-			repo.removed.forEach((doc: Document) => {
-				if(ids.includes(doc._id)) {
-					if(doc.archived) {
-						newRepoArchives.push(doc);
-					} else {
-						newRepoDocuments.push(doc)
-					}
-				} else {
-					newRepoRemovedArray.push(doc)
-				}
-			})
-
-			const newRepoInstance = repo.set(repo.concat(newRepoDocuments));
-			newRepoInstance.archives = [...newRepoInstance.archives, ...newRepoArchives]
-			newRepoInstance.removed = newRepoRemovedArray
-			return newRepoInstance;
-		},
+		restore,
 		//@ts-ignore je sais pas d'où vient ce bug
 		(reapplyChanges, _cancelChanges, _oldRepo, currentRepo, _requestData, responseData) => {
 			reapplyChanges(currentRepo, responseData);
@@ -400,11 +370,7 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 	// Apply destroy
 	const applyDestroy = useCallback(getApplyFunction<"destroy">(
 		"destroy",
-		(repo, ids) => {
-			const newRepoInstance = repo.clone();
-			newRepoInstance.removed = newRepoInstance.removed.filter((doc: Document) => !ids.includes(doc._id));
-			return newRepoInstance;
-		},
+		destroy,
 		//@ts-ignore je sais pas d'où vient ce bug
 		(reapplyChanges, _cancelChanges, _oldRepo, currentRepo, _requestData, responseData) => {
 			reapplyChanges(currentRepo, responseData);
@@ -415,22 +381,7 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 	// Apply archive
 	const applyArchive = useCallback(getApplyFunction<"archive">(
 		"archive",
-		(repo, ids) => {
-			const newRepoArray: Document[] = [];
-			const newRepoArchivedDocuments: Document[] = [];
-
-			repo.forEach(doc => {
-				if(ids.includes(doc._id)) {
-					newRepoArchivedDocuments.push(doc);
-				} else {
-					newRepoArray.push(doc)
-				}
-			})
-
-			const newRepoInstance = repo.set(newRepoArray);
-			newRepoInstance.archives.push(...newRepoArchivedDocuments)
-			return newRepoInstance;
-		},
+		archive,
 		//@ts-ignore je sais pas d'où vient ce bug
 		(reapplyChanges, _cancelChanges, _oldRepo, currentRepo, _requestData, responseData) => {
 			reapplyChanges(currentRepo, responseData);
@@ -441,22 +392,7 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 	// Apply unarchive
 	const applyUnarchive = useCallback(getApplyFunction<"unarchive">(
 		"unarchive",
-		(repo, ids) => {
-			const newRepoDocuments: Document[] = [];
-			const newRepoArchivedArray: Document[] = [];
-
-			repo.archives.forEach(doc => {
-				if(ids.includes(doc._id)) {
-					newRepoDocuments.push(doc);
-				} else {
-					newRepoArchivedArray.push(doc)
-				}
-			})
-
-			const newRepoInstance = repo.set(repo.concat(newRepoDocuments));
-			newRepoInstance.archives = newRepoArchivedArray
-			return newRepoInstance;
-		},
+		unarchive,
 		//@ts-ignore je sais pas d'où vient ce bug
 		(reapplyChanges, _cancelChanges, _oldRepo, currentRepo, _requestData, responseData) => {
 			reapplyChanges(currentRepo, responseData);
@@ -468,7 +404,6 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 	const applyGetAll = useCallback(getApplyFunction<"getAll">(
 		"getAll",
 		(repo) => {
-			console.log("GET ALL")
 			const newRepoInstance = repo.clone();
 			return newRepoInstance;
 		},
@@ -533,32 +468,15 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	// À chaque changement de token, on recharge les repositories
-	useEffect(() => {
-		log.useRepositories("use effect session.user", session.token, session.user)
+	// REMOTE CHANGES //////////////////////////////////////////////////////////////////////////////////
 
-		if(session.token && session.user) {
-			log.useRepositories("LOADING REPO", repositoriesRef.current)
-
-			for(let repoName in repositoriesRef.current) {
-				repositoriesRef.current[repoName].getAll().send()
-					.then(() => {})
-					.catch(() => {})
-			}
-		}
-	}, [session.user])
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Listen to remote changes
-	useEffect(() => {
+	useEffect(<RCT extends RCType>() => {
 		socket.on<{
 			author: UserType | null,
 			date: Date,
 			repositoryName: string;
-			type: "post" | "patch" | "remove";
-			data: string[] | (Partial<any & Document> & {_id: string})[] | (Document & any)[],
+			controllerType: RCT;
+			data: RCArguments<any>[RCT],
 		}>("remoteChanges", (remoteChange) => {
 			try {
 				log.useRepositories("remoteChanges", remoteChange)
@@ -570,11 +488,22 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 					return;
 				}
 
-				switch(remoteChange.type) {
+				if(!remoteChange.data) {
+					console.log(`remoteChanges error, no data.`)
+					return;
+				}
+
+				switch(remoteChange.controllerType) {
 					case "post": { // Un post a été fait par quelqu'un d'autre, on update les donneés locales.
+						console.log("==========================================================")
+						console.log("post")
+						console.log("==========================================================")
+
 						// On évite d'ajouter des documents qui sont déjà là
-						const docsToAdd = remoteChange.data.filter((doc) => !repository.some((d: Document) => d._id === doc._id || d._id === doc._oldId))
-						const newerRepositoryInstance = repository.set([...repository, ...docsToAdd])
+						let data = remoteChange.data as RCArguments<any>["post"]
+						data = data.filter(doc => !repository.some(d => d._id === doc._id))
+
+						const newerRepositoryInstance = post(repository, data)
 
 						setRepositories({
 							...repositoriesRef.current,
@@ -585,16 +514,8 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 					}
 
 					case "patch": { // Un patch a été fait par quelqu'un d'autre, on update les données locales
-						const newerRepositoryInstance = repository.set(repository.map((doc: Document) => {
-							const patch = remoteChange.data.find(d => d._id === doc._id);
-
-							if(patch) { // On remplace l'ancienne version des documents par la nouvelle.
-								return {...doc, ...patch}
-							}
-							else {
-								return doc;
-							}
-						}))
+						const data = remoteChange.data as RCArguments<any>["patch"]
+						const newerRepositoryInstance = patch(repository, data)
 
 						setRepositories({
 							...repositoriesRef.current,
@@ -605,9 +526,56 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 					}
 
 					case "remove": { // Un remove a fait par quelqu'un d'autre, on update les données locales.
-						const newerRepositoryInstance = repository.set(repository.filter((doc: Document) => {
-							return !remoteChange.data.includes(doc._id)
-						}))
+						const data = remoteChange.data as RCArguments<any>["remove"]
+						const newerRepositoryInstance = remove(repository, data)
+
+						setRepositories({
+							...repositoriesRef.current,
+							[remoteChange.repositoryName] : newerRepositoryInstance
+						})
+
+						break;
+					}
+
+					case "restore": { // Un remove a fait par quelqu'un d'autre, on update les données locales.
+						const data = remoteChange.data as RCArguments<any>["restore"]
+						const newerRepositoryInstance = restore(repository, data)
+
+						setRepositories({
+							...repositoriesRef.current,
+							[remoteChange.repositoryName] : newerRepositoryInstance
+						})
+
+						break;
+					}
+
+					case "destroy": { // Un remove a fait par quelqu'un d'autre, on update les données locales.
+						const data = remoteChange.data as RCArguments<any>["destroy"]
+						const newerRepositoryInstance = destroy(repository, data)
+
+						setRepositories({
+							...repositoriesRef.current,
+							[remoteChange.repositoryName] : newerRepositoryInstance
+						})
+
+						break;
+					}
+
+					case "archive": { // Un remove a fait par quelqu'un d'autre, on update les données locales.
+						const data = remoteChange.data as RCArguments<any>["archive"]
+						const newerRepositoryInstance = archive(repository, data)
+
+						setRepositories({
+							...repositoriesRef.current,
+							[remoteChange.repositoryName] : newerRepositoryInstance
+						})
+
+						break;
+					}
+
+					case "unarchive": { // Un remove a fait par quelqu'un d'autre, on update les données locales.
+						const data = remoteChange.data as RCArguments<any>["unarchive"]
+						const newerRepositoryInstance = unarchive(repository, data)
 
 						setRepositories({
 							...repositoriesRef.current,
@@ -623,6 +591,42 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 			}
 		})
 	}, [])
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	// À chaque changement de token, on recharge les repositories
+	useEffect(() => {
+		log.useRepositories("use effect session.user", session.token, session.user)
+
+		if(session.token && session.user) {
+			log.useRepositories("LOADING REPO", repositoriesRef.current)
+
+			for(let repoName in repositoriesRef.current) {
+				repositoriesRef.current[repoName].getAll().send()
+					.then(() => {})
+					.catch(() => {})
+			}
+		}
+	}, [session.user]);
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////

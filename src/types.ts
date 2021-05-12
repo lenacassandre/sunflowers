@@ -295,3 +295,5 @@ export declare type RCError<DocType extends Document = Document> = {
 	patch: SocketError,
 	post: SocketError,
 }
+
+export declare type ClientController<ControllerType extends RCType> = (repository: Repository<any, any>, remoteChanges: RCReturn<any>[ControllerType]) => Repository<any, any>
