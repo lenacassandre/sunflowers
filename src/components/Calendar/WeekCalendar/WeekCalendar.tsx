@@ -231,7 +231,7 @@ export function WeekCalendar<TaskType extends BaseTaskType, IdKey extends keyof 
                         {Tasks}
                     </TransitionGroup>
 
-                    {props.renderEditor && (
+                    {Editor && (
                         <TransitionGroup className="editorGroup">
                             {Editor}
                         </TransitionGroup>
