@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.7](https://github.com/lenacassandre/sunflowers/compare/v0.2.6...v0.2.7) (2021-05-18)
+
+
+### Bug Fixes
+
+* **calendar:** crash onPost ([5e47bc7](https://github.com/lenacassandre/sunflowers/commit/5e47bc78c27225de742e9ebf5e3c1d422db6b56e))
+
 ### [0.2.6](https://github.com/lenacassandre/sunflowers/compare/v0.2.5...v0.2.6) (2021-05-18)
 
 
