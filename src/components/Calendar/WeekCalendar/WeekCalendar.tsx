@@ -231,9 +231,11 @@ export function WeekCalendar<TaskType extends BaseTaskType, IdKey extends keyof 
                         {Tasks}
                     </TransitionGroup>
 
-                    <TransitionGroup className="editorGroup">
-                        {Editor}
-                    </TransitionGroup>
+                    {props.renderEditor && (
+                        <TransitionGroup className="editorGroup">
+                            {Editor}
+                        </TransitionGroup>
+                    )}
 
                     {
                         // FOCUS LAYER /////////////////////////////////////////////////////////////////////////
