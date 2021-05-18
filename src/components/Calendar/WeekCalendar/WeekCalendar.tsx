@@ -64,12 +64,13 @@ export function WeekCalendar<TaskType extends BaseTaskType, IdKey extends keyof 
     tasks: TaskType[];
     config: CalendarConfig<TaskType, IdKey>;
 
-    onPost: OnPost<TaskType, IdKey>;
-    onPatch: OnPatch<TaskType>;
-    onDelete: OnDelete<TaskType>;
-
     renderWeekTask: RenderTask<TaskType, IdKey>;
-    renderEditor: RenderEditor<TaskType, IdKey>;
+
+    onPost?: OnPost<TaskType, IdKey>;
+    onPatch?: OnPatch<TaskType>;
+    onDelete?: OnDelete<TaskType>;
+
+    renderEditor?: RenderEditor<TaskType, IdKey>;
 }) {
     // Store
     const [store, setStore] = useState<StoreType<TaskType, IdKey>>(initialStore);
@@ -125,7 +126,7 @@ export function WeekCalendar<TaskType extends BaseTaskType, IdKey extends keyof 
             )
         }
         else {
-            props.onPatch(task, patch)
+            props.onPatch && props.onPatch(task, patch)
         }
     }
 

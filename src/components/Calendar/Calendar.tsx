@@ -37,9 +37,9 @@ export declare type RenderTask<TaskType extends BaseTaskType, IdKey extends keyo
     task: TaskType,
     config: CalendarConfig<TaskType, IdKey>,
     rect: {left: number, top: number, width: number, height: number},
-    post: OnPost<TaskType, IdKey>,
-    patch: OnPatchLazy<TaskType>,
-    delete: OnDelete<TaskType>,
+    post?: OnPost<TaskType, IdKey>,
+    patch?: OnPatchLazy<TaskType>,
+    delete?: OnDelete<TaskType>,
     close: () => void,
     clone: () => void,
 }>
@@ -82,12 +82,12 @@ export function Calendar<TaskType extends BaseTaskType, IdKey extends keyof Task
     tasks: TaskType[];
     config?: Partial<CalendarConfig<TaskType, IdKey>>;
 
-    onPost: OnPost<TaskType, IdKey>;
-    onPatch: OnPatch<TaskType>;
-    onDelete: OnDelete<TaskType>;
+    onPost?: OnPost<TaskType, IdKey>;
+    onPatch?: OnPatch<TaskType>;
+    onDelete?: OnDelete<TaskType>;
 
     renderWeekTask: RenderTask<TaskType, IdKey>
-    renderEditor: RenderEditor<TaskType, IdKey>
+    renderEditor?: RenderEditor<TaskType, IdKey>
 }) {
     // DEFAULT CONFIG ///////////////////////////////////////////////////////////////////////////////
     const config: Partial<CalendarConfig<TaskType, IdKey>> = props.config || {};

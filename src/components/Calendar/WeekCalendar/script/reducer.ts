@@ -15,9 +15,9 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 	config: CalendarConfig<TaskType, IdKey>,
 	tasks: TaskType[],
 	dispatch: <Action extends keyof Actions<TaskType, IdKey>>(type: keyof Actions<TaskType, IdKey>, action: Actions<TaskType, IdKey>[Action]) => void,
-    onPost: OnPost<TaskType, IdKey>,
-    onPatch: OnPatchLazy<TaskType>,
-    onDelete: OnDelete<TaskType>,
+    onPost?: OnPost<TaskType, IdKey>,
+    onPatch?: OnPatchLazy<TaskType>,
+    onDelete?: OnDelete<TaskType>,
 ): Partial<StoreType<TaskType, IdKey>> | void => {
 	if(type !== "mousemove_grid") {
 		//console.log("ACTION", type, action)
@@ -78,28 +78,30 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 				dispatch("changeId", {oldId: temp_id, newId})
 			}
 
-			// Call onPost event, and waiting for the frowardId callback to be called.
-			const newTask = onPost(
-				//@ts-ignore
-				{
-					[config.idKey]: temp_id,
+			if(onPost) {
+				// Call onPost event, and waiting for the frowardId callback to be called.
+				const newTask = onPost(
 					//@ts-ignore
-					date: action.date,
-					duration: config.step,
-				},
-				forwardId
-			);
+					{
+						[config.idKey]: temp_id,
+						//@ts-ignore
+						date: action.date,
+						duration: config.step,
+					},
+					forwardId
+				);
 
-			if(newTask) {
-				addClassToBody("resize"); // la classe grabbing permet d'avoir le cursor grab
+				if(newTask) {
+					addClassToBody("resize"); // la classe grabbing permet d'avoir le cursor grab
 
-				return {
-					//@ts-ignore
-					clickDate: new Date(action.date),
-					clickTask: newTask,
-					editing: temp_id,
-					mouseAction: "creating",
-					editor: "close",
+					return {
+						//@ts-ignore
+						clickDate: new Date(action.date),
+						clickTask: newTask,
+						editing: temp_id,
+						mouseAction: "creating",
+						editor: "close",
+					}
 				}
 			}
 
@@ -298,7 +300,7 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 							newDuration = store.clickTask.duration - delta;
 
 							if(taskToPatch.duration !== newDuration || taskToPatch.date.getTime() !== newDate.getTime()) {
-								onPatch(taskToPatch, {date: newDate, duration: newDuration});
+								onPatch && onPatch(taskToPatch, {date: newDate, duration: newDuration});
 							}
 						}
 						// La durée change ///////////////////////////////////////////////////////////
@@ -310,7 +312,7 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 
 						// PATCH
 						if(taskToPatch.duration !== newDuration || taskToPatch.date.getTime() !== newDate.getTime()) {
-							onPatch(taskToPatch, {duration: newDuration, date: newDate});
+							onPatch && onPatch(taskToPatch, {duration: newDuration, date: newDate});
 						}
 					}
 
@@ -340,7 +342,7 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 
 						// PATCH
 						if(taskToPatch.duration !== newDuration || taskToPatch.date.getTime() !== newDate.getTime()) {
-							onPatch(taskToPatch, {date: newDate, duration: newDuration});
+							onPatch && onPatch(taskToPatch, {date: newDate, duration: newDuration});
 						}
 					}
 
@@ -380,16 +382,18 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 						dispatch("changeId", {oldId: temp_id, newId})
 					}
 
-					// Call onPost event, and waiting for the frowardId callback to be called.
-					const newTask = onPost({...store.clickTask, [config.idKey]: undefined}, forwardId)
+					if(onPost) {
+						// Call onPost event, and waiting for the frowardId callback to be called.
+						const newTask = onPost({...store.clickTask, [config.idKey]: undefined}, forwardId)
 
-					return {
-						//@ts-ignore
-						clickDate: new Date(action.date),
-						clickTask: null,
-						editing: temp_id,
-						mouseAction: null,
-						editor: "open",
+						return {
+							//@ts-ignore
+							clickDate: new Date(action.date),
+							clickTask: null,
+							editing: temp_id,
+							mouseAction: null,
+							editor: "open",
+						}
 					}
 				}
 				else if(store.mouseAction === "drag_clone" && store.tempTask) {
@@ -400,15 +404,17 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 						dispatch("changeId", {oldId: temp_id, newId})
 					}
 
-					// Call onPost event, and waiting for the frowardId callback to be called.
-					const newTask = onPost(store.tempTask, forwardId);
+					if(onPost) {
+						// Call onPost event, and waiting for the frowardId callback to be called.
+						const newTask = onPost(store.tempTask, forwardId);
 
-					return {
-						mouseAction: null,
-						editing: null,
-						tempTask: null,
-						clickDate: null,
-						clickTask: null
+						return {
+							mouseAction: null,
+							editing: null,
+							tempTask: null,
+							clickDate: null,
+							clickTask: null
+						}
 					}
 				}
 				// Si l'éditeur est fermé ou en train de changer de task
@@ -466,16 +472,18 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 					dispatch("changeId", {oldId: temp_id, newId})
 				}
 
-				// Call onPost event, and waiting for the frowardId callback to be called.
-				const newTask = onPost({...store.clickTask, [config.idKey]: undefined}, forwardId)
+				if(onPost) {
+					// Call onPost event, and waiting for the frowardId callback to be called.
+					const newTask = onPost({...store.clickTask, [config.idKey]: undefined}, forwardId)
 
-				return {
-					//@ts-ignore
-					clickDate: new Date(action.date),
-					clickTask: null,
-					editing: temp_id,
-					mouseAction: null,
-					editor: "open",
+					return {
+						//@ts-ignore
+						clickDate: new Date(action.date),
+						clickTask: null,
+						editing: temp_id,
+						mouseAction: null,
+						editor: "open",
+					}
 				}
 			}
 			else if(store.mouseAction === "drag_clone" && store.tempTask) {
@@ -486,15 +494,17 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 					dispatch("changeId", {oldId: temp_id, newId})
 				}
 
-				// Call onPost event, and waiting for the frowardId callback to be called.
-				const newTask = onPost(store.tempTask, forwardId);
+				if(onPost) {
+					// Call onPost event, and waiting for the frowardId callback to be called.
+					const newTask = onPost(store.tempTask, forwardId);
 
-				return {
-					mouseAction: null,
-					editing: null,
-					tempTask: null,
-					clickDate: null,
-					clickTask: null
+					return {
+						mouseAction: null,
+						editing: null,
+						tempTask: null,
+						clickDate: null,
+						clickTask: null
+					}
 				}
 			}
 			else {
@@ -570,15 +580,19 @@ export default reducer;
 /*********************************************************************************************************************/
 /*********************************************************************************************************************/
 
+/**
+ * TODO: documenter cette fonction
+ */
 function lazyPatch<TaskType extends BaseTaskType, IdKey extends keyof TaskType>(
 	tasks: TaskType[],
 	config: CalendarConfig<TaskType, IdKey>,
 	store: StoreType<TaskType, IdKey>,
-	onPatch: OnPatchLazy<TaskType>
+	onPatch?: OnPatchLazy<TaskType>
 ) {
 	const taskToPatch = tasks.find(task => task[config.idKey] === store.editing);
 
 	if(
+		onPatch &&
 		config.lazyPatch &&
 		store.mouseAction &&
 		store.clickTask &&

@@ -6,9 +6,9 @@ export function MonthCalendar<TaskType extends BaseTaskType, IdKey extends keyof
     tasks: TaskType[];
     config: CalendarConfig<TaskType, IdKey> ;
 
-    onPost: OnPost<TaskType, IdKey>;
-    onPatch: OnPatch<TaskType>;
-    onDelete: OnDelete<TaskType>;
+    onPost?: OnPost<TaskType, IdKey>;
+    onPatch?: OnPatch<TaskType>;
+    onDelete?: OnDelete<TaskType>;
 }) {
     return (
         <div className="MonthCalendar">Month calendar</div>

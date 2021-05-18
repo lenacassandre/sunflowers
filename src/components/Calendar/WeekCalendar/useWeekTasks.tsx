@@ -18,10 +18,10 @@ export function useWeekTasks<TaskType extends BaseTaskType, IdKey extends keyof 
     store: StoreType< TaskType, IdKey>,
     dispatch: <Action extends keyof Actions<TaskType, IdKey>>(type: Action, action: Actions<TaskType, IdKey>[Action]) => void,
     RenderWeekTask: RenderTask<TaskType, IdKey>,
-    RenderEditor: RenderEditor<TaskType, IdKey>,
-    onPost: OnPost<TaskType, IdKey>,
-    onPatch: OnPatchLazy<TaskType>,
-    onDelete: OnDelete<TaskType>
+    RenderEditor?: RenderEditor<TaskType, IdKey>,
+    onPost?: OnPost<TaskType, IdKey>,
+    onPatch?: OnPatchLazy<TaskType>,
+    onDelete?: OnDelete<TaskType>
 ) {
     // Le premier jour de la journée doit d'abord avoir été trouvé par le calendrier
     if(!store.firstDayOfTheWeek) return []
@@ -400,7 +400,7 @@ export function useWeekTasks<TaskType extends BaseTaskType, IdKey extends keyof 
 
     let EditorComponent: JSX.Element | undefined;
 
-    if(store.editor !== "close" && store.editing) {
+    if(store.editor !== "close" && store.editing && RenderEditor) {
         // Find the currently dragged task that is not a ghost
         const positionnedTaskContainer = positionnedTasksContainers.find(
             ptc =>
