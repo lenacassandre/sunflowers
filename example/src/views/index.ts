@@ -1,4 +1,5 @@
 import Plants from "./Plants";
+import Calendrier from "./Calendrier";
 import Users from "./Users";
 import Superadmin from "./Superadmin";
 import Connexion from "./Connexion";
@@ -30,6 +31,13 @@ const views: (
 		title: "plantttssss",
 		auth: true,
 		className: "Plants",
+		menu: true
+	},
+	{
+		path: "calendrier",
+		view: Calendrier,
+		title: "Calendrier",
+		className: "Calendrier",
 		menu: true
 	},
 	{

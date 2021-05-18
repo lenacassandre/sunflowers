@@ -195,7 +195,9 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 						const newDate = new Date(action.date);
 						const clickDateMinutes = store.clickDate.getHours() * 60 + store.clickDate.getMinutes();
 						const clickTaskMinutes = store.clickTask.date.getHours() * 60 + store.clickTask.date.getMinutes();
-						newDate.setMinutes(newDate.getMinutes() - (clickDateMinutes - clickTaskMinutes));
+						let newMinutes = newDate.getMinutes() - (clickDateMinutes - clickTaskMinutes);
+						newMinutes = newMinutes < 0 ? 0 : newMinutes;
+						newDate.setMinutes(newMinutes);
 
 						///////////////////////////////////////////////////////////
 						// Prevent drag before the day start
@@ -257,7 +259,9 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 						const newDate = new Date(action.date);
 						const clickDateMinutes = store.clickDate.getHours() * 60 + store.clickDate.getMinutes();
 						const clickTaskMinutes = store.clickTask.date.getHours() * 60 + store.clickTask.date.getMinutes();
-						newDate.setMinutes(newDate.getMinutes() - (clickDateMinutes - clickTaskMinutes));
+						let newMinutes = newDate.getMinutes() - (clickDateMinutes - clickTaskMinutes);
+						newMinutes = newMinutes < 0 ? 0 : newMinutes;
+						newDate.setMinutes(newMinutes);
 
 						///////////////////////////////////////////////////////////
 						// Prevent drag before the day start
@@ -350,6 +354,8 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 					return
 				}
 			}
+
+			return
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -359,14 +365,14 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 			removeClassFromBody("resize"); // la classe resize permet d'avoir le cursor resize
 			removeClassFromBody("grabbing"); // la classe grabbing permet d'avoir le cursor grab
 
-			lazyPatch(tasks, config, store, onPatch)
+			lazyPatch(tasks, config, store, onPatch);
 
 			// Mouse up sur la même task que celle sur laquelle on a mouse down
 			//@ts-ignore
 			if(action.taskId === store.editing) {
 				// Callback onclick si on est pas en train de drag une task
 				if(store.mouseAction === "down_mid" && store.clickTask) {
-					onClick && onClick(store.clickTask)
+					onClick && onClick(store.clickTask);
 				}
 
 				// Si l'éditeur esst ouvert
@@ -401,6 +407,8 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 							editor: "open",
 						}
 					}
+
+					return
 				}
 				else if(store.mouseAction === "drag_clone" && store.tempTask) {
 					const temp_id = store.tempTask[config.idKey];
@@ -422,6 +430,8 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 							clickTask: null
 						}
 					}
+
+					return
 				}
 				// Si l'éditeur est fermé ou en train de changer de task
 				else {
@@ -451,6 +461,8 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 					mouseAction: null,
 				}
 			}
+
+			return
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -522,6 +534,8 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 					mouseAction: null,
 				}
 			}
+
+			return
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////

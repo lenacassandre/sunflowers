@@ -209,8 +209,6 @@ export function WeekCalendar<TaskType extends BaseTaskType, IdKey extends keyof 
         }
     })
 
-    console.log("MOUSE ACTION", store.mouseAction)
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////:
     return (
         <div className="WeekCalendar" draggable={false}>

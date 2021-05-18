@@ -75,6 +75,7 @@ export declare type CalendarConfig<TaskType extends BaseTaskType, IdKey extends 
     deadlineDurationReplacer: number; // La durée que doit prendre en compte le calendrier pour afficher une tâches qui n'a techniquement pas de durée
     weekday: boolean // Display week day in week mode
     dayNumber: boolean // Display day number
+    enableEditor: boolean // Display editor
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -112,6 +113,7 @@ export function Calendar<TaskType extends BaseTaskType, IdKey extends keyof Task
     config.deadlineDurationReplacer ||= 15;
     config.weekday = config.weekday === false ? false : true;
     config.dayNumber = config.dayNumber === false ? false : true;
+    config.enableEditor ||= false;
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     return (
