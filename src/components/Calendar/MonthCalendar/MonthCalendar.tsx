@@ -9,6 +9,8 @@ export function MonthCalendar<TaskType extends BaseTaskType, IdKey extends keyof
     onPost?: OnPost<TaskType, IdKey>;
     onPatch?: OnPatch<TaskType>;
     onDelete?: OnDelete<TaskType>;
+
+    onClick?: (task: TaskType) => void;
 }) {
     return (
         <div className="MonthCalendar">Month calendar</div>

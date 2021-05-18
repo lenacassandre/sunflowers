@@ -18,6 +18,7 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
     onPost?: OnPost<TaskType, IdKey>,
     onPatch?: OnPatchLazy<TaskType>,
     onDelete?: OnDelete<TaskType>,
+    onClick?: (task: TaskType) => void
 ): Partial<StoreType<TaskType, IdKey>> | void => {
 	if(type !== "mousemove_grid") {
 		//console.log("ACTION", type, action)
@@ -363,6 +364,11 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 			// Mouse up sur la même task que celle sur laquelle on a mouse down
 			//@ts-ignore
 			if(action.taskId === store.editing) {
+				// Callback onclick si on est pas en train de drag une task
+				if(store.mouseAction === "down_mid" && store.clickTask) {
+					onClick && onClick(store.clickTask)
+				}
+
 				// Si l'éditeur esst ouvert
 				if(store.editor === "open") {
 					return {

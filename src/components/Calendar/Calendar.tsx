@@ -86,6 +86,8 @@ export function Calendar<TaskType extends BaseTaskType, IdKey extends keyof Task
     onPatch?: OnPatch<TaskType>;
     onDelete?: OnDelete<TaskType>;
 
+    onClick?: (task: TaskType) => void
+
     renderWeekTask: RenderTask<TaskType, IdKey>
     renderEditor?: RenderEditor<TaskType, IdKey>
 }) {
@@ -125,6 +127,8 @@ export function Calendar<TaskType extends BaseTaskType, IdKey extends keyof Task
                         onPatch={props.onPatch}
                         onDelete={props.onDelete}
 
+                        onClick={props.onClick}
+
                         renderWeekTask={props.renderWeekTask}
                         renderEditor={props.renderEditor}
                     />
@@ -137,6 +141,8 @@ export function Calendar<TaskType extends BaseTaskType, IdKey extends keyof Task
                         onPost={props.onPost}
                         onPatch={props.onPatch}
                         onDelete={props.onDelete}
+
+                        onClick={props.onClick}
                     />
                 )
             }

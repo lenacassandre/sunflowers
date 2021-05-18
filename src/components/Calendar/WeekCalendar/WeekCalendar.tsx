@@ -70,6 +70,8 @@ export function WeekCalendar<TaskType extends BaseTaskType, IdKey extends keyof 
     onPatch?: OnPatch<TaskType>;
     onDelete?: OnDelete<TaskType>;
 
+    onClick?: (task: TaskType) => void
+
     renderEditor?: RenderEditor<TaskType, IdKey>;
 }) {
     // Store
@@ -145,7 +147,8 @@ export function WeekCalendar<TaskType extends BaseTaskType, IdKey extends keyof 
             dispatch,
             props.onPost,
             onPatch,
-            props.onDelete
+            props.onDelete,
+            props.onClick
         )
 
         if(update) {
