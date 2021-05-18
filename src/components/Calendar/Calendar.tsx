@@ -73,6 +73,8 @@ export declare type CalendarConfig<TaskType extends BaseTaskType, IdKey extends 
     focusLayer: boolean; // Display focus layer ? Focus layer is display behind the currently edited task, and above other tasks. Its style can be edited, and it change some clicks behaviors.
     firstDayOfWeek: "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday";
     deadlineDurationReplacer: number; // La durée que doit prendre en compte le calendrier pour afficher une tâches qui n'a techniquement pas de durée
+    weekday: boolean // Display week day in week mode
+    dayNumber: boolean // Display day number
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -106,6 +108,8 @@ export function Calendar<TaskType extends BaseTaskType, IdKey extends keyof Task
     config.focusLayer = config.focusLayer === false ? false : true;
     config.firstDayOfWeek ||= "monday";
     config.deadlineDurationReplacer ||= 15;
+    config.weekday = config.weekday === false ? false : true;
+    config.dayNumber = config.dayNumber === false ? false : true;
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     return (

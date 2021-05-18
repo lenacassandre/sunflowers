@@ -43,8 +43,8 @@ export const DaysNames = <TaskType extends BaseTaskType, IdKey extends keyof Tas
                         className={`DayName`}
                         draggable={false}
                     >
-                        <span draggable={false} className="weekday">{day.toLocaleDateString("fr", {weekday: "long"}).substring(0, 3)}.</span>
-                        <span draggable={false} className="numday">{day.getDate()}</span>
+                        {props.config.weekday && <span draggable={false} className="weekday">{day.toLocaleDateString("fr", {weekday: "long"}).substring(0, 3)}.</span>}
+                        {props.config.dayNumber && <span draggable={false} className="numday">{day.getDate()}</span>}
                         <span draggable={false} className="borders calendarBorder"></span>
                     </p>
                 ))
