@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.5](https://github.com/lenacassandre/sunflowers/compare/v0.2.4...v0.2.5) (2021-05-18)
+
+
+### Features
+
+* **calendar:** onClick props ([f7fb5c1](https://github.com/lenacassandre/sunflowers/commit/f7fb5c106381c1d755b16f5e931ae464a325b5ce))
+* **calendar:** props onPost, onPatch, onRemove, RenderEditor are now optionnal ([21eef45](https://github.com/lenacassandre/sunflowers/commit/21eef45e03e18bc4b2aeb3dfe9196afe09ddf52f))
+
 ### [0.2.4](https://github.com/lenacassandre/sunflowers/compare/v0.2.3...v0.2.4) (2021-05-18)
 
 
