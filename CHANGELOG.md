@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.9](https://github.com/lenacassandre/sunflowers/compare/v0.2.8...v0.2.9) (2021-05-19)
+
+
+### Bug Fixes
+
+* select Component. Fixed name of the buttons when props multiple is given. + prop text ([29b9af8](https://github.com/lenacassandre/sunflowers/commit/29b9af877c37130d054b16aa23c28e69867a2760))
+
 ### [0.2.8](https://github.com/lenacassandre/sunflowers/compare/v0.2.7...v0.2.8) (2021-05-19)
 
 
