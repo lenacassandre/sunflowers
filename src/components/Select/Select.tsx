@@ -81,12 +81,12 @@ export const Select: React.FC<SelectProps> = (props): JSX.Element => {
 		}
 	}
 
-	const text = props.values.reduce((string, value, i) => {
+	const text = props.text || props.values.reduce((string, value, i) => {
 		if(selection.includes(value)) {
 			const valueIndex = props.values.findIndex(v => v === value);
 			let label =	props.labels[valueIndex];
 			label = props.displayFilter ? props.displayFilter(label) : label;
-			return `${string}${i < selection.length - 1 ? ", " : ""}${label}`;
+			return `${string}${label}${i < selection.length - 1 ? ", " : ""}`;
 		}
 		else return string
 	}, "")
