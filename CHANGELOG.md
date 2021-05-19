@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.8](https://github.com/lenacassandre/sunflowers/compare/v0.2.7...v0.2.8) (2021-05-19)
+
+
+### Bug Fixes
+
+* **calendar:** bound minimum minutes of a task to 0 ([8f8f4e7](https://github.com/lenacassandre/sunflowers/commit/8f8f4e7a1eadb4fd7ed04a740b0e9d9d659bb100))
+* **calendar:** cancelled some changes ([f870c5b](https://github.com/lenacassandre/sunflowers/commit/f870c5be4017743346becd230de65e2bd7cb3414))
+
 ### [0.2.7](https://github.com/lenacassandre/sunflowers/compare/v0.2.6...v0.2.7) (2021-05-18)
 
 
