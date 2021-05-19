@@ -43,7 +43,8 @@ export const Context = React.createContext<{
 	notify?: Notify,
 	modal?: CallModal,
 	session?: SessionSystem<any>,
-	router?: RouterSystem<any>
+	router?: RouterSystem<any>,
+	repository?: Repositories
 }>({});
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////:
@@ -64,7 +65,6 @@ function ViewComposerBase<UserDocumentClass extends User>(props: ViewComposerBas
 	log.render(window.location.pathname || "/");
 
 	log.title("HOOKS");
-
 
 	///////////////////////////////////////////////////////////////////////////////////////
 	// HOOKS //////////////////////////////////////////////////////////////////////////////
@@ -140,7 +140,8 @@ function ViewComposerBase<UserDocumentClass extends User>(props: ViewComposerBas
 		notify,
 		modal: callModal,
 		session,
-		router
+		router,
+		repositories: repositoriesRef.current
 	}
 
 	let view = (

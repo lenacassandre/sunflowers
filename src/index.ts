@@ -51,5 +51,5 @@ export {
 	Repository,
 	Document,
 	User,
-	Promise
+	Promise,
 };
