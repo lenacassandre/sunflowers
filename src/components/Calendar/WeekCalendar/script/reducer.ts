@@ -7,6 +7,40 @@ import { cloneElement } from 'react';
 
 // TODO : enlever les @ts-ignore, normalement TS va avoir une mise à jour corrigeant tous les bugs qui m'ont obligé à mettre ces tags
 
+function drag<TaskType extends BaseTaskType, IdKey extends keyof TaskType, Action extends keyof Actions<TaskType, IdKey>>(
+	config: CalendarConfig<TaskType, IdKey>,
+	clickDate: Date,
+	clickTask: TaskType,
+	tempTask: TaskType
+) {
+	//@ts-ignore
+	const newDate = new Date(action.date);
+	const clickDateMinutes = clickDate.getHours() * 60 + clickDate.getMinutes();
+	const clickTaskMinutes = clickTask.date.getHours() * 60 + clickTask.date.getMinutes();
+	let newMinutes = newDate.getMinutes() - (clickDateMinutes - clickTaskMinutes);
+	newMinutes = newMinutes < 0 ? 0 : newMinutes;
+	newDate.setMinutes(newDate.getMinutes() - (clickDateMinutes - clickTaskMinutes));
+
+	///////////////////////////////////////////////////////////
+	// Prevent drag before the day start
+	if(newDate.getHours() < config.startHour) {
+		newDate.setHours(config.startHour)
+		newDate.setMinutes(0)
+	}
+
+	////////////////////////////////////////////////////////////
+	// Prevent dragging after the day end
+	const taskEndDate = new Date(newDate)
+	taskEndDate.setMinutes((taskEndDate.getMinutes() + tempTask.duration))
+
+	if(taskEndDate.getHours() >= config.endHour) {
+		newDate.setHours(config.endHour);
+		newDate.setMinutes(- tempTask.duration)
+	}
+
+	return newDate
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////
 const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Action extends keyof Actions<TaskType, IdKey>>(
 	store: StoreType<TaskType, IdKey>,
@@ -20,6 +54,7 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
     onDelete?: OnDelete<TaskType>,
     onClick?: (task: TaskType) => void
 ): Partial<StoreType<TaskType, IdKey>> | void => {
+	// Objet d'update du state du calendrier
 	if(type !== "mousemove_grid") {
 		//console.log("ACTION", type, action)
 	}
@@ -27,6 +62,7 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 	switch (type) {
 		default: return;
 
+		// Changement d'id après un post asynchrone
 		case "changeId": {
 			//@ts-ignore
 			if(store.editing === action.oldId) {
@@ -34,9 +70,10 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 				return { editing: action.newId }
 			}
 
-			return
+			return;
 		}
 
+		// Action de cliquer sur un bouton pour fermer l'éditeur
 		case "close_editor": {
 			return {
 				editing: null,
@@ -45,8 +82,11 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 				clickTask: null,
 				mouseAction: null
 			}
+
+			return;
 		}
 
+		// Action de mousedown sur le layer noir entre la tache hightlight et les autres
 		case "mousedown_filter": {
 			return {
 				editing: null,
@@ -55,6 +95,8 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 				clickTask: null,
 				mouseAction: null
 			}
+
+			return;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////////////
@@ -142,8 +184,13 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 				clickTask: {...clickedTask},
 				mouseAction: type === "mousedown_top" ? "drag_top" : type === "mousedown_mid" ? "down_mid" : "drag_bot"
 			}
+
+			return;
 		}
 
+		///////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////////////////////////////////////
 		// MOUSE MOVE
@@ -181,7 +228,7 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 						}
 					}
 
-					return
+					return;
 				}
 
 				////////////////////////////////////////////////////////////////////////////////////:
@@ -195,9 +242,7 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 						const newDate = new Date(action.date);
 						const clickDateMinutes = store.clickDate.getHours() * 60 + store.clickDate.getMinutes();
 						const clickTaskMinutes = store.clickTask.date.getHours() * 60 + store.clickTask.date.getMinutes();
-						let newMinutes = newDate.getMinutes() - (clickDateMinutes - clickTaskMinutes);
-						newMinutes = newMinutes < 0 ? 0 : newMinutes;
-						newDate.setMinutes(newMinutes);
+						newDate.setMinutes(newDate.getMinutes() - (clickDateMinutes - clickTaskMinutes));
 
 						///////////////////////////////////////////////////////////
 						// Prevent drag before the day start
@@ -223,7 +268,7 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 						}
 					}
 
-					return
+					return;
 				}
 
 				/////////////////////////////////////////////////////////////////////////////////////////////////////////:
@@ -241,7 +286,7 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 						}
 					}
 
-					return {}
+					return;
 				}
 
 				/////////////////////////////////////////////////////////////////////////////////////////////////////////:
@@ -254,14 +299,11 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 					let [taskToPatch, delta] = getTaskAndDelta(tasks, config, store, action, store.clickDate);
 
 					if(taskToPatch) {
-
 						//@ts-ignore
 						const newDate = new Date(action.date);
 						const clickDateMinutes = store.clickDate.getHours() * 60 + store.clickDate.getMinutes();
 						const clickTaskMinutes = store.clickTask.date.getHours() * 60 + store.clickTask.date.getMinutes();
-						let newMinutes = newDate.getMinutes() - (clickDateMinutes - clickTaskMinutes);
-						newMinutes = newMinutes < 0 ? 0 : newMinutes;
-						newDate.setMinutes(newMinutes);
+						newDate.setMinutes(newDate.getMinutes() - (clickDateMinutes - clickTaskMinutes));
 
 						///////////////////////////////////////////////////////////
 						// Prevent drag before the day start
@@ -285,7 +327,7 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 						onPatch(taskToPatch, {date: newDate})
 					}
 
-					return
+					return;
 				}
 
 				/////////////////////////////////////////////////////////////////////////////////////////////////////////:
@@ -321,7 +363,7 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 						}
 					}
 
-					return
+					return;
 				}
 
 				/////////////////////////////////////////////////////////////////////////////////////////////////////////:
@@ -351,13 +393,16 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 						}
 					}
 
-					return
+					return;
 				}
 			}
 
-			return
+			return;
 		}
 
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		////////////////////////////////////////////////////////////////////////////////////////////////
 		// MOUSE UP ON A TASK
@@ -375,7 +420,7 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 					onClick && onClick(store.clickTask);
 				}
 
-				// Si l'éditeur esst ouvert
+				// Si l'éditeur est ouvert
 				if(store.editor === "open") {
 					return {
 						clickDate: null,
@@ -396,7 +441,7 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 
 					if(onPost) {
 						// Call onPost event, and waiting for the frowardId callback to be called.
-						const newTask = onPost({...store.clickTask, [config.idKey]: undefined}, forwardId)
+						onPost({...store.clickTask, [config.idKey]: undefined}, forwardId)
 
 						return {
 							//@ts-ignore
@@ -462,7 +507,7 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 				}
 			}
 
-			return
+			return;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////
@@ -481,8 +526,9 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 					mouseAction: null
 				}
 			}
-			// Mouse up after pressing clone
+			// Mouse up immediatly after pressing clone
 			else if(store.mouseAction === "down_clone" && store.clickTask) {
+				// Temporary id
 				const temp_id = <unknown>randomId() as TaskType[IdKey];
 
 				// Will change the id of the task when the server send a UID
@@ -535,7 +581,7 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 				}
 			}
 
-			return
+			return;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -26,7 +26,11 @@ const calendarConfig: Partial<CalendarConfig<CalendarTimeSlot, "id">> = {
     day: new Date(baseDateString), // Le premier lundi du système de date
     displayMode: "week",
     days: 7,
-    dayWidth: 90
+    dayWidth: 100,
+	focusLayer: false,
+	highlightDraggedTask: false,
+	highlightPadding: 0,
+	ghost: false
 }
 
 const idGenerator = () => String(Math.round(Math.random() * 10000000000))
