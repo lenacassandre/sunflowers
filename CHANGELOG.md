@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.10](https://github.com/lenacassandre/sunflowers/compare/v0.2.9...v0.2.10) (2021-05-19)
+
+
+### Features
+
+* **context:** added Repositories to context with any type (todo: find a way to type context repos) ([8f3fb2f](https://github.com/lenacassandre/sunflowers/commit/8f3fb2f1a4db4a12ea47b1f7239f7f89c34ed2bf))
+
 ### [0.2.9](https://github.com/lenacassandre/sunflowers/compare/v0.2.8...v0.2.9) (2021-05-19)
 
 
