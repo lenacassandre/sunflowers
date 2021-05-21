@@ -42,7 +42,7 @@ import { Promise } from "../..";
 export const Context = React.createContext<{
 	emit?: Emit,
 	get?: <ResponseType = {}>(route: string, body: any) => Promise<typeof body, ResponseType>,
-	post?: <ResponseType = {}>(route: string, body: any) => Promise<typeof body, ResponseType>,
+	post?: <ResponseType = {}>(route: string, body: any, head: any) => Promise<typeof body, ResponseType>,
 	notify?: Notify,
 	modal?: CallModal,
 	session?: SessionSystem<any>,
