@@ -131,11 +131,11 @@ export default class Socket {
 		})
 	}
 
-	public post = <ResponseType = {}>(route: string, body?: any) => {
+	public post = <ResponseType = {}>(route: string, body?: any, head?: any) => {
 		const requestId = log.request(`HTTP/POST: ${route}`, route, body);
 
 		return new Promise<typeof body, ResponseType>((resolve, reject) => {
-			axios.post<typeof body, ResponseType>(this.validURL(route), this.sendWithToken(body))
+			axios.post<typeof body, ResponseType>(this.validURL(route), this.sendWithToken(body), head)
 				.then((response) => {
 					log.response(`HTTP/POST: ${route}`, requestId, response, true);
 					resolve(response);
