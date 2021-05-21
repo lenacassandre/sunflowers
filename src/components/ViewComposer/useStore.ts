@@ -57,6 +57,8 @@ export default function useStore<CustomUserDocument extends User>(
 					notify,
 					dispatch: (type2, action2) => setTimeout(() => dispatch(type2, action2)),
 					emit: socket.emit,
+					post: socket.emit,
+					get: socket.get,
 					update,
 					router,
 					modal,

@@ -30,6 +30,7 @@
 		"@fortawesome/react-fontawesome": "^0.1.11",
 		"@types/react-native": "^0.63.25",
 		"@types/styled-components": "^5.1.4",
+		"axios": "^0.21.1",
 		"dotenv": "^8.2.0",
 		"path": "^0.12.7",
 		"react": "17.0.1",

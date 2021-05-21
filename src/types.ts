@@ -122,7 +122,10 @@ export declare type ViewSystem<
 
 	dispatch: Dispatch<ActionsType>;
 	update: Update<StoreType>;
+
 	emit: Emit;
+	get: <Response = {}>(route: string, body: any) => Promise<Response, SocketError>
+	post: <Response = {}>(route: string, body: any) => Promise<Response, SocketError>
 
 	modal: CallModal;
 	notify: Notify;

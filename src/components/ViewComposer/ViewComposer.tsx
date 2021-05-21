@@ -32,6 +32,7 @@ import User from "./classes/user.class";
 console.clear()
 
 import './ViewComposer.scss'
+import { Promise } from "../..";
 
 //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
 //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
@@ -40,6 +41,8 @@ import './ViewComposer.scss'
 
 export const Context = React.createContext<{
 	emit?: Emit,
+	get?: <ResponseType = {}>(route: string, body: any) => Promise<typeof body, ResponseType>,
+	post?: <ResponseType = {}>(route: string, body: any) => Promise<typeof body, ResponseType>,
 	notify?: Notify,
 	modal?: CallModal,
 	session?: SessionSystem<any>,
@@ -121,6 +124,8 @@ function ViewComposerBase<UserDocumentClass extends User>(props: ViewComposerBas
 				dispatch={dispatch}
 				update={update}
 				emit={props.socket.emit}
+				get={props.socket.get}
+				post={props.socket.post}
 				notify={notify}
 				modal={callModal}
 				session={session}
@@ -137,6 +142,8 @@ function ViewComposerBase<UserDocumentClass extends User>(props: ViewComposerBas
 
 	const contextValue = {
 		emit: props.socket.emit,
+		get: props.socket.get,
+		post: props.socket.post,
 		notify,
 		modal: callModal,
 		session,
@@ -252,12 +259,13 @@ type ViewComposerPropType<UserDocumentClass> = {
 	defaultView: ViewDeclaration<UserDocumentClass, any>;
 	repositories: Repositories;
 	socketURL: string
+	httpURL?: string
 	UserModel: { new(user: UserDocumentClass): UserDocumentClass }
 }
 
 // Ce composant sert à initaliser certaines valeur, afin de ne jamais les recalculer aux rendus suivant.
 export function ViewComposer<UserType extends User>(props: ViewComposerPropType<UserType>): JSX.Element {
-	const socket = new Socket(props.socketURL);
+	const socket = new Socket(props.socketURL, props.httpURL);
 	const defaultView = props.views.find(vd => vd.default);
 
 	if(!defaultView) {

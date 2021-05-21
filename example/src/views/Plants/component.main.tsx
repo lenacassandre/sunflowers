@@ -43,6 +43,14 @@ const Main: ViewComponent<User, StoreType, RepositoriesType> = (view): JSX.Eleme
 		<div>
 			<section>
 				<h3>Plants</h3>
+
+				<Button
+					name="test get"
+					onClick={() => {
+						view.post("user/verify", {userName: "super", password: "s"})
+					}}
+				/>
+
 				<Button
 					name="Nouvelle plante"
 					onClick={() =>
@@ -59,7 +67,6 @@ const Main: ViewComponent<User, StoreType, RepositoriesType> = (view): JSX.Eleme
 									.catch(() => view.notify("red", "error"))
 							})
 							.catch(() => {})
-
 					}
 					className="addButton"
 					filled
