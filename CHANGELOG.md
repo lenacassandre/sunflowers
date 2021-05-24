@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.14](https://github.com/lenacassandre/sunflowers/compare/v0.2.13...v0.2.14) (2021-05-24)
+
+
+### Bug Fixes
+
+* **http get & post:** fixed method types ([2b77902](https://github.com/lenacassandre/sunflowers/commit/2b779029deb7e2e12855132bd219bfec2b8d6138))
+
 ### [0.2.13](https://github.com/lenacassandre/sunflowers/compare/v0.2.12...v0.2.13) (2021-05-21)
 
 
