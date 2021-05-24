@@ -25,9 +25,7 @@ export const DatePicker: React.FC<{
 	top?: boolean,
 	middle?: boolean,
 }> = (props): JSX.Element => {
-	const context = useContext(Context)
-
-	console.log("DATE PICKER context", context)
+	const context = useContext(Context);
 
 	const [date, setDate] = useState<Date>(
 		props.value && isValidDate(props.value) ? props.value : props.end ? props.end : new Date()

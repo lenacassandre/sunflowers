@@ -47,7 +47,7 @@ const Main: ViewComponent<User, StoreType, RepositoriesType> = (view): JSX.Eleme
 				<Button
 					name="test get"
 					onClick={() => {
-						view.post("user/verify", {userName: "super", password: "s"})
+						view.post("user/verify", {userName: "super", password: "s"}, {})
 					}}
 				/>
 

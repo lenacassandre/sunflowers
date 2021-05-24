@@ -124,8 +124,8 @@ export declare type ViewSystem<
 	update: Update<StoreType>;
 
 	emit: Emit;
-	get: <Response = {}>(route: string, body: any) => Promise<Response, SocketError>
-	post: <Response = {}>(route: string, body: any, head: any) => Promise<Response, SocketError>
+	get: <Response = {}>(route: string, body?: any) => Promise<Response, SocketError>
+	post: <Response = {}>(route: string, body?: any, head?: any) => Promise<Response, SocketError>
 
 	modal: CallModal;
 	notify: Notify;
