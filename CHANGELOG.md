@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.16](https://github.com/lenacassandre/sunflowers/compare/v0.2.15...v0.2.16) (2021-05-26)
+
+
+### Bug Fixes
+
+* passing token in header ([0555f9d](https://github.com/lenacassandre/sunflowers/commit/0555f9d828f5a74f34ce69382ec814668fdcfbf0))
+
 ### [0.2.15](https://github.com/lenacassandre/sunflowers/compare/v0.2.14...v0.2.15) (2021-05-26)
 
 
