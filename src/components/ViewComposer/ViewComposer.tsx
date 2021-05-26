@@ -47,7 +47,7 @@ export const Context = React.createContext<{
 	modal?: CallModal,
 	session?: SessionSystem<any>,
 	router?: RouterSystem<any>,
-	repository?: Repositories
+	repositories?: Repositories
 }>({});
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////:
