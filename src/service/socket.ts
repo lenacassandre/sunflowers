@@ -143,12 +143,16 @@ export default class Socket {
 		return new Promise<typeof body, ResponseType>((resolve, reject) => {
 			axios.post<typeof body, ResponseType>(this.validURL(route), body, config)
 				.then((response) => {
-					log.response(`HTTP/POST: ${route}`, requestId, response, true);
-					resolve(response);
+					//@ts-ignore
+					log.response(`HTTP/POST: ${route}`, requestId, response?.data, true);
+					//@ts-ignore
+					resolve(response?.data);
 				})
 				.catch((response) => {
-					log.response(`HTTP/POST: ${route}`, requestId, response, false, response.error);
-					reject(response);
+					//@ts-ignore
+					log.response(`HTTP/POST: ${route}`, requestId, response?.data, false, response.error);
+					//@ts-ignore
+					reject(response?.data);
 				})
 		});
 	}
