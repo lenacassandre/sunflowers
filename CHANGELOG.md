@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.15](https://github.com/lenacassandre/sunflowers/compare/v0.2.14...v0.2.15) (2021-05-26)
+
+
+### Features
+
+* **http/post:** token is now passed in the header ([3594975](https://github.com/lenacassandre/sunflowers/commit/35949755091941bbdf5c969bf61790f585f501ed))
+
 ### [0.2.14](https://github.com/lenacassandre/sunflowers/compare/v0.2.13...v0.2.14) (2021-05-24)
 
 
