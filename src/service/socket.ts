@@ -119,7 +119,7 @@ export default class Socket {
 		const requestId = log.request(`HTTP/GET: ${route}`, route, body);
 
 		return new Promise<typeof body, ResponseType>((resolve, reject) => {
-			axios.get<typeof body, ResponseType>(this.validURL(route), this.sendWithToken(body))
+			axios.get<typeof body, ResponseType>(this.validURL(route), body)
 				.then((response) => {
 					log.response(`HTTP/GET: ${route}`, requestId, response, true);
 					resolve(response);
@@ -136,10 +136,12 @@ export default class Socket {
 
 		const config = head || {};
 
-		config.Authorization = `Bearer ${localStorage.getItem('token')}`;
+		config.headers = {"Authorization": `Bearer ${localStorage.getItem('token')}`};
+
+		console.log("config", config)
 
 		return new Promise<typeof body, ResponseType>((resolve, reject) => {
-			axios.post<typeof body, ResponseType>(this.validURL(route), this.sendWithToken(body), config)
+			axios.post<typeof body, ResponseType>(this.validURL(route), body, config)
 				.then((response) => {
 					log.response(`HTTP/POST: ${route}`, requestId, response, true);
 					resolve(response);
