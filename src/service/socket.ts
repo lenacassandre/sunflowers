@@ -134,8 +134,12 @@ export default class Socket {
 	public post = <ResponseType = {}>(route: string, body?: any, head?: any) => {
 		const requestId = log.request(`HTTP/POST: ${route}`, route, body);
 
+		const config = head || {};
+
+		config.Authorization = `Bearer ${localStorage.getItem('token')}`;
+
 		return new Promise<typeof body, ResponseType>((resolve, reject) => {
-			axios.post<typeof body, ResponseType>(this.validURL(route), this.sendWithToken(body), head)
+			axios.post<typeof body, ResponseType>(this.validURL(route), this.sendWithToken(body), config)
 				.then((response) => {
 					log.response(`HTTP/POST: ${route}`, requestId, response, true);
 					resolve(response);
