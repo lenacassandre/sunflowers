@@ -1,6 +1,6 @@
 {
 	"name": "sunflowers",
-	"version": "0.2.20",
+	"version": "0.2.21",
 	"main": "./lib/cjs/index.js",
 	"module": "./lib/esm/index.js",
 	"types": "./lib/cjs/index.d.ts",
