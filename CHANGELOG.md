@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.19](https://github.com/lenacassandre/sunflowers/compare/v0.2.18...v0.2.19) (2021-05-31)
+
+
+### Bug Fixes
+
+* **post:** server can overwrite properties after changes ([3ae35ae](https://github.com/lenacassandre/sunflowers/commit/3ae35ae7fc060977df2a88c86eb2c03c00d2c3ce))
+
 ### [0.2.18](https://github.com/lenacassandre/sunflowers/compare/v0.2.17...v0.2.18) (2021-05-26)
 
 
