@@ -98,22 +98,27 @@ export default function useSession<UserDocumentClass extends User>(
 	useEffect(() => {
 		const currentToken = localStorage.getItem("token");
 
+		log.useSession("Bootstrap useEffect token -", currentToken)
+
 		// Fermeture de la session si le token a été supprimé
 		if (!currentToken) {
+			log.useSession("Bootstrap useEffect token - No token, loging out");
 			logout();
 		}
 		// Un nouveau token a été enregistré dans le localStorage, on demande alors à l'API de vérifier son authenticité
 		else {
+			log.useSession("Bootstrap useEffect token - Verifying token");
+
 			socket.emit<{user: UserDocumentClass}>("user/verify", {token: currentToken})
 				.then((response) => {
-					log.useSession("RESPONSE VERIFY", response)
-
 					// Token non vérifié : suppression du l'utilisateur et du token enregistré
 					if (!response || !response.user) {
+						log.useSession("Bootstrap useEffect token - Invalid token");
 						logout();
 					}
 					// Token vérifié : enregistrement de l'utilisateur
 					else {
+						log.useSession("Bootstrap useEffect token - Valid token.");
 						setState({
 							...state,
 							user: new UserClass({
