@@ -28,11 +28,14 @@ export default function useSession<UserDocumentClass extends User>(
 
 	// Supprime la session enreigistrée ET le token
 	function logout() {
+		log.useSession("Logout");
 		localStorage.clear();
 		setState({ user: null, token: null });
 	}
 
 	function login(userName: string, password: string): Promise<void> {
+		log.useSession("Login -", userName);
+
 		return new Promise<void>((resolve, reject) => {
 			socket.emit<{token: string, user: UserDocumentClass}>("user/login", {userName, password})
 				.then((response) => {
@@ -63,6 +66,7 @@ export default function useSession<UserDocumentClass extends User>(
 	 * @param user
 	 */
 	function saveUser(user: UserDocumentClass) {
+		log.useSession("Save user -", user);
 		setState({...state, user})
 	}
 
@@ -72,6 +76,7 @@ export default function useSession<UserDocumentClass extends User>(
 	 * @param token
 	 */
 	function saveToken(token: string) {
+		log.useSession("Save token -", token);
 		localStorage.setItem("token", token);
 		setState({...state, token})
 	}
@@ -82,6 +87,7 @@ export default function useSession<UserDocumentClass extends User>(
 	 * @param token
 	 */
 	function saveSession(token: string, user: UserDocumentClass) {
+		log.useSession("Save session -", token, user);
 		localStorage.setItem("token", token);
 		setState({user, token})
 	}
@@ -146,7 +152,6 @@ export default function useSession<UserDocumentClass extends User>(
 				: ""
 		}`
 	);
-
 
 	return SessionRef;
 }
