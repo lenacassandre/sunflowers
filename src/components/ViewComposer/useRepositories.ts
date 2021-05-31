@@ -231,24 +231,16 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 			// Trouve le repo
 			const oldRepositoryInstance = repositoriesRef.current[repositoryName] as RepositoryType;
 
-			console.log("applyfunction", repositoryName, controllerType);
-
 			// Erreur si le repo n'est pas trouvé, la promesse est automatiquement rejetée.
 			if(!oldRepositoryInstance) return autoRejectRepositoryPromise<DocType, ControllerType>(`La repository ${repositoryName} est introuvable.`);
 
 			// On demande une nouvelle instance du repo, modifié en fonction de la méthode appelée, afin de le remplacer immédiatement, avec même de proposer d'envoyer la requête au serveur.
 			const newRepositoryInstance = getNewRepoInstance<RepositoryType, DocType>(oldRepositoryInstance, requestData)
 
-			console.log("apply function.", repositoryName, controllerType, "got old and new ref")
-
 			// On applique immédiatement les changement localement, et on propose de les envoyer au serveur.
 			return applyChanges<RepositoryType, DocType, ControllerType>(repositoryName, newRepositoryInstance, (reapplyChanges, cancelChanges) => {
-				console.log("apply function. emitting", `${repositoryName}/${controllerType}`)
-
 				socket.emit<RCReturn<DocType>[ControllerType]>(`${repositoryName}/${controllerType}`, requestData)
 					.then((responseData) => {
-						console.log("apply function. emit. THEN")
-
 						// Trouve le repo
 						const currentRepositoryInstance = repositoriesRef.current[repositoryName] as RepositoryType;
 
@@ -259,8 +251,6 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 						requestResolved<RepositoryType, DocType>(reapplyChanges, cancelChanges, oldRepositoryInstance, currentRepositoryInstance, requestData, responseData)
 					})
 					.catch((e) => {
-						console.log("apply function. emit. CATCH")
-
 						if(requestRejected) {
 							requestRejected(e)
 						}
@@ -297,7 +287,7 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 	const applyPost = useCallback(getApplyFunction<"post">(
 		"post",
 		post,
-		(reapplyChanges, _cancelChanges, _oldRepo, currentRepo, requestData, responseData) => {
+		(reapplyChanges, _cancelChanges, oldRepo, currentRepo, requestData, responseData) => {
 			// Les documents qui avaient été envoyés mais ne sont pas dans la réponse.
 			const refusedDocs = requestData
 				.filter((doc) =>
@@ -309,22 +299,46 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 			const newerRepositoryInstance = currentRepo.set(
 				currentRepo
 					.filter((doc) => !refusedDocs.some((d) => d._id === doc._id))
+					// doc = document du repo actuel
 					.map(doc => {
+						// Document tel qu'il a été ajouté par le client au début
+						const oldDoc = requestData.find(d => d._id === doc._id);
+
+						// responseDoc = document renvoyé par le serveur une fois accepté
 						const responseDoc = responseData.find(d => d._oldId === doc._id)
 
-						console.log("========================================")
-						console.log("RESPONSE DOC ", responseDoc, doc, responseData)
-						console.log("========================================")
-
+						// Changement de l'_id
 						if(responseDoc) {
 							doc._id = responseDoc._id;
+
+							///////////////////////////////////////////////////////////////////////////////:
+							// Modifie sur le client toutes les propriétés du document qui ont été modifiées par le serveur (fonctionne pour l'instant uniquement pour les primaires)
+							for(let key in responseDoc) {
+								const responseDocKey = key as keyof typeof responseDoc;
+
+								// La propriété de ne pas être une date, une fonction, un objet, ou un symbole
+								// Si la valeur de la propriété renvoyée par le serveur est différente du document d'origine, c'est la valeur envoyé par le serveur qui prime.
+								if(
+									//@ts-ignore
+									!(doc[responseDocKey] instanceof Date)
+									&& !(
+										typeof responseDoc[responseDocKey] === "function" ||
+										typeof responseDoc[responseDocKey] === "object" ||
+										typeof responseDoc[responseDocKey] === "symbol"
+									)
+									// @ts-ignore
+									&& oldDoc[responseDocKey] !== responseDoc[responseDocKey]
+								) {
+									//@ts-ignore
+									doc[responseDocKey] = responseDoc[responseDocKey]
+								}
+							}
+							/////////////////////////////////////////////////////////////////////////
 						}
 
 						return doc
 					})
 			)
-
-
 
 			reapplyChanges(newerRepositoryInstance, responseData);
 		}
