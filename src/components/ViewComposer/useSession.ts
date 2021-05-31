@@ -100,7 +100,8 @@ export default function useSession<UserDocumentClass extends User>(
 		else {
 			socket.emit<{user: UserDocumentClass}>("user/verify", {token: currentToken})
 				.then((response) => {
-					console.log("RESPONSE VERIFY", response)
+					log.useSession("RESPONSE VERIFY", response)
+
 					// Token non vérifié : suppression du l'utilisateur et du token enregistré
 					if (!response || !response.user) {
 						logout();

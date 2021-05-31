@@ -127,7 +127,6 @@ export const useRepositoryCallbacks = {
  * @argument method : Le méthode de la repository a appeler (pour la requête au serveur).
  */
 export default function useRepositories<UserType extends User>(socket: Socket, emptyRepositories: Repositories, session: SessionSystem<UserType>) {
-	console.log("REPO TOKEN", session.token)
 	log.useRepositoriesGroup();
 
 	// Un state object contenant tous les repos.
@@ -177,8 +176,6 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 			[repositoryName]: newRepositoryInstance
 		})
 
-		console.log("applychanges ")
-
 		return repositoryPromise<DocType, ControllerType>((resolve, reject) => { // La repositoryPromise permet d'envoyer la requête au serveur en appelant .send(). C'est facultatif, on peut très bien ne pas l'appeler et conserver les changement uniquement localement.
 			const cancelChanges = (error: {error: string, [key: string]: any}) => { // Cette fonction sera appellée en cas d'erreur, pour rétablir l'ancien état des repositories
 				setRepositories({ // Mise à jour immédiate des repositories côté client. La mise à jour sera annulée en cas d'erreur.
@@ -198,7 +195,6 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 				resolve(resolveValues)
 			}
 
-			console.log("apply changes, calling callback")
 			callback(reApplyChanges, cancelChanges, oldRepositoryInstance);
 		})
 	}, [])
@@ -498,21 +494,17 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 				const repository = repositoriesRef.current[remoteChange.repositoryName];
 
 				if(!repository) {
-					console.log(`remoteChanges error, can't find ${remoteChange.repositoryName} repository.`)
+					log.useRepositories(`remoteChanges error, can't find ${remoteChange.repositoryName} repository.`)
 					return;
 				}
 
 				if(!remoteChange.data) {
-					console.log(`remoteChanges error, no data.`)
+					log.useRepositories(`remoteChanges error, no data.`)
 					return;
 				}
 
 				switch(remoteChange.controllerType) {
 					case "post": { // Un post a été fait par quelqu'un d'autre, on update les donneés locales.
-						console.log("==========================================================")
-						console.log("post")
-						console.log("==========================================================")
-
 						// On évite d'ajouter des documents qui sont déjà là
 						let data = remoteChange.data as RCArguments<any>["post"]
 						data = data.filter(doc => !repository.some(d => d._id === doc._id))

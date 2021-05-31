@@ -162,14 +162,6 @@ function ViewComposerBase<UserDocumentClass extends User>(props: ViewComposerBas
 						<Middle>
 							{router._currentViewDeclaration.view.Main && (
 								<Main>
-									<Context.Consumer>
-										{
-											(context) => {
-												console.log("VIEW COMPOSER context",context)
-												return <div></div>
-											}
-										}
-									</Context.Consumer>
 									{flux(router._currentViewDeclaration.view.Main)}
 									<div className="notificationsContainer">
 										<TransitionGroup className="notificationsTransitionGroup">

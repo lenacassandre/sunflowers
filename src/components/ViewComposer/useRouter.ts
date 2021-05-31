@@ -160,6 +160,7 @@ export default function useRouter<CustomUserModel extends User>(
 				|| (viewDeclaration.roles && viewDeclaration.roles.length > 0)
 			) && !session.token
 		) {
+			log.useRouter("NAVIGATE -", path, "- View require being logged in but you aren't.");
 			return
 		}
 
@@ -171,8 +172,11 @@ export default function useRouter<CustomUserModel extends User>(
 				|| !viewDeclaration.roles.some(role => session.user?.roles.includes(role))
 			)
 		) {
+			log.useRouter("NAVIGATE -", path, "- View require a role you haven't.");
 			return
 		}
+
+		log.useRouter("NAVIGATE -", path, "- Ok.");
 
 		////////////////////////////////////////////////////////////////////////:
 		// Push la nouvelle page dans l'historique du navigateur
