@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.22](https://github.com/lenacassandre/sunflowers/compare/v0.2.21...v0.2.22) (2021-05-31)
+
+
+### Bug Fixes
+
+* **session:** logs ([8cd18d4](https://github.com/lenacassandre/sunflowers/commit/8cd18d416a0ffeadd3b0f5df3fd37e3c01de3378))
+
 ### [0.2.21](https://github.com/lenacassandre/sunflowers/compare/v0.2.20...v0.2.21) (2021-05-31)
 
 
