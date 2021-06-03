@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.23](https://github.com/lenacassandre/sunflowers/compare/v0.2.22...v0.2.23) (2021-06-03)
+
+
+### Features
+
+* **table:** function give row index ([2049b70](https://github.com/lenacassandre/sunflowers/commit/2049b70589df9c6a219afecbe94796d8113b6e9e))
+
 ### [0.2.22](https://github.com/lenacassandre/sunflowers/compare/v0.2.21...v0.2.22) (2021-05-31)
 
 
