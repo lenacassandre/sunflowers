@@ -16,8 +16,8 @@ export default function Row<RowType>(props: {
 	sortedColumns: Column[];
 	style: any;
 	withoutMemo?: boolean;
-	remove?: (row: RowType) => void;
-	onClick?: (row: any) => void;
+	remove?: (row: RowType, index: number) => void;
+	onClick?: (row: any, index: number) => void;
 	valid?: (row: RowType) => boolean;
 	warning?: (row: RowType) => boolean;
 	error?: (row: RowType) => boolean;
@@ -58,7 +58,7 @@ export default function Row<RowType>(props: {
 					error ? " error" : warning ? " warning" : valid ? " valid" : ""
 				} sub${subLevel}`}
 				onClick={
-					props.onClick ? () => props.onClick && props.onClick(props.row) : () => false
+					props.onClick ? () => props.onClick && props.onClick(props.row, props.rowIndex) : () => false
 				}
 			>
 				{props.sortedColumns.map((col, colIndex) => {
@@ -68,6 +68,7 @@ export default function Row<RowType>(props: {
 								key={colIndex}
 								colIndex={colIndex}
 								col={col}
+								rowIndex={props.rowIndex}
 								first={props.head.indexOf(col) === 0}
 								lastFixed={props.fixedColumns[props.fixedColumns.length - 1] === col}
 								order={props.head.indexOf(col)}
@@ -84,6 +85,7 @@ export default function Row<RowType>(props: {
 								key={colIndex}
 								colIndex={colIndex}
 								col={col}
+								rowIndex={props.rowIndex}
 								first={props.head.indexOf(col) === 0}
 								lastFixed={props.fixedColumns[props.fixedColumns.length - 1] === col}
 								order={props.head.indexOf(col)}

@@ -8,7 +8,8 @@ import { Button } from "../../Button/Button";
 function getContent<RowType extends {[key: string]: any}>(
 	row: RowType,
 	col: Column<RowType>,
-	remove?: (row: RowType) => any,
+	rowIndex: number,
+	remove?: (row: RowType, index: number) => any,
 	disabled?: boolean // Pour le bouton remove
 ) {
 	if (col.type) {
@@ -92,7 +93,7 @@ function getContent<RowType extends {[key: string]: any}>(
 
 			case "function": {
 				if(col.function && typeof col.function === "function") {
-					return col.function(row)
+					return col.function(row, rowIndex)
 				} else {
 					return String(row[col.key])
 				}
@@ -109,7 +110,7 @@ function getContent<RowType extends {[key: string]: any}>(
 								event.stopPropagation();
 
 								if (remove) {
-									remove(row);
+									remove(row, rowIndex);
 								}
 							}}
 							filled
@@ -131,6 +132,7 @@ function getContent<RowType extends {[key: string]: any}>(
 export function Cell<RowType>(props: {
 	col: Column;
 	row: RowType;
+	rowIndex: number;
 	left?: string;
 	order: number;
 	first?: boolean;
@@ -138,7 +140,7 @@ export function Cell<RowType>(props: {
 	colIndex: number;
 	style?: any;
 	disabled?: boolean;
-	remove?: (row: RowType) => void
+	remove?: (row: RowType, index: number) => void
 }): JSX.Element {
 	// Col.fixed cells are th. Free ones are td.
 	const Tag = props.col.fixed ? "th" : "td";
@@ -172,7 +174,7 @@ export function Cell<RowType>(props: {
 		style = { ...style, ...props.style };
 	}
 
-	const content = getContent<RowType>(props.row, props.col, props.remove, props.disabled);
+	const content = getContent<RowType>(props.row, props.col, props.rowIndex, props.remove, props.disabled);
 
 	return (
 		<Tag

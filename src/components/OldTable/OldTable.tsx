@@ -21,7 +21,7 @@ export declare type Column<RowType = any> = {
 	prefix?: string; // Un prefix à afficher devant la donnée.
 	buttonColor?: string; // Si le type de colonne est "button"
 	buttonIcon?: React.FC; // Si le type de colonne est "button"
-	function?: (row: RowType) => React.ReactNode;
+	function?: (row: RowType, index: number) => React.ReactNode;
 };
 
 export function Table<DocType>(props: {
@@ -43,8 +43,8 @@ export function Table<DocType>(props: {
 	rowChildren?: (row: DocType) => DocType[] | undefined; // Permet de chercher les enfants d'une ligne
 
 	addChild?: (row: DocType) => void;
-	remove?: (row: DocType) => void;
-	onClick?: (row: DocType) => void;
+	remove?: (row: DocType, index: number) => void;
+	onClick?: (row: DocType, index: number) => void;
 
 	valid?: (row: DocType) => boolean;
 	warning?: (row: DocType) => boolean;
