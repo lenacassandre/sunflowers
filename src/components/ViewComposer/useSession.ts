@@ -35,19 +35,29 @@ export default function useSession<UserDocumentClass extends User>(
 		setState({ user: null, token: null });
 	}
 
-	function login(userName: string, password: string): Promise<void, string> {
+	function login(userName: string, password: string): Promise<void, {error: string}> {
 		log.useSession("Login -", userName);
 
-		return new Promise<void, string>((resolve, reject) => {
+		return new Promise<void, {error: string}>((resolve, reject) => {
+			if(!userName) {
+				reject({error: "Veuillez saisir votre adresse e-mail."});
+				return;
+			}
+
+			if(!password) {
+				reject({error: "Veuillez saisir votre mot de passe."});
+				return;
+			}
+
 			socket.emit<{token: string, user: UserDocumentClass}>("user/login", {userName, password})
 				.then((response) => {
 					if (!response.token) {
-						reject("Signup Erreur : pas de token.");
+						reject({error: "Login Erreur : pas de token."});
 						return;
 					}
 
 					if (!response.user) {
-						reject("Signup Erreur : pas d'utilisateur.");
+						reject({error: "Login Erreur : pas d'utilisateur."});
 						return;
 					}
 
@@ -56,8 +66,8 @@ export default function useSession<UserDocumentClass extends User>(
 
 					setTimeout(resolve);
 				})
-				.catch(({error}) => {
-					reject(error);
+				.catch((response) => {
+					reject(response);
 				});
 		})
 	}
