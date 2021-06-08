@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.25](https://github.com/lenacassandre/sunflowers/compare/v0.2.24...v0.2.25) (2021-06-08)
+
+
+### Bug Fixes
+
+* **login:** login error fix 2 ([e272bb0](https://github.com/lenacassandre/sunflowers/commit/e272bb0d75a200580bae4c468aa0981834c092ec))
+
 ### [0.2.24](https://github.com/lenacassandre/sunflowers/compare/v0.2.23...v0.2.24) (2021-06-08)
 
 
