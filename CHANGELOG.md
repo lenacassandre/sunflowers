@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.26](https://github.com/lenacassandre/sunflowers/compare/v0.2.25...v0.2.26) (2021-06-08)
+
+
+### Features
+
+* **login:** better error messages ([b94a747](https://github.com/lenacassandre/sunflowers/commit/b94a747cc9e0b0442ce64ce7ec94ed831d6bcf78))
+
 ### [0.2.25](https://github.com/lenacassandre/sunflowers/compare/v0.2.24...v0.2.25) (2021-06-08)
 
 
