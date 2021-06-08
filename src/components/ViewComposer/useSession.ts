@@ -9,6 +9,8 @@ import Socket from "../../service/socket";
 import log from "../../utils/log";
 import User from "./classes/user.class";
 
+import { Promise } from '../../classes/Promise';
+
 const SessionRef:any = {}
 
 export default function useSession<UserDocumentClass extends User>(
@@ -33,10 +35,10 @@ export default function useSession<UserDocumentClass extends User>(
 		setState({ user: null, token: null });
 	}
 
-	function login(userName: string, password: string): Promise<void> {
+	function login(userName: string, password: string): Promise<void, string> {
 		log.useSession("Login -", userName);
 
-		return new Promise<void>((resolve, reject) => {
+		return new Promise<void, string>((resolve, reject) => {
 			socket.emit<{token: string, user: UserDocumentClass}>("user/login", {userName, password})
 				.then((response) => {
 					if (!response.token) {
@@ -54,7 +56,7 @@ export default function useSession<UserDocumentClass extends User>(
 
 					setTimeout(resolve);
 				})
-				.catch((error) => {
+				.catch(({error}) => {
 					reject(error);
 				});
 		})
