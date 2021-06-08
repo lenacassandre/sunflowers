@@ -147,7 +147,7 @@ export declare type SessionSystem<customUserModel> = {
 	token: string | null;
 
 	logout: () => void;
-	login: (userName: string, password: string) => Promise<void, void>;
+	login: (userName: string, password: string) => Promise<void, string>;
 
 	saveUser: (user: customUserModel) => void;
 	saveToken: (token: string) => void;
