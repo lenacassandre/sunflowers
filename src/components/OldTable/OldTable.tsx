@@ -14,7 +14,7 @@ export declare type Column<RowType = any> = {
 	key: string; // Le nom de la propriété de l'objet
 	type?: "string" | "text" | "color" | "number" | "date" | "longdate" | "shortdate" | "table" | "jsx" | "button" | "feature" | "boolean" | "function"; // Type de donnée / feature
 	size?: number; // Taille de la colonne
-	sortingFilter?: (cell: any) => any; // Appelée lors du tri pour modifier les données. Ex: Des dates sont au format dd/mm/yyyy dans le tableau, mais on souhaite les trier avec le format yyy-mm-dd. Le sorting filter s'occupe de cette transformation.
+	sortingFilter?: (cell: any) => any; // Appelée lors du tri pour sauvegarder les données. Ex: Des dates sont au format dd/mm/yyyy dans le tableau, mais on souhaite les trier avec le format yyy-mm-dd. Le sorting filter s'occupe de cette transformation.
 	fixed?: boolean; // La colonne restera t-elle visible si l'utilisateru•trice scroll vers la droite ?
 	sortable?: boolean; // La colonne est-elle triable ?
 	table?: { [key: string]: any }; // Un tableau de correspondance. Ex: Avec un tableau de rôle. On donne le tableau de correspondance {"1": "administrateur", "2": "gestionnaire"}. La ligne a pour propriété row.role: "1". Le tableau va afficher administrateur.

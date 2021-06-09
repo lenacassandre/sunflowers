@@ -230,7 +230,7 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 			// Erreur si le repo n'est pas trouvé, la promesse est automatiquement rejetée.
 			if(!oldRepositoryInstance) return autoRejectRepositoryPromise<DocType, ControllerType>(`La repository ${repositoryName} est introuvable.`);
 
-			// On demande une nouvelle instance du repo, modifié en fonction de la méthode appelée, afin de le remplacer immédiatement, avec même de proposer d'envoyer la requête au serveur.
+			// On demande une nouvelle instance du repo, sauvegardé en fonction de la méthode appelée, afin de le remplacer immédiatement, avec même de proposer d'envoyer la requête au serveur.
 			const newRepositoryInstance = getNewRepoInstance<RepositoryType, DocType>(oldRepositoryInstance, requestData)
 
 			// On applique immédiatement les changement localement, et on propose de les envoyer au serveur.
@@ -308,7 +308,7 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 							doc._id = responseDoc._id;
 
 							///////////////////////////////////////////////////////////////////////////////:
-							// Modifie sur le client toutes les propriétés du document qui ont été modifiées par le serveur (fonctionne pour l'instant uniquement pour les primaires)
+							// Modifie sur le client toutes les propriétés du document qui ont été sauvegardées par le serveur (fonctionne pour l'instant uniquement pour les primaires)
 							for(let key in responseDoc) {
 								const responseDocKey = key as keyof typeof responseDoc;
 

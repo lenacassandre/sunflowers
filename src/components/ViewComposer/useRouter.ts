@@ -64,7 +64,10 @@ const pushHistoryState = <UserType extends User>(viewDeclaration: ViewDeclaratio
 // L'url avec laquelle a été ouverte l'app.
 let initialPath = window.location.pathname || "";
 
-if(initialPath[0] === "/") initialPath = initialPath.slice(1)
+if(initialPath[0] === "/") initialPath = initialPath.slice(1);
+
+// Cette ligne sert à faire fonctionner connrectement le router avec Electron
+if(initialPath.includes("index.html")) initialPath = "/";
 
 let initialParams = getParamsObjectfromURL();
 
@@ -211,9 +214,6 @@ export default function useRouter<CustomUserModel extends User>(
 	}, [session.user])
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////:
-
-
-
 	// TODO : retravailler cette partie. Je ne sais pas comment faire pour conserver la ref.
 	// Un useRef rallongerais la longueur du code puisqu'on devrait appeler router.current...
 	RouterRef.navigate = navigate;

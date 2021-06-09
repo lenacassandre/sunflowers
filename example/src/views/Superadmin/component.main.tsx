@@ -529,9 +529,9 @@ const Main: ViewComponent<User, StoreType, RepositoriesType> = (view): JSX.Eleme
 						flex
 						onClick={(orga) => {
 							view.modal<Organization>({
-								title: "Modifier l'organisation",
+								title: "Sauvegarder l'organisation",
 								rejectButton: "Annuler",
-								resolveButton: "Modifier",
+								resolveButton: "Sauvegarder",
 								form: orgaForm(orga)
 							})
 								.then((patch) => {
@@ -625,9 +625,9 @@ const Main: ViewComponent<User, StoreType, RepositoriesType> = (view): JSX.Eleme
 						flex
 						onClick={(user) => {
 							view.modal<User>({
-								title: "Modifier l'utilisateur",
+								title: "Sauvegarder l'utilisateur",
 								rejectButton: "Annuler",
-								resolveButton: "Modifier",
+								resolveButton: "Sauvegarder",
 								form: userForm(user)
 							})
 								.then((patch) => {

@@ -32,7 +32,7 @@ export type Actions<TaskType extends BaseTaskType, IdKey extends keyof TaskType>
     "mousedown_filter": {},
     "close_editor": {},
 
-    "changeId" : { // Lorsque l'id d'une task est modifié car le serveur a envoyé sa réponse
+    "changeId" : { // Lorsque l'id d'une task est sauvegardé car le serveur a envoyé sa réponse
         oldId: TaskType[IdKey],
         newId: TaskType[IdKey],
     },

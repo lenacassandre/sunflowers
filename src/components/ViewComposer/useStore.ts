@@ -37,8 +37,8 @@ export default function useStore<CustomUserDocument extends User>(
 		}
 	}
 
-	// Fonction essentiel au système de vue/flux. Elle seule permet de modifier le store, et donc
-	// de modifier les informations affichées dans l'interface.
+	// Fonction essentiel au système de vue/flux. Elle seule permet de sauvegarder le store, et donc
+	// de sauvegarder les informations affichées dans l'interface.
 	// Elle prend en argument un objet, dont les propriétés sont :
 	// - Un type d'action. (obligatoire)
 	// - Un évènement, pour que le reducer puisse accéder à la position du curseur, par exemple. (facultatif)

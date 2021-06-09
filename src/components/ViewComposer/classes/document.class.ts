@@ -67,8 +67,8 @@ export default class Document {
 
     /**
      * Affecte une propriétée donnée du document à une nouvelle valeur donnée, sur le serveur et le client.
-     * @param prop Propriété que l'on souhaite modifier
-     * @param value Nouvelle valeur de la propriété que l'on souhaite modifier
+     * @param prop Propriété que l'on souhaite sauvegarder
+     * @param value Nouvelle valeur de la propriété que l'on souhaite sauvegarder
      */
     public patch(prop: keyof this, value: any): RepositoryPromise<RCReturn<this>["patch"], RCError["patch"]>;
     /**

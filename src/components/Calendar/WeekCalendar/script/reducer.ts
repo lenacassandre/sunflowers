@@ -721,7 +721,7 @@ function getTaskAndDelta<TaskType extends BaseTaskType, IdKey extends keyof Task
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 
-	const taskToPatch = tasks.find(t => t[config.idKey] === store.editing); // La task qui doit être modifiée
+	const taskToPatch = tasks.find(t => t[config.idKey] === store.editing); // La task qui doit être sauvegardée
 
 	if(!taskToPatch){
 		console.error("tackToPatch undefined");
