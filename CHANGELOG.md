@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.28](https://github.com/lenacassandre/sunflowers/compare/v0.2.27...v0.2.28) (2021-06-09)
+
+
+### Bug Fixes
+
+* **router:** bug electron ([a7cee0d](https://github.com/lenacassandre/sunflowers/commit/a7cee0d17ecb99ef1a5509e9eefd064e7721876b))
+
 ### [0.2.27](https://github.com/lenacassandre/sunflowers/compare/v0.2.26...v0.2.27) (2021-06-08)
 
 
