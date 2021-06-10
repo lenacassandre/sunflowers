@@ -208,8 +208,8 @@ const DatePickerForm: React.FC<{
 				value={dateCalendar}
 				name="date"
 				start={props.start}
-				mode={7}
 				end={props.end}
+				mode={7}
 				onChange={handleCalendarChange}
 				bottom={props.bottom}
 				top={props.top}

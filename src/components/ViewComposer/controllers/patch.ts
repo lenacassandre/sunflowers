@@ -26,5 +26,16 @@ export function patch<
         }
     })
 
-    return newRepoInstance;
+    // Nouvelle instance pour tous les documents qui ont été modifiés
+    const newerRpoInstance = newRepoInstance.set(
+        newRepoInstance.map((doc: Document) => {
+            if(patches.some(d => d._id === doc._id)) {
+                return new newRepoInstance.__DocumentClass(doc)
+            } else {
+                return doc
+            }
+        })
+    )
+
+    return newerRpoInstance;
 }

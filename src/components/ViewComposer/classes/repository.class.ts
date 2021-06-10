@@ -75,8 +75,8 @@ export default class Repository<
      */
     public set(docs: Array<DocType> | RepositoryType) {
         const newInstance = new this.__RepositoryClass(docs);
-        newInstance.archives = this.archives;
-        newInstance.removed = this.removed;
+        newInstance.archives = [...this.archives];
+        newInstance.removed = [...this.removed];
         return newInstance;
     }
 
@@ -94,8 +94,8 @@ export default class Repository<
 
     public clone(): RepositoryType {
         const newInstance = new this.__RepositoryClass([...this]);
-        newInstance.archives = this.archives;
-        newInstance.removed = this.removed;
+        newInstance.archives = [...this.archives];
+        newInstance.removed = [...this.removed];
         return newInstance;
     }
 

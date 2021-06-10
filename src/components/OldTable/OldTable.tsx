@@ -17,7 +17,7 @@ export declare type Column<RowType = any> = {
 	sortingFilter?: (cell: any) => any; // Appelée lors du tri pour sauvegarder les données. Ex: Des dates sont au format dd/mm/yyyy dans le tableau, mais on souhaite les trier avec le format yyy-mm-dd. Le sorting filter s'occupe de cette transformation.
 	fixed?: boolean; // La colonne restera t-elle visible si l'utilisateru•trice scroll vers la droite ?
 	sortable?: boolean; // La colonne est-elle triable ?
-	table?: { [key: string]: any }; // Un tableau de correspondance. Ex: Avec un tableau de rôle. On donne le tableau de correspondance {"1": "administrateur", "2": "gestionnaire"}. La ligne a pour propriété row.role: "1". Le tableau va afficher administrateur.
+	table?: { [key: string]: any }; // Un tableau de correspondance. Ex: Avec un tableau de rôle. On donne le tableau de correspondance {"1": "administrateur", "2": "utilisateur"}. La ligne a pour propriété row.role: "1". Le tableau va afficher administrateur.
 	prefix?: string; // Un prefix à afficher devant la donnée.
 	buttonColor?: string; // Si le type de colonne est "button"
 	buttonIcon?: React.FC; // Si le type de colonne est "button"
