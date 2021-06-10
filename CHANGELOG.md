@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.29](https://github.com/lenacassandre/sunflowers/compare/v0.2.28...v0.2.29) (2021-06-10)
+
+
+### Bug Fixes
+
+* **userepositories:** fixed the remoteChanges patch ([7d3cb14](https://github.com/lenacassandre/sunflowers/commit/7d3cb14f956bd9080bd9a2d886677cd904b8c3ce))
+
 ### [0.2.28](https://github.com/lenacassandre/sunflowers/compare/v0.2.27...v0.2.28) (2021-06-09)
 
 
