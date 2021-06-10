@@ -20,7 +20,7 @@ export const MiniCalendar = (props: {
   middle?: boolean,
 }) => {
 	const [date, setDate] = useState<Date>(
-		props.value && props.value instanceof Date ? props.value : props.end ? topDate(props.end) : new Date()
+		props.value && props.value instanceof Date ? props.value : props.start ? bottomDate(props.start) : new Date()
 	);
 
 	const [monthNavDate, setMonthNavDate] = useState(date);
@@ -100,6 +100,14 @@ export const MiniCalendar = (props: {
   // CHANGING DATE //////////////////////////////////////////////////////////////////////////////////
 
 	function handleChange(date: Date) {
+		if(props.bottom) {
+			date = bottomDate(date)
+		}
+
+		if(props.top) {
+			date = topDate(date)
+		}
+
 		if (props.onChange) {
 			props.onChange(date);
 		}
