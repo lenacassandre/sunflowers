@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.30](https://github.com/lenacassandre/sunflowers/compare/v0.2.29...v0.2.30) (2021-06-10)
+
+
+### Bug Fixes
+
+* **datepicker:** top & Bottom dates ([ca4bd74](https://github.com/lenacassandre/sunflowers/commit/ca4bd74fb14c5512c573209ec3054eacfa99033d))
+
 ### [0.2.29](https://github.com/lenacassandre/sunflowers/compare/v0.2.28...v0.2.29) (2021-06-10)
 
 
