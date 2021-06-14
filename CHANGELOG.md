@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.31](https://github.com/lenacassandre/sunflowers/compare/v0.2.30...v0.2.31) (2021-06-14)
+
+
+### Features
+
+* forceDestroy ([1a6ec1e](https://github.com/lenacassandre/sunflowers/commit/1a6ec1ea9226f093a3f9ef9812462df2f4fed787))
+
 ### [0.2.30](https://github.com/lenacassandre/sunflowers/compare/v0.2.29...v0.2.30) (2021-06-10)
 
 
