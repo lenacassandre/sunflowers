@@ -351,9 +351,9 @@ export default class Repository<
          )
      }
 
-         //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
+    //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
     //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
-    // Remove
+    // Destroy
 
     /**
      *
@@ -392,7 +392,48 @@ export default class Repository<
         )
     }
 
-        //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
+    //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
+    //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
+    // Force Destroy
+
+    /**
+     *
+     * @param id _id du document que l'on souhaite supprimer
+     * @param cascade Suppression en cascade ?
+     */
+     public forceDestroy(_id: string): RepositoryPromise<RCReturn<DocType>["forceDestroy"], RCError["forceDestroy"]>;
+     /**
+      *
+      * @param ids Tableau d'_ids des documents que l'on souhaite supprimer
+      * @param cascade Suppression en cascade ?
+      */
+     public forceDestroy(_ids: string[]): RepositoryPromise<RCReturn<DocType>["forceDestroy"], RCError["forceDestroy"]>;
+     public forceDestroy(_id_s: string | string[]): RepositoryPromise<RCReturn<DocType>["forceDestroy"], RCError["forceDestroy"]> {
+         let ids: string[];
+
+         // Overload 1
+         if (typeof _id_s === "string") {
+             // Retire l'élement
+             ids = [_id_s]
+         }
+         //Overload 2
+         else if (_id_s instanceof Array) {
+             ids = _id_s
+         }
+         else {
+             throw new Error(
+                 `No overload match this call (Repository ${this.__repositoryName}.remove(_id_s: ${typeof _id_s}))`
+             );
+         }
+
+         // Propose d'envoyer la suppression au server
+         return useRepositoryCallbacks.applyForceDestroy<RepositoryType, DocType>(
+             this.__repositoryName,
+             ids,
+         )
+     }
+
+    //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
     //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
     // Remove
 

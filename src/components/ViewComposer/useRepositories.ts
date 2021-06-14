@@ -16,6 +16,7 @@ import { archive } from "./controllers/archive";
 import { unarchive } from "./controllers/unarchive";
 import { destroy } from "./controllers/destroy";
 import { disconnect } from "process";
+import { forceDestroy } from "./controllers/forceDestroy";
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 export type RepositoryPromise<ReturnType = any, CatchType = void> = {send: () => Promise<ReturnType, CatchType>}
@@ -95,6 +96,7 @@ export const useRepositoryCallbacks = {
 	applyRemove: getDefaultApplyFunction<"remove">("remove"),
 	applyRestore: getDefaultApplyFunction<"restore">("restore"),
 	applyDestroy: getDefaultApplyFunction<"destroy">("destroy"),
+	applyForceDestroy: getDefaultApplyFunction<"forceDestroy">("forceDestroy"),
 	applyArchive: getDefaultApplyFunction<"archive">("archive"),
 	applyUnarchive: getDefaultApplyFunction<"unarchive">("unarchive"),
 	applyGetAll: getDefaultApplyFunction<"getAll">("getAll"),
@@ -106,6 +108,7 @@ export const useRepositoryCallbacks = {
 	forwardRemove: getDefaultForwardFunction<"remove">("remove"),
 	forwardRestore: getDefaultForwardFunction<"restore">("restore"),
 	forwardDestroy: getDefaultForwardFunction<"destroy">("destroy"),
+	forwardForceDestroy: getDefaultForwardFunction<"forceDestroy">("forceDestroy"),
 	forwardArchive: getDefaultForwardFunction<"archive">("archive"),
 	forwardUnarchive: getDefaultForwardFunction<"unarchive">("unarchive"),
 }
@@ -141,13 +144,12 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 		log.useRepositories(repositoryName, repositoriesRef.current[repositoryName].length, repositoriesRef.current[repositoryName].loaded ? "✅" : "⭕️")
 	}
 
-
-
 	// Les forwards methods permettent de faire passer l'appel de la méthode d'un document à son repo.
 	const forwardPatch = useCallback(getForwardFunction<"patch">(repositoriesRef, (repo, data) => repo.patch(data)), []);
 	const forwardRemove = useCallback(getForwardFunction<"remove">(repositoriesRef, (repo, data) => repo.remove(data)), []);
 	const forwardRestore = useCallback(getForwardFunction<"restore">(repositoriesRef, (repo, data) => repo.restore(data)), []);
 	const forwardDestroy = useCallback(getForwardFunction<"destroy">(repositoriesRef, (repo, data) => repo.destroy(data)), []);
+	const forwardForceDestroy = useCallback(getForwardFunction<"forceDestroy">(repositoriesRef, (repo, data) => repo.forceDestroy(data)), []);
 	const forwardArchive = useCallback(getForwardFunction<"archive">(repositoriesRef, (repo, data) => repo.archive(data)), []);
 	const forwardUnarchive = useCallback(getForwardFunction<"unarchive">(repositoriesRef, (repo, data) => repo.unarchive(data)), []);
 
@@ -388,6 +390,17 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 	), [])
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Apply force destroy
+	const applyForceDestroy = useCallback(getApplyFunction<"forceDestroy">(
+		"forceDestroy",
+		forceDestroy,
+		//@ts-ignore je sais pas d'où vient ce bug
+		(reapplyChanges, _cancelChanges, _oldRepo, currentRepo, _requestData, responseData) => {
+			reapplyChanges(currentRepo, responseData);
+		}
+	), [])
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Apply archive
 	const applyArchive = useCallback(getApplyFunction<"archive">(
 		"archive",
@@ -567,6 +580,18 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 						break;
 					}
 
+					case "forceDestroy": { // Un remove a fait par quelqu'un d'autre, on update les données locales.
+						const data = remoteChange.data as RCArguments<any>["forceDestroy"]
+						const newerRepositoryInstance = forceDestroy(repository, data)
+
+						setRepositories({
+							...repositoriesRef.current,
+							[remoteChange.repositoryName] : newerRepositoryInstance
+						})
+
+						break;
+					}
+
 					case "archive": { // Un remove a fait par quelqu'un d'autre, on update les données locales.
 						const data = remoteChange.data as RCArguments<any>["archive"]
 						const newerRepositoryInstance = archive(repository, data)
@@ -643,6 +668,7 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 		useRepositoryCallbacks.forwardRemove = forwardRemove;
 		useRepositoryCallbacks.forwardRestore = forwardRestore;
 		useRepositoryCallbacks.forwardDestroy = forwardDestroy;
+		useRepositoryCallbacks.forwardForceDestroy = forwardForceDestroy;
 		useRepositoryCallbacks.forwardArchive = forwardArchive;
 		useRepositoryCallbacks.forwardUnarchive = forwardUnarchive;
 
@@ -651,6 +677,7 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 		useRepositoryCallbacks.applyRemove = applyRemove;
 		useRepositoryCallbacks.applyRestore = applyRestore;
 		useRepositoryCallbacks.applyDestroy = applyDestroy;
+		useRepositoryCallbacks.applyForceDestroy = applyForceDestroy;
 		useRepositoryCallbacks.applyArchive = applyArchive;
 		useRepositoryCallbacks.applyUnarchive = applyUnarchive;
 		useRepositoryCallbacks.applyGetAll = applyGetAll;

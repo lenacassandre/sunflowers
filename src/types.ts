@@ -246,7 +246,7 @@ export declare type Notifications = NotificationObject[];
 /**
  * Repositiry Controller Type
  */
-export declare type RCType = "post" | "patch" | "remove" | "archive" | "destroy" | "unarchive" | "restore" | "getAll" | "getArchives" | "getRemoved"
+export declare type RCType = "post" | "patch" | "remove" | "archive" | "destroy" | "forceDestroy" | "unarchive" | "restore" | "getAll" | "getArchives" | "getRemoved"
 
 // Type d'argument demandé pour appeler une fonction de repo/doc
 /**
@@ -260,6 +260,7 @@ export declare type RCArguments<DocType extends Document> = {
 	unarchive: string[]
 	remove: string[]
 	restore: string[]
+	forceDestroy: string[]
 	destroy: string[]
 	patch: (Partial<DocType> & {_id: string})[]
 	post: (Partial<DocType> & {_id: string})[]
@@ -277,6 +278,7 @@ export declare type RCReturn<DocType extends Document> = {
 	unarchive: string[],
 	remove: string[],
 	restore: string[],
+	forceDestroy: string[],
 	destroy: string[],
 	patch: (Partial<DocType> & {_id: string})[],
 	post: (Partial<DocType> & {_oldId: string, _id: string})[],
@@ -294,6 +296,7 @@ export declare type RCError<DocType extends Document = Document> = {
 	unarchive: SocketError,
 	remove: SocketError,
 	restore: SocketError,
+	forceDestroy: SocketError,
 	destroy: SocketError,
 	patch: SocketError,
 	post: SocketError,
