@@ -280,6 +280,8 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 					// @ts-ignore
 					if(!store.clickDate) return {clickDate: new Date(action.date)}
 
+					
+
 					// Si le mouvement de la tâche est verouillé, on empêche de bouger
 					if(lockMove && lockMove(store.clickTask)) return
 

@@ -152,7 +152,10 @@ export function WeekCalendar<TaskType extends BaseTaskType, IdKey extends keyof 
             props.onPost,
             onPatch,
             props.onDelete,
-            props.onClick
+            props.onClick,
+            props.lock,
+            props.lockResize,
+            props.lockMove,
         )
 
         if(update) {
