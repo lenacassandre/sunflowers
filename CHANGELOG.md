@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.34](https://github.com/lenacassandre/sunflowers/compare/v0.2.33...v0.2.34) (2021-06-17)
+
+
+### Features
+
+* **calendar:** lockResize & lockMove ([cb63ac9](https://github.com/lenacassandre/sunflowers/commit/cb63ac926e4b13f488d33cfcba12163ca4e5ce2b))
+
 ### [0.2.33](https://github.com/lenacassandre/sunflowers/compare/v0.2.32...v0.2.33) (2021-06-17)
 
 
