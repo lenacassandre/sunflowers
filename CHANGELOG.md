@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.36](https://github.com/lenacassandre/sunflowers/compare/v0.2.35...v0.2.36) (2021-06-17)
+
+
+### Bug Fixes
+
+* **calendar:** locks ([15b31e2](https://github.com/lenacassandre/sunflowers/commit/15b31e2853a5d959e70065da8324a6fe23c190fa))
+
 ### [0.2.35](https://github.com/lenacassandre/sunflowers/compare/v0.2.34...v0.2.35) (2021-06-17)
 
 
