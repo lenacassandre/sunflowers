@@ -73,6 +73,8 @@ export function WeekCalendar<TaskType extends BaseTaskType, IdKey extends keyof 
     onClick?: (task: TaskType) => void
 
     lock?: (task: TaskType) => boolean;
+    lockResize?: (task: TaskType) => boolean;
+    lockMove?: (task: TaskType) => boolean;
 
     renderEditor?: RenderEditor<TaskType, IdKey>;
 }) {
@@ -170,7 +172,9 @@ export function WeekCalendar<TaskType extends BaseTaskType, IdKey extends keyof 
         props.onPost,
         props.onPatch,
         props.onDelete,
-        props.lock
+        props.lock,
+        props.lockResize,
+        props.lockMove,
     )
 
     // Grid ref for calcultations purpose

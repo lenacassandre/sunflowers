@@ -26,6 +26,8 @@ export function TaskContainer<TaskType extends BaseTaskType, IdKey extends keyof
     dispatch: <Action extends keyof Actions<TaskType, IdKey>>(type: Action, action: Actions<TaskType, IdKey>[Action]) => void
 
     lock?: (task: TaskType) => boolean;
+    lockResize?: (task: TaskType) => boolean;
+    lockMove?: (task: TaskType) => boolean;
 }) {
     const sizeClass = props.task.duration <= 15
         ? "xs"
@@ -76,9 +78,19 @@ export function TaskContainer<TaskType extends BaseTaskType, IdKey extends keyof
                 {
                     !props.lock || !props.lock(props.task) && (
                         <div className="eventListeners" draggable={false} onMouseUp={mouseUp}>
-                            {!props.task.deadline && <div className="eventListener top" onMouseDown={mouseDownTop} draggable={false} />}
+                            {
+                                !props.task.deadline
+                                && (!props.lockResize || !props.lockResize(props.task))
+                                && (!props.lockMove || !props.lockMove(props.task))
+                                && <div className="eventListener top" onMouseDown={mouseDownTop} draggable={false} />
+                            }
                             <div className="eventListener mid" onMouseDown={mouseDownMid} draggable={false} />
-                            {!props.task.deadline && <div className="eventListener bot" onMouseDown={mouseDownBot} draggable={false} />}
+                            {
+                                !props.task.deadline
+                                && (!props.lockResize || !props.lockResize(props.task))
+                                && (!props.lockMove || !props.lockMove(props.task))
+                                && <div className="eventListener bot" onMouseDown={mouseDownBot} draggable={false} />
+                            }
                         </div>
                     )
                 }

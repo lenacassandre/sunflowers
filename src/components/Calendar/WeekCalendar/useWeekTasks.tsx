@@ -22,7 +22,9 @@ export function useWeekTasks<TaskType extends BaseTaskType, IdKey extends keyof 
     onPost?: OnPost<TaskType, IdKey>,
     onPatch?: OnPatchLazy<TaskType>,
     onDelete?: OnDelete<TaskType>,
-    lock?: (task: TaskType) => boolean
+    lock?: (task: TaskType) => boolean,
+    lockResize?: (task: TaskType) => boolean,
+    lockMove?: (task: TaskType) => boolean,
 ) {
     // Le premier jour de la journée doit d'abord avoir été trouvé par le calendrier
     if(!store.firstDayOfTheWeek) return []
@@ -368,6 +370,8 @@ export function useWeekTasks<TaskType extends BaseTaskType, IdKey extends keyof 
         >
             <TaskContainer<TaskType, IdKey>
                 lock={lock}
+                lockResize={lockResize}
+                lockMove={lockMove}
 
                 task={taskContainer.taskObject}
 
@@ -443,13 +447,6 @@ export function useWeekTasks<TaskType extends BaseTaskType, IdKey extends keyof 
     return [TasksContainersJSXElements, EditorComponent];
 }
 
-
-
-
-
-
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -464,8 +461,6 @@ export function useWeekTasks<TaskType extends BaseTaskType, IdKey extends keyof 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 
 // Check if region A and B are overlaping
 function overlap(startA: Date, endA: Date, startB: Date, endB: Date) {

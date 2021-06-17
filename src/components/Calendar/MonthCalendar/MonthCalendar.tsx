@@ -11,6 +11,8 @@ export function MonthCalendar<TaskType extends BaseTaskType, IdKey extends keyof
     onDelete?: OnDelete<TaskType>;
 
     lock?: (task: TaskType) => boolean;
+    lockResize?: (task: TaskType) => boolean;
+    lockMove?: (task: TaskType) => boolean;
 
     onClick?: (task: TaskType) => void;
 }) {

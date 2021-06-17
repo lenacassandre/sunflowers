@@ -90,6 +90,8 @@ export function Calendar<TaskType extends BaseTaskType, IdKey extends keyof Task
     onClick?: (task: TaskType) => void;
 
     lock?: (task: TaskType) => boolean;
+    lockResize?: (task: TaskType) => boolean;
+    lockMove?: (task: TaskType) => boolean;
 
     renderWeekTask: RenderTask<TaskType, IdKey>
     renderEditor?: RenderEditor<TaskType, IdKey>
@@ -133,6 +135,8 @@ export function Calendar<TaskType extends BaseTaskType, IdKey extends keyof Task
 
                         onClick={props.onClick}
                         lock={props.lock}
+                        lockResize={props.lockResize}
+                        lockMove={props.lockMove}
 
                         renderWeekTask={props.renderWeekTask}
                         renderEditor={props.renderEditor}
@@ -149,6 +153,8 @@ export function Calendar<TaskType extends BaseTaskType, IdKey extends keyof Task
 
                         onClick={props.onClick}
                         lock={props.lock}
+                        lockResize={props.lockResize}
+                        lockMove={props.lockMove}
                     />
                 )
             }

@@ -52,7 +52,10 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
     onPost?: OnPost<TaskType, IdKey>,
     onPatch?: OnPatchLazy<TaskType>,
     onDelete?: OnDelete<TaskType>,
-    onClick?: (task: TaskType) => void
+    onClick?: (task: TaskType) => void,
+    lock?: (task: TaskType) => boolean,
+    lockResize?: (task: TaskType) => boolean,
+    lockMove?: (task: TaskType) => boolean,
 ): Partial<StoreType<TaskType, IdKey>> | void => {
 	// Objet d'update du state du calendrier
 	if(type !== "mousemove_grid") {
@@ -276,6 +279,9 @@ const reducer = <TaskType extends BaseTaskType, IdKey extends keyof TaskType, Ac
 				case "down_mid": {
 					// @ts-ignore
 					if(!store.clickDate) return {clickDate: new Date(action.date)}
+
+					// Si le mouvement de la tâche est verouillé, on empêche de bouger
+					if(lockMove && lockMove(store.clickTask)) return
 
 					// @ts-ignore
 					if(action.date.getTime() !== store.clickDate.getTime()) {
