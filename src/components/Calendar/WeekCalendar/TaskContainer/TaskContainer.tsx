@@ -76,19 +76,23 @@ export function TaskContainer<TaskType extends BaseTaskType, IdKey extends keyof
                 {props.children}
 
                 {
-                    !props.lock || !props.lock(props.task) && (
+                    (!props.lock || !props.lock(props.task)) && (
                         <div className="eventListeners" draggable={false} onMouseUp={mouseUp}>
                             {
-                                !props.task.deadline
-                                && (!props.lockResize || !props.lockResize(props.task))
-                                && (!props.lockMove || !props.lockMove(props.task))
+                                (
+                                    !props.task.deadline
+                                    && (!props.lockResize || !props.lockResize(props.task))
+                                    && (!props.lockMove || !props.lockMove(props.task))
+                                )
                                 && <div className="eventListener top" onMouseDown={mouseDownTop} draggable={false} />
                             }
                             <div className="eventListener mid" onMouseDown={mouseDownMid} draggable={false} />
                             {
-                                !props.task.deadline
-                                && (!props.lockResize || !props.lockResize(props.task))
-                                && (!props.lockMove || !props.lockMove(props.task))
+                                (
+                                    !props.task.deadline
+                                    && (!props.lockResize || !props.lockResize(props.task))
+                                    && (!props.lockMove || !props.lockMove(props.task))
+                                )
                                 && <div className="eventListener bot" onMouseDown={mouseDownBot} draggable={false} />
                             }
                         </div>
