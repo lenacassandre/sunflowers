@@ -21,7 +21,8 @@ export function useWeekTasks<TaskType extends BaseTaskType, IdKey extends keyof 
     RenderEditor?: RenderEditor<TaskType, IdKey>,
     onPost?: OnPost<TaskType, IdKey>,
     onPatch?: OnPatchLazy<TaskType>,
-    onDelete?: OnDelete<TaskType>
+    onDelete?: OnDelete<TaskType>,
+    lock?: (task: TaskType) => boolean
 ) {
     // Le premier jour de la journée doit d'abord avoir été trouvé par le calendrier
     if(!store.firstDayOfTheWeek) return []
@@ -366,7 +367,7 @@ export function useWeekTasks<TaskType extends BaseTaskType, IdKey extends keyof 
             classNames="taskContainerTransition"
         >
             <TaskContainer<TaskType, IdKey>
-
+                lock={lock}
 
                 task={taskContainer.taskObject}
 
@@ -411,9 +412,9 @@ export function useWeekTasks<TaskType extends BaseTaskType, IdKey extends keyof 
         if(positionnedTaskContainer) {
             EditorComponent = (
                 <CSSTransition
-                        key="Editor"
-                        timeout={500}
-                    >
+                    key="Editor"
+                    timeout={500}
+                >
                     <Editor
                         taskContainer={positionnedTaskContainer}
                         config={config}

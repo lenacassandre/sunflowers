@@ -24,6 +24,8 @@ export function TaskContainer<TaskType extends BaseTaskType, IdKey extends keyof
 
     config: CalendarConfig<TaskType, IdKey>;
     dispatch: <Action extends keyof Actions<TaskType, IdKey>>(type: Action, action: Actions<TaskType, IdKey>[Action]) => void
+
+    lock?: (task: TaskType) => boolean;
 }) {
     const sizeClass = props.task.duration <= 15
         ? "xs"
@@ -71,11 +73,15 @@ export function TaskContainer<TaskType extends BaseTaskType, IdKey extends keyof
             >
                 {props.children}
 
-                <div className="eventListeners" draggable={false} onMouseUp={mouseUp}>
-                    {!props.task.deadline && <div className="eventListener top" onMouseDown={mouseDownTop} draggable={false} />}
-                    <div className="eventListener mid" onMouseDown={mouseDownMid} draggable={false} />
-                    {!props.task.deadline && <div className="eventListener bot" onMouseDown={mouseDownBot} draggable={false} />}
-                </div>
+                {
+                    !props.lock || !props.lock(props.task) && (
+                        <div className="eventListeners" draggable={false} onMouseUp={mouseUp}>
+                            {!props.task.deadline && <div className="eventListener top" onMouseDown={mouseDownTop} draggable={false} />}
+                            <div className="eventListener mid" onMouseDown={mouseDownMid} draggable={false} />
+                            {!props.task.deadline && <div className="eventListener bot" onMouseDown={mouseDownBot} draggable={false} />}
+                        </div>
+                    )
+                }
             </div>
     )
 }
