@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.37](https://github.com/lenacassandre/sunflowers/compare/v0.2.36...v0.2.37) (2021-06-22)
+
+
+### Features
+
+* **usesuncontext:** nouvelle hook useSunContext ([8f964f2](https://github.com/lenacassandre/sunflowers/commit/8f964f2c6f5d7292c8ab23de149a206e6c1a2a46))
+
 ### [0.2.36](https://github.com/lenacassandre/sunflowers/compare/v0.2.35...v0.2.36) (2021-06-17)
 
 
