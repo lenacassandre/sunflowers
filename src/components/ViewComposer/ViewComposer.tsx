@@ -71,7 +71,8 @@ export const Context = React.createContext<ContextType<any>>({
 		}
 	},
 	store: {},
-	update: (updates) => {}
+	update: (updates) => {},
+	repositories: {},
 });
 
 
