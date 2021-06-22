@@ -11,5 +11,6 @@ export function forceDestroy<
 ) {
     const newRepoInstance = repo.set(repo.filter((doc: Document) => !ids.includes(doc._id)));
     newRepoInstance.removed = newRepoInstance.removed.filter((doc: Document) => !ids.includes(doc._id));
+    newRepoInstance.archives = newRepoInstance.archives.filter((doc: Document) => !ids.includes(doc._id));
     return newRepoInstance;
 }

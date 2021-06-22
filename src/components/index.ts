@@ -35,3 +35,6 @@ export * from './TabsButtons/TabsButtons';
 export * from './TabsPages/TabsPages';
 export * from './TopBar/TopBar';
 export * from './ViewComposer/ViewComposer';
+
+import { useSunflowersContext } from './ViewComposer/ViewComposer';
+export const useSunContext = useSunflowersContext;

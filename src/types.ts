@@ -16,6 +16,19 @@ export declare type Config = {
 
 export declare type SocketError<T = {}> = ({error: string} & T)
 
+export declare type ContextType<StoreType extends BaseStoreType = BaseStoreType> = {
+	emit: Emit,
+	get: <ResponseType = {}>(route: string, body?: any) => Promise<typeof body, ResponseType>,
+	post: <ResponseType = {}>(route: string, body?: any, head?: any) => Promise<typeof body, ResponseType>,
+	notify: Notify,
+	modal: CallModal,
+	session: SessionSystem<any>,
+	router: RouterSystem<any>,
+	repositories: Repositories,
+	store: StoreType,
+	update: Update<StoreType>,
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -369,6 +369,7 @@ export function useWeekTasks<TaskType extends BaseTaskType, IdKey extends keyof 
             classNames="taskContainerTransition"
         >
             <TaskContainer<TaskType, IdKey>
+                key={`${taskContainer.taskObject[config.idKey]}${taskContainer.taskObject.ghost ? ' ghost' : ""}`}
                 lock={lock}
                 lockResize={lockResize}
                 lockMove={lockMove}

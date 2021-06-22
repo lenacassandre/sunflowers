@@ -121,7 +121,7 @@ export default function useSession<UserDocumentClass extends User>(
 		else {
 			log.useSession("Bootstrap useEffect token - Verifying token");
 
-			socket.emit<{user: UserDocumentClass}>("user/verify", {token: currentToken})
+			const checkToken = () => socket.emit<{user: UserDocumentClass}>("user/verify", {token: currentToken})
 				.then((response) => {
 					// Token non vérifié : suppression du l'utilisateur et du token enregistré
 					if (!response || !response.user) {
@@ -142,8 +142,14 @@ export default function useSession<UserDocumentClass extends User>(
 				})
 				// Token non vérifié : suppression du l'utilisateur et du token enregistré
 				.catch((error) => {
-					logout();
+					if(error.error.includes("timeout")) {
+						setTimeout(checkToken, 5000);
+					} else {
+						logout();
+					}
 				});
+
+			checkToken();
 		}
 	}, [])
 

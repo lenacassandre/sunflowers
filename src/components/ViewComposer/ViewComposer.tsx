@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef, useState, useContext } from "react";
 
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
@@ -10,7 +10,7 @@ import { Notification } from "../Notification/Notification";
 import { RightBar } from "../RightBar/RightBar";
 import { TopBar } from "../TopBar/TopBar";
 
-import { CallModal, Emit, Notify, RouterSystem, SessionSystem, View, ViewComponent, ViewDeclaration, ViewsTree, ViewSystem } from "../../types";
+import { BaseStoreType, CallModal, Emit, ModalDeclaration, ModalForm, Notify, RouterSystem, SessionSystem, View, ViewComponent, ViewDeclaration, ViewsTree, ViewSystem } from "../../types";
 
 import Socket from "../../service/socket";
 
@@ -26,7 +26,7 @@ import useStore from "./useStore";
 
 import log from "../../utils/log";
 
-import { Repositories } from '../../types'
+import { Repositories, ContextType } from '../../types'
 import User from "./classes/user.class";
 
 console.clear()
@@ -39,16 +39,46 @@ import { Promise } from "../..";
 //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
 //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
 
-export const Context = React.createContext<{
-	emit?: Emit,
-	get?: <ResponseType = {}>(route: string, body?: any) => Promise<typeof body, ResponseType>,
-	post?: <ResponseType = {}>(route: string, body?: any, head?: any) => Promise<typeof body, ResponseType>,
-	notify?: Notify,
-	modal?: CallModal,
-	session?: SessionSystem<any>,
-	router?: RouterSystem<any>,
-	repositories?: Repositories
-}>({});
+
+
+export const Context = React.createContext<ContextType<any>>({
+	//@ts-ignore
+	emit: () => new Promise((_resolve, reject) => reject({error: "timeout"})),
+	//@ts-ignore
+	get: () => new Promise((_resolve, reject) => reject({error: "timeout"})),
+	//@ts-ignore
+	post: () => new Promise((_resolve, reject) => reject({error: "timeout"})),
+	notify: (_message, _color) => {},
+	modal: (_modalArg) => new Promise((_resolve, reject) => reject()),
+	session: {
+		user: null,
+		token: null,
+		login: (_userName, _password) => new Promise((_resolve, reject) => reject({error: "timeout"})),
+		logout: () => {},
+		saveUser: (_user) => {},
+		saveSession: (_user, _session) => {},
+		saveToken: (_token) => {}
+	},
+	router: {
+		path: "",
+		params: {},
+		navigate: (route) => {},
+		_currentViewDeclaration: {
+			path: '',
+			title: "",
+			//@ts-ignore
+			view: null
+		}
+	},
+	store: {},
+	update: (updates) => {}
+});
+
+
+export function useSunflowersContext<StoreType extends BaseStoreType = BaseStoreType>() {
+	const context: ContextType<StoreType> = useContext(Context);
+	return context;
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////:
 
@@ -148,7 +178,9 @@ function ViewComposerBase<UserDocumentClass extends User>(props: ViewComposerBas
 		modal: callModal,
 		session,
 		router,
-		repositories: repositoriesRef.current
+		repositories: repositoriesRef.current,
+		store,
+		update
 	}
 
 	let view = (
