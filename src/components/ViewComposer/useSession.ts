@@ -142,7 +142,7 @@ export default function useSession<UserDocumentClass extends User>(
 				})
 				// Token non vérifié : suppression du l'utilisateur et du token enregistré
 				.catch((error) => {
-					if(error.error.includes("timeout")) {
+					if(error.error.includes("timed out")) {
 						setTimeout(checkToken, 5000);
 					} else {
 						logout();
