@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.39](https://github.com/lenacassandre/sunflowers/compare/v0.2.38...v0.2.39) (2021-06-22)
+
+
+### Bug Fixes
+
+* **suncontext:** repos type ([ea7c98f](https://github.com/lenacassandre/sunflowers/commit/ea7c98f07917d2fa5fe8190b075cf788f41a9c48))
+
 ### [0.2.38](https://github.com/lenacassandre/sunflowers/compare/v0.2.37...v0.2.38) (2021-06-22)
 
 
