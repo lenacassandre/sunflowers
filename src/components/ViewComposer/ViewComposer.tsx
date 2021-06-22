@@ -10,7 +10,7 @@ import { Notification } from "../Notification/Notification";
 import { RightBar } from "../RightBar/RightBar";
 import { TopBar } from "../TopBar/TopBar";
 
-import { BaseStoreType, CallModal, Emit, ModalDeclaration, ModalForm, Notify, RouterSystem, SessionSystem, View, ViewComponent, ViewDeclaration, ViewsTree, ViewSystem } from "../../types";
+import { BaseRepositoriesType, BaseStoreType, CallModal, Emit, ModalDeclaration, ModalForm, Notify, RouterSystem, SessionSystem, View, ViewComponent, ViewDeclaration, ViewsTree, ViewSystem } from "../../types";
 
 import Socket from "../../service/socket";
 
@@ -76,8 +76,12 @@ export const Context = React.createContext<ContextType<any>>({
 });
 
 
-export function useSunflowersContext<StoreType extends BaseStoreType = BaseStoreType>() {
-	const context: ContextType<StoreType> = useContext(Context);
+export function useSunflowersContext<
+	StoreType extends BaseStoreType = BaseStoreType,
+	RepositoriesType extends BaseRepositoriesType = BaseRepositoriesType
+>() {
+	//@ts-ignore
+	const context: ContextType<StoreType, RepositoriesType> = useContext(Context);
 	return context;
 }
 
