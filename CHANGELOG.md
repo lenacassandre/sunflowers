@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.40](https://github.com/lenacassandre/sunflowers/compare/v0.2.39...v0.2.40) (2021-06-22)
+
+
+### Bug Fixes
+
+* **session:** verify timed out ([65f4a8e](https://github.com/lenacassandre/sunflowers/commit/65f4a8ec281def427e59587dad1155d6677f1712))
+
 ### [0.2.39](https://github.com/lenacassandre/sunflowers/compare/v0.2.38...v0.2.39) (2021-06-22)
 
 
