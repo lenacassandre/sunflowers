@@ -38,7 +38,7 @@ export default class Socket {
 	private validURL(route: string) {
 		const matches = route.match(/\.|\//g);
 
-		if(matches && matches[0] && matches[0] === ".") {
+		if(matches && matches[0]) {
 			return route;
 		}
 		else if(route.length > 0) {
