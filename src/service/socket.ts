@@ -36,9 +36,9 @@ export default class Socket {
 	 *	if no domain has been given, add this.url
 	 */
 	private validURL(route: string) {
-		const matches = route.match(/\.|\//g);
+		const matches = route.match(/http[s]?:\/\//g);
 
-		if(matches && matches[0]) {
+		if(matches && matches.length > 0) {
 			return route;
 		}
 		else if(route.length > 0) {
