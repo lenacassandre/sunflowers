@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.41](https://github.com/lenacassandre/sunflowers/compare/v0.2.40...v0.2.41) (2021-07-05)
+
+
+### Bug Fixes
+
+* fix HTTP valid URL method ([e71ef69](https://github.com/lenacassandre/sunflowers/commit/e71ef69534d579546ea9a34dd1b93f8b4c14d0a6))
+
 ### [0.2.40](https://github.com/lenacassandre/sunflowers/compare/v0.2.39...v0.2.40) (2021-06-22)
 
 
