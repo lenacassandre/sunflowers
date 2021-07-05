@@ -38,6 +38,8 @@ export default class Socket {
 	private validURL(route: string) {
 		const matches = route.match(/http[s]?:\/\//g);
 
+		console.log("validURL matches", matches)
+
 		if(matches && matches.length > 0) {
 			return route;
 		}
