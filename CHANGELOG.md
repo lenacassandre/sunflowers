@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.49](https://github.com/lenacassandre/sunflowers/compare/v0.2.48...v0.2.49) (2021-10-06)
+
+
+### Bug Fixes
+
+* **talbe:** crash in applyFilter ([13a7ba4](https://github.com/lenacassandre/sunflowers/commit/13a7ba47ae6b697a19aeb63549a6bef56a09c79f))
+
 ### [0.2.48](https://github.com/lenacassandre/sunflowers/compare/v0.2.47...v0.2.48) (2021-10-06)
 
 
