@@ -9,9 +9,12 @@ import { faSortDown } from "@fortawesome/free-solid-svg-icons";
 
 import "./Table.scss"
 
+/**
+ * key must be unique
+ */
 export declare type Column<RowType = any> = {
 	label: string; // Nom d'affichage de la colonne
-	key: string; // Le nom de la propriété de l'objet
+	key: string; // Le nom de la propriété de l'objet MUST BE UNIQUE
 	type?: "string" | "text" | "color" | "number" | "date" | "longdate" | "shortdate" | "table" | "jsx" | "button" | "feature" | "boolean" | "function"; // Type de donnée / feature
 	size?: number; // Taille de la colonne
 	sortingFilter?: (cell: any) => any; // Appelée lors du tri pour sauvegarder les données. Ex: Des dates sont au format dd/mm/yyyy dans le tableau, mais on souhaite les trier avec le format yyy-mm-dd. Le sorting filter s'occupe de cette transformation.
@@ -123,14 +126,17 @@ export function Table<DocType>(props: {
 	}
 
 	// Check if the key must be sort with a filter. If yes, it does.
-	function applyFilter(row: any, key: string) {
+	function applyFilter(row: DocType, key: string) {
 		const col: Column | undefined = head.find((c) => c.key === key);
 
-		if (col && col.sortingFilter && row[key]) {
-			return col.sortingFilter(row[key]);
-		} else if (typeof row[key] === "string") {
-			return row[key].toLowerCase();
+		if (col && col.sortingFilter) {
+			return col.sortingFilter(row);
+			//@ts-ignore TODO: correct this
+		} else if (typeof row[col.key] === "string") {
+			//@ts-ignore TODO: correct this
+			return row[rol.key].toLowerCase();
 		} else {
+			//@ts-ignore TODO: correct this
 			return row[key];
 		}
 	}
