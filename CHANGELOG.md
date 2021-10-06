@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.46](https://github.com/lenacassandre/sunflowers/compare/v0.2.45...v0.2.46) (2021-10-06)
+
+
+### Bug Fixes
+
+* **link:** log params on navigate ([55eea26](https://github.com/lenacassandre/sunflowers/commit/55eea266b390eb8bf10786ee121c6e2849f5b2ea))
+
 ### [0.2.45](https://github.com/lenacassandre/sunflowers/compare/v0.2.44...v0.2.45) (2021-10-06)
 
 
