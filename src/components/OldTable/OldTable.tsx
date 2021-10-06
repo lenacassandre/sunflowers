@@ -134,7 +134,7 @@ export function Table<DocType>(props: {
 			//@ts-ignore TODO: correct this
 		} else if (typeof row[col.key] === "string") {
 			//@ts-ignore TODO: correct this
-			return row[rol.key].toLowerCase();
+			return row[row.key].toLowerCase();
 		} else {
 			//@ts-ignore TODO: correct this
 			return row[key];
