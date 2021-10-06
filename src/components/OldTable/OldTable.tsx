@@ -17,10 +17,10 @@ export declare type Column<RowType = any> = {
 	key: string; // Le nom de la propriété de l'objet MUST BE UNIQUE
 	type?: "string" | "text" | "color" | "number" | "date" | "longdate" | "shortdate" | "table" | "jsx" | "button" | "feature" | "boolean" | "function"; // Type de donnée / feature
 	size?: number; // Taille de la colonne
-	sortingFilter?: (cell: any) => any; // Appelée lors du tri pour sauvegarder les données. Ex: Des dates sont au format dd/mm/yyyy dans le tableau, mais on souhaite les trier avec le format yyy-mm-dd. Le sorting filter s'occupe de cette transformation.
+	sortingFilter?: (row: RowType) => any; // Appelée lors du tri pour sauvegarder les données. Ex: Des dates sont au format dd/mm/yyyy dans le tableau, mais on souhaite les trier avec le format yyy-mm-dd. Le sorting filter s'occupe de cette transformation.
 	fixed?: boolean; // La colonne restera t-elle visible si l'utilisateru•trice scroll vers la droite ?
 	sortable?: boolean; // La colonne est-elle triable ?
-	table?: { [key: string]: any }; // Un tableau de correspondance. Ex: Avec un tableau de rôle. On donne le tableau de correspondance {"1": "administrateur", "2": "utilisateur"}. La ligne a pour propriété row.role: "1". Le tableau va afficher administrateur.
+	table?: { [key: string]: React.ReactNode }; // Un tableau de correspondance. Ex: Avec un tableau de rôle. On donne le tableau de correspondance {"1": "administrateur", "2": "utilisateur"}. La ligne a pour propriété row.role: "1". Le tableau va afficher administrateur.
 	prefix?: string; // Un prefix à afficher devant la donnée.
 	buttonColor?: string; // Si le type de colonne est "button"
 	buttonIcon?: React.FC; // Si le type de colonne est "button"
