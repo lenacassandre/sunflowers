@@ -179,7 +179,7 @@ export default function useRouter<CustomUserModel extends User>(
 			return
 		}
 
-		log.useRouter("NAVIGATE -", path, "- Ok.");
+		log.useRouter("NAVIGATE -", path, params, "- Ok.");
 
 		////////////////////////////////////////////////////////////////////////:
 		// Push la nouvelle page dans l'historique du navigateur
