@@ -132,9 +132,9 @@ export function Table<DocType>(props: {
 		if (col && col.sortingFilter) {
 			return col.sortingFilter(row);
 			//@ts-ignore TODO: correct this
-		} else if (typeof row[col.key] === "string") {
+		} else if (typeof row[key] === "string") {
 			//@ts-ignore TODO: correct this
-			return row[row.key].toLowerCase();
+			return row[key].toLowerCase();
 		} else {
 			//@ts-ignore TODO: correct this
 			return row[key];
