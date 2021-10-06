@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.47](https://github.com/lenacassandre/sunflowers/compare/v0.2.46...v0.2.47) (2021-10-06)
+
+
+### Features
+
+* **table:** sortingFilter no longer receive the value but the row ([283e05f](https://github.com/lenacassandre/sunflowers/commit/283e05f2e5c091c2fbe12613d7efb56b3940bdc6))
+
 ### [0.2.46](https://github.com/lenacassandre/sunflowers/compare/v0.2.45...v0.2.46) (2021-10-06)
 
 
