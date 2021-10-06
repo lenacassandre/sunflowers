@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.48](https://github.com/lenacassandre/sunflowers/compare/v0.2.47...v0.2.48) (2021-10-06)
+
+
+### Bug Fixes
+
+* **crash in table/applyfilter:** table ([0baf2dd](https://github.com/lenacassandre/sunflowers/commit/0baf2dda503ed9a31b97332fe55c8d1c35f57571))
+
 ### [0.2.47](https://github.com/lenacassandre/sunflowers/compare/v0.2.46...v0.2.47) (2021-10-06)
 
 
