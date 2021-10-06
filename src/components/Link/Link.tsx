@@ -16,7 +16,7 @@ export const Link: React.FC<{
             style={props.style}
             href="javascript:;"
             onClick={() => {
-                sunContext.router.navigate(props.href)
+                sunContext.router.navigate(props.href, props.params)
             }}
         >
             {props.children}
