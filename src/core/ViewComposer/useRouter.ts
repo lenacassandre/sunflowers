@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation, useParams, Redirect, Router } from "react-router-dom";
 import { View, ViewDeclaration, ViewsTree, Navigate, RouterSystem, SessionSystem } from "../../types";
 import log from "../../utils/log";
-import User from "./classes/user.class";
+import User from "../../classes/user.class";
 
 type state<CustomUserModel> = [Navigate, ViewDeclaration<CustomUserModel, any>, {[key: string]: string}]
 

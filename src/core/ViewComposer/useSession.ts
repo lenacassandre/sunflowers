@@ -7,7 +7,7 @@ import Socket from "../../service/socket";
 
 
 import log from "../../utils/log";
-import User from "./classes/user.class";
+import User from "../../classes/user.class";
 
 import { Promise } from '../../classes/Promise';
 

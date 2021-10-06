@@ -5,7 +5,7 @@ import { RequiredSymbol } from "../RequiredSymbol/RequiredSymbol";
 
 import './Select.scss'
 
-import { Context } from "../ViewComposer/ViewComposer";
+import { useSunContext } from "../../core/ViewComposer/ViewComposer";
 
 /////////////////////////////////////////////////////////////////////////////////////////////////:
 // PROPS
@@ -33,7 +33,7 @@ type SelectProps = {
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // MAIN COMPONENT
 export const Select: React.FC<SelectProps> = (props): JSX.Element => {
-	const CobblestoneContext = useContext(Context);
+	const sunContext = useSunContext();
 
 	const buttonRef = useRef<HTMLButtonElement>()
 
@@ -57,7 +57,7 @@ export const Select: React.FC<SelectProps> = (props): JSX.Element => {
 		const rect = buttonRef.current?.getBoundingClientRect()
 
 		if(rect) {
-			CobblestoneContext.modal && CobblestoneContext.modal({
+			sunContext.modal({
 				className: `SelectModal ${props.className || ""}`,
 				raw: true,
 				delay: 0,

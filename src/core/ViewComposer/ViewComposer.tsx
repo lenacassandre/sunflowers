@@ -6,7 +6,7 @@ import { LeftBar } from "../LeftBar/LeftBar";
 import { Main } from "../Main/Main";
 import { Middle } from "../Middle/Middle";
 import { Modal } from "../Modal/Modal";
-import { Notification } from "../Notification/Notification";
+import { DefaultNotification } from "../DefautNotification/DefaultNotification";
 import { RightBar } from "../RightBar/RightBar";
 import { TopBar } from "../TopBar/TopBar";
 
@@ -27,7 +27,7 @@ import useStore from "./useStore";
 import log from "../../utils/log";
 
 import { Repositories, ContextType } from '../../types'
-import User from "./classes/user.class";
+import User from "../../classes/user.class";
 
 console.clear()
 
@@ -39,9 +39,7 @@ import { Promise } from "../..";
 //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
 //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
 
-
-
-export const Context = React.createContext<ContextType<any>>({
+export const SunContext = React.createContext<ContextType<any>>({
 	//@ts-ignore
 	emit: () => new Promise((_resolve, reject) => reject({error: "timeout"})),
 	//@ts-ignore
@@ -76,12 +74,12 @@ export const Context = React.createContext<ContextType<any>>({
 });
 
 
-export function useSunflowersContext<
+export function useSunContext<
 	StoreType extends BaseStoreType = BaseStoreType,
 	RepositoriesType extends BaseRepositoriesType = BaseRepositoriesType
 >() {
 	//@ts-ignore
-	const context: ContextType<StoreType, RepositoriesType> = useContext(Context);
+	const context: ContextType<StoreType, RepositoriesType> = useContext(SunContext);
 	return context;
 }
 
@@ -190,7 +188,7 @@ function ViewComposerBase<UserDocumentClass extends User>(props: ViewComposerBas
 
 	let view = (
 		<div className={`App${router._currentViewDeclaration.className ? ` ${router._currentViewDeclaration.className}` : ""}`}>
-			<Context.Provider // Permet aux composants de la bibliothèque d'accéder aux méthodes de hook
+			<SunContext.Provider // Permet aux composants de la bibliothèque d'accéder aux méthodes de hook
 				value={contextValue}
 			>
 				<div className={`View${store.className ? " " + store.className : ""}${LeftBarState ? " menu" : ""}`}>
@@ -208,7 +206,7 @@ function ViewComposerBase<UserDocumentClass extends User>(props: ViewComposerBas
 													timeout={500}
 													classNames={`${notif.closing} notificationTransition`}
 												>
-													<Notification
+													<DefaultNotification
 														id={notif.id}
 														close={notif.close}
 														style={{
@@ -217,7 +215,7 @@ function ViewComposerBase<UserDocumentClass extends User>(props: ViewComposerBas
 														className={notif.color}
 													>
 														{notif.content}
-													</Notification>
+													</DefaultNotification>
 												</CSSTransition>
 											))}
 										</TransitionGroup>
@@ -263,7 +261,7 @@ function ViewComposerBase<UserDocumentClass extends User>(props: ViewComposerBas
 							</CSSTransition>
 						))}
 				</TransitionGroup>
-			</Context.Provider>
+			</SunContext.Provider>
 		</div>
 	);
 
@@ -284,9 +282,9 @@ function ViewComposerBase<UserDocumentClass extends User>(props: ViewComposerBas
 //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
 
 type ViewComposerPropType<UserDocumentClass> = {
+	repositories: Repositories;
 	views: ViewsTree<UserDocumentClass>;
 	defaultView: ViewDeclaration<UserDocumentClass, any>;
-	repositories: Repositories;
 	socketURL: string
 	httpURL?: string
 	UserModel: { new(user: UserDocumentClass): UserDocumentClass }

@@ -4,9 +4,9 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-import './Notification.scss'
+import './DefaultNotification.scss'
 
-export const Notification: React.FC<{
+export const DefaultNotification: React.FC<{
 	id: number;
 	close: Function;
 	className?: string;

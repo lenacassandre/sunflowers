@@ -1,6 +1,6 @@
 import React from "react";
 
-import { BurgerButton } from "../BurgerButton/BurgerButton";
+import { BurgerButton } from "../../components/BurgerButton/BurgerButton";
 import './TopBar.scss'
 
 export const TopBar: React.FC<{

@@ -1,6 +1,6 @@
-import React, { useContext, StyleHTMLAttributes } from "react";
+import React, { StyleHTMLAttributes } from "react";
 
-import { Context } from  '../ViewComposer/ViewComposer'
+import { useSunContext } from  '../../core/ViewComposer/ViewComposer'
 
 export const Link: React.FC<{
     href: string;
@@ -8,7 +8,7 @@ export const Link: React.FC<{
     style?: StyleHTMLAttributes<any>;
     className?: string;
 }> = (props) => {
-    const context = useContext(Context)
+    const sunContext = useSunContext()
 
 	return (
         <a
@@ -16,8 +16,7 @@ export const Link: React.FC<{
             style={props.style}
             href="javascript:;"
             onClick={() => {
-                console.log(props.href, context)
-                context.router?.navigate(props.href)
+                sunContext.router.navigate(props.href)
             }}
         >
             {props.children}

@@ -1,6 +1,6 @@
 import React from "react";
-import Repository from "./components/ViewComposer/classes/repository.class";
-import Document from "./components/ViewComposer/classes/document.class";
+import Repository from "./classes/repository.class";
+import Document from "./classes/document.class";
 import { Promise } from './classes/Promise'
 
 /**

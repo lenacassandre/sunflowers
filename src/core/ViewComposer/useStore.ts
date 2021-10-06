@@ -3,10 +3,10 @@ import { View, Notify, CallModal, SessionSystem, Dispatch, Update, Navigate, Rou
 
 import Socket from "../../service/socket";
 
-import Repository from "./classes/repository.class"
+import Repository from "../../classes/repository.class"
 
 import log from "../../utils/log";
-import User from "./classes/user.class";
+import User from "../../classes/user.class";
 
 let previousView: View<any, any> | undefined;
 

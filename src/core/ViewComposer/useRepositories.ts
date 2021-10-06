@@ -2,9 +2,9 @@ import { useEffect, useState, useCallback, useRef} from "react";
 import { SessionSystem, Repositories, RCArguments, RCType, RCReturn, RCError, SocketError } from "../../types";
 import log, { response } from "../../utils/log";
 
-import Repository from './classes/repository.class'
-import Document from './classes/document.class'
-import User from './classes/user.class'
+import Repository from '../../classes/repository.class'
+import Document from '../../classes/document.class'
+import User from '../../classes/user.class'
 import Socket from "../../service/socket";
 
 import { Promise } from '../../classes/Promise'
@@ -520,7 +520,7 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 					case "post": { // Un post a été fait par quelqu'un d'autre, on update les donneés locales.
 						// On évite d'ajouter des documents qui sont déjà là
 						let data = remoteChange.data as RCArguments<any>["post"]
-						data = data.filter(doc => !repository.some(d => d._id === doc._id))
+						data = data.filter(doc => !repository.some((d: any) => d._id === doc._id))
 
 						const newerRepositoryInstance = post(repository, data)
 

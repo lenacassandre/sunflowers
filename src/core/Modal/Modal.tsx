@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 
-import { Button } from "../Button/Button";
+import { Button } from "../../components/Button/Button";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";

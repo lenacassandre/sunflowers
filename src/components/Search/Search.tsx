@@ -119,7 +119,7 @@ export function Search<Type>(props: {
 					}
 				});
 		} else {
-			setContent("");
+			setContent(" ");
 			if(props.callback) {
 				props.callback(props.array, string);
 			}

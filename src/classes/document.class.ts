@@ -1,6 +1,6 @@
-import { RCArguments, RCError, RCReturn } from "../../../types";
-import randomId from "../../../utils/randomId";
-import {RepositoryPromise, useRepositoryCallbacks, } from "../useRepositories"
+import { RCArguments, RCError, RCReturn } from "../types";
+import randomId from "../utils/randomId";
+import {RepositoryPromise, useRepositoryCallbacks, } from "../core/ViewComposer/useRepositories"
 import Repository from "./repository.class";
 
 export default class Document {

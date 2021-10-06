@@ -1,6 +1,7 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import React from "react";
-import { Button, Column, Input, Number, Row, Table, ViewComponent } from "../../../../src";
+import React, { useState } from "react";
+import { LoaderOptionsPlugin } from "webpack";
+import { Button, Column, Input, Number, Row, SearchSelect, Table, ViewComponent } from "../../../../src";
 import { RepositoriesType } from "../../models";
 import PlantModel, { Plant } from "../../models/Plant.model";
 import {User} from '../../models/User.model';
@@ -39,10 +40,39 @@ const form = (plant?: Plant) => (
 const Main: ViewComponent<User, StoreType, RepositoriesType> = (view): JSX.Element => {
 	console.log(view.repositories.plant)
 
+	const [searchString, setSearchString] = useState("")
+
 	return (
 		<div>
 			<section>
 				<h3>Plants</h3>
+
+				<SearchSelect
+					label="recherche"
+					name="recherche"
+					array={[
+						{name: "test1"},
+						{name: "test2"},
+						{name: "test3"},
+						{name: "test4"},
+						{name: "test5"},
+						{name: "nuage1"},
+						{name: "nuage2"},
+						{name: "nuage3"},
+						{name: "nuage4"},
+						{name: "nuage5"},
+						{name: "mouton1"},
+						{name: "mouton2"},
+						{name: "mouton3"},
+						{name: "mouton4"},
+						{name: "mouton5"},
+					]}
+					searchKeys={["name"]}
+					value={searchString}
+					onInputChange={(s) => setSearchString(s)}
+					display={(line) => line.name}
+					onSelect={(line) => setTimeout(() => setSearchString(line.name))}
+				/>
 
 				<Button
 					name="test post"

@@ -1,6 +1,6 @@
 import { RCReturn } from "../../../types";
-import Document from "../classes/document.class";
-import Repository from "../classes/repository.class";
+import Document from "../../../classes/document.class";
+import Repository from "../../../classes/repository.class";
 
 export function restore<
     RepositoryType extends Repository<any, any>,

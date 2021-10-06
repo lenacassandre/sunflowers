@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import "./SearchSelect.scss";
 
 import { Search } from '../Search/Search'
-import { Context } from "../ViewComposer/ViewComposer";
+import { useSunContext } from "../../core/ViewComposer/ViewComposer";
 
 /////////////////////////////////////////////////////////////////////////////////////////////////:
 // PROPS
@@ -27,9 +27,9 @@ type SearchSelectProps<Type> = {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 // MAIN COMPONENT
 export function SearchSelect<Type>(props: SearchSelectProps<Type>) {
-    const CobblestoneContext = useContext(Context);
+    const sunContext = useSunContext();
 
-    const [state, setState] = useState<{value: string, searchResults: Type[]}>({value: "", searchResults: []})
+    const [state, setState] = useState<{value: string, searchResults: Type[], modalIsAlreadyOpened: boolean}>({value: "", searchResults: [], modalIsAlreadyOpened: false})
     const stateRef = useRef(state);
     stateRef.current = state;
 
@@ -40,7 +40,7 @@ export function SearchSelect<Type>(props: SearchSelectProps<Type>) {
 
         // default values
         searchResults ||= [];
-        value ||= "";
+        value ||= " ";
 
         // Limit results
         searchResults = searchResults.slice(0, props.limit || 10)
@@ -54,10 +54,11 @@ export function SearchSelect<Type>(props: SearchSelectProps<Type>) {
     }
 
     function openFocusMode(searchResults: Type[], value: string) {
+        console.log("openFocusMode", stateRef.current.modalIsAlreadyOpened)
         const rect = inputRef.current?.getBoundingClientRect()
 
-		if(rect) {
-			CobblestoneContext.modal && CobblestoneContext.modal<Type>({
+		if(rect && !stateRef.current.modalIsAlreadyOpened) {
+			sunContext.modal<Type>({
 				className: `SearchSelectModal ${props.className || ""}`,
 				raw: true,
 				delay: 0,
@@ -77,12 +78,19 @@ export function SearchSelect<Type>(props: SearchSelectProps<Type>) {
                         callback={handleCallback}
 					/>
 			})
-				.then((item: Type) => props.onSelect && props.onSelect(item))
-				.catch(() => {})
+				.then((item: Type) => {
+                    props.onSelect && props.onSelect(item);
+                    setState({...stateRef.current, modalIsAlreadyOpened: false})
+                })
+				.catch(() => {
+                    setState({...stateRef.current, modalIsAlreadyOpened: false})
+                })
+
+            setState({...stateRef.current, modalIsAlreadyOpened: true})
 		}
     }
 
-    console.log("MAIN render", state.value)
+    console.log("MAIN render", stateRef.current.value)
 
     return (
         <div className="SearchSelect">
@@ -152,6 +160,7 @@ function SearchSelectListModal<Type>(props: {
 	// ON CLICK
 
 	function handleClick(index: number) {
+        console.log("handleclick")
         props.resolve(state.searchResults[index]);
 	}
 

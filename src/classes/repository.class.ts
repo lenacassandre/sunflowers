@@ -1,6 +1,6 @@
-import {Document} from '../../../'
-import {useRepositoryCallbacks, RepositoryPromise } from "../useRepositories"
-import { RCError, RCReturn } from '../../../types';
+import Document from './document.class'
+import {useRepositoryCallbacks, RepositoryPromise } from "../core/ViewComposer/useRepositories"
+import { RCError, RCReturn } from '../types';
 
 // TODO : intégrer le getAll à la classe repository
 

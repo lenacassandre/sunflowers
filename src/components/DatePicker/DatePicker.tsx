@@ -10,7 +10,7 @@ import { dateCH, dateBH } from "../../handlers";
 import formatNumber from "../../utils/formatNumber";
 import { CallModal } from "../../types";
 import "./DatePicker.scss";
-import { Context } from "../ViewComposer/ViewComposer";
+import { useSunContext } from "../../core/ViewComposer/ViewComposer";
 
 export const DatePicker: React.FC<{
 	value?: Date,
@@ -25,7 +25,7 @@ export const DatePicker: React.FC<{
 	top?: boolean,
 	middle?: boolean,
 }> = (props): JSX.Element => {
-	const context = useContext(Context);
+	const sunContext = useSunContext();
 
 	const [date, setDate] = useState<Date>(
 		props.value && isValidDate(props.value) ? props.value : props.end ? props.end : new Date()
@@ -68,7 +68,7 @@ export const DatePicker: React.FC<{
 				onClick={(event) => {
 					event.preventDefault();
 					event.stopPropagation();
-					context.modal && context.modal<{date: Date}>({
+					sunContext.modal<{date: Date}>({
 						title: props.label,
 						form: (resolve, reject) => (
 							<DatePickerForm

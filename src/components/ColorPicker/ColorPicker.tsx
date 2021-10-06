@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 
 import { Button, RequiredSymbol } from "..";
-import { Context } from "../ViewComposer/ViewComposer";
+import { useSunContext } from "../../core/ViewComposer/ViewComposer";
 
 import {ColorList} from "./ColorList/ColorList";
 import "./ColorPicker.scss";
@@ -14,7 +14,7 @@ export function ColorPicker(props: {
   style?: any,
   required?: boolean,
 }) {
-  const CobblestoneContext = useContext(Context)
+  const sunContext = useSunContext();
 
   const [choosenColor, choose] = useState(props.value);
 
@@ -35,7 +35,7 @@ export function ColorPicker(props: {
 			onClick={(event) => {
 				event.preventDefault();
 				event.stopPropagation();
-				CobblestoneContext.modal && CobblestoneContext.modal<string>({
+				sunContext.modal<string>({
 					form: (resolve, _reject) => <ColorList resolve={resolve} />
 				})
 					.then((color) => handleChange(color))
