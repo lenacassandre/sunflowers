@@ -30,6 +30,7 @@ export declare type ContextType<
 	repositories: RepositoriesType,
 	store: StoreType,
 	update: Update<StoreType>,
+	dispatch: Dispatch
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////

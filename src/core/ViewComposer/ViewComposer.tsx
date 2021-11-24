@@ -183,7 +183,8 @@ function ViewComposerBase<UserDocumentClass extends User>(props: ViewComposerBas
 		router,
 		repositories: repositoriesRef.current,
 		store,
-		update
+		update,
+		dispatch
 	}
 
 	let view = (
