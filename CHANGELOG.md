@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.51](https://github.com/lenacassandre/sunflowers/compare/v0.2.50...v0.2.51) (2021-11-24)
+
+
+### Features
+
+* **suncontext:** added dispatch to the context ([227ff18](https://github.com/lenacassandre/sunflowers/commit/227ff181918e87c5294d572706f8c62334d9f4ef))
+
 ### [0.2.50](https://github.com/lenacassandre/sunflowers/compare/v0.2.49...v0.2.50) (2021-10-06)
 
 
