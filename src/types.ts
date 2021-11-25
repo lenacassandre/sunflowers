@@ -89,7 +89,7 @@ export declare type ViewDeclaration<
 	className?: string;
 
 	// Si cette propriété est spécifiée, seuls les utilisateur·ices qui ont le bon rôle pourront accéder à la vue
-	roles?: number[]
+	roles?: string[]
 }
 
 
