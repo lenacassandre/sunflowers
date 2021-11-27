@@ -108,7 +108,16 @@ dist
 vs-code
 .vs-code
 
-#Export
+# Export
 lib
 
 .DS_Store
+
+# Yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
