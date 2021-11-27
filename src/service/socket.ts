@@ -2,7 +2,6 @@ import io from "socket.io-client";
 import log from '../utils/log'
 
 import { Promise } from '../classes/Promise'
-
 import { SocketError } from '../types'
 import axios from "axios";
 

@@ -2422,6 +2422,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@socket.io/component-emitter@npm:~3.0.0":
+  version: 3.0.0
+  resolution: "@socket.io/component-emitter@npm:3.0.0"
+  checksum: b5e909dbb16bcf27958d1bfb8319f3255f3a50f62fde78ecf9a584f39f916b928fdc5661519892eea912da082c6413d671c1e67bde70725c75ee62956aa67c26
+  languageName: node
+  linkType: hard
+
 "@svgr/babel-plugin-add-jsx-attribute@npm:^4.2.0":
   version: 4.2.0
   resolution: "@svgr/babel-plugin-add-jsx-attribute@npm:4.2.0"
@@ -4496,6 +4503,13 @@ __metadata:
   version: 0.1.4
   resolution: "base64-arraybuffer@npm:0.1.4"
   checksum: d249a929e27b2430d7ba1527e91a36e14da37ae2f80e350c4d696a038257718f8da07577e820e7262f86a0ecd573c283db10c46502080f53ae11bfdd99b6a029
+  languageName: node
+  linkType: hard
+
+"base64-arraybuffer@npm:~1.0.1":
+  version: 1.0.1
+  resolution: "base64-arraybuffer@npm:1.0.1"
+  checksum: 04b6fe6818b1c79774fa8aea169063521ad177f2ba04d2a4a0f00fca297d516319b551a3cda76050263da751b4ffb07d939fc1b5eb155f0e429659733e60afb0
   languageName: node
   linkType: hard
 
@@ -6729,7 +6743,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:^4.3.1":
+"debug@npm:4, debug@npm:^4.3.1, debug@npm:~4.3.2":
   version: 4.3.3
   resolution: "debug@npm:4.3.3"
   dependencies:
@@ -7336,30 +7350,38 @@ __metadata:
   languageName: node
   linkType: hard
 
-"engine.io-client@npm:~4.1.0":
-  version: 4.1.1
-  resolution: "engine.io-client@npm:4.1.1"
+"engine.io-client@npm:~6.1.1":
+  version: 6.1.1
+  resolution: "engine.io-client@npm:6.1.1"
   dependencies:
-    base64-arraybuffer: 0.1.4
-    component-emitter: ~1.3.0
+    "@socket.io/component-emitter": ~3.0.0
     debug: ~4.3.1
-    engine.io-parser: ~4.0.1
+    engine.io-parser: ~5.0.0
     has-cors: 1.1.0
     parseqs: 0.0.6
     parseuri: 0.0.6
-    ws: ~7.4.2
-    xmlhttprequest-ssl: ~1.5.4
+    ws: ~8.2.3
+    xmlhttprequest-ssl: ~2.0.0
     yeast: 0.1.2
-  checksum: 6e7bb685e499c049c53914620b5df26e52c1a32974b915acc89da932b8ab0ec9c4f0b0f319a72bf01e68d7e24372f13b574c44671b3bcc963b87e50d4e003810
+  checksum: c2e1cec87ac8cf45842527bd072d1b2c5f14fbf9e57f110b4120335ed7bf5310a86da0d33b5906dd4774094ee499d534a498db467d3c1cb53c7a1109a593b05d
   languageName: node
   linkType: hard
 
-"engine.io-parser@npm:~4.0.0, engine.io-parser@npm:~4.0.1":
+"engine.io-parser@npm:~4.0.0":
   version: 4.0.2
   resolution: "engine.io-parser@npm:4.0.2"
   dependencies:
     base64-arraybuffer: 0.1.4
   checksum: 763b8a2cc478e80274f5fbf87fdb7f6690112d35a150e0dde29254bf81d9be91f9d428abc7cfc3119c502a069853a12849199b68a61b49b088d1c3aa8be64072
+  languageName: node
+  linkType: hard
+
+"engine.io-parser@npm:~5.0.0":
+  version: 5.0.2
+  resolution: "engine.io-parser@npm:5.0.2"
+  dependencies:
+    base64-arraybuffer: ~1.0.1
+  checksum: bd65c3cdce29c31308168fa0ca4cd67b97f515d6016d55b2951de8c6fb698e4025da5e16acaa5a642463f00791121c15c37b96883d4a2f6f0ea1942962c1e1e9
   languageName: node
   linkType: hard
 
@@ -17439,22 +17461,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"socket.io-client@npm:3.1.1":
-  version: 3.1.1
-  resolution: "socket.io-client@npm:3.1.1"
+"socket.io-client@npm:4.4.0":
+  version: 4.4.0
+  resolution: "socket.io-client@npm:4.4.0"
   dependencies:
-    "@types/component-emitter": ^1.2.10
+    "@socket.io/component-emitter": ~3.0.0
     backo2: ~1.0.2
-    component-emitter: ~1.3.0
-    debug: ~4.3.1
-    engine.io-client: ~4.1.0
+    debug: ~4.3.2
+    engine.io-client: ~6.1.1
     parseuri: 0.0.6
-    socket.io-parser: ~4.0.4
-  checksum: a66db2a16131fb7b73876e377c411ec799a07149fea0ac7d2418018bd7e8c08eeae1b47d8261613ed29e695bd7a948c4a9a4e82f42e7b66d7ef82cbe431a472b
+    socket.io-parser: ~4.1.1
+  checksum: a56c2327709439dbf84a06130fabc9234b074b8d4e469de220af631ad686896ce51860209a209d10650f878f82d3068129545ed32ca55f6b606786a61b303a34
   languageName: node
   linkType: hard
 
-"socket.io-parser@npm:~4.0.3, socket.io-parser@npm:~4.0.4":
+"socket.io-parser@npm:~4.0.3":
   version: 4.0.4
   resolution: "socket.io-parser@npm:4.0.4"
   dependencies:
@@ -17462,6 +17483,16 @@ __metadata:
     component-emitter: ~1.3.0
     debug: ~4.3.1
   checksum: c173b4f3747c51e2af802eca35212f4dcfa8fe55d7fdc07b9a01da1ecc956791c1bf6591e307952548eab69e6500bcfe27cea8aff1386b860d9bb51f98e4fafb
+  languageName: node
+  linkType: hard
+
+"socket.io-parser@npm:~4.1.1":
+  version: 4.1.1
+  resolution: "socket.io-parser@npm:4.1.1"
+  dependencies:
+    "@socket.io/component-emitter": ~3.0.0
+    debug: ~4.3.1
+  checksum: d762d01f372df393ef08fa409c62dffbc69bb9820eb78ee1d646e7679fff60a56366778d7bc78e044ffa4c1d85537d771292133506097d164ad3b9ff7f879ef1
   languageName: node
   linkType: hard
 
@@ -18275,7 +18306,7 @@ __metadata:
     react-transition-group: ^4.4.1
     save: ^2.4.0
     socket.io: 3.1.1
-    socket.io-client: 3.1.1
+    socket.io-client: 4.4.0
     standard-version: ^9.0.0
     styled-components: ^5.2.0
     typescript: 4.2.4
@@ -19946,6 +19977,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ws@npm:~8.2.3":
+  version: 8.2.3
+  resolution: "ws@npm:8.2.3"
+  peerDependencies:
+    bufferutil: ^4.0.1
+    utf-8-validate: ^5.0.2
+  peerDependenciesMeta:
+    bufferutil:
+      optional: true
+    utf-8-validate:
+      optional: true
+  checksum: c869296ccb45f218ac6d32f8f614cd85b50a21fd434caf11646008eef92173be53490810c5c23aea31bc527902261fbfd7b062197eea341b26128d4be56a85e4
+  languageName: node
+  linkType: hard
+
 "xcode@npm:^2.0.0":
   version: 2.1.0
   resolution: "xcode@npm:2.1.0"
@@ -19993,10 +20039,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"xmlhttprequest-ssl@npm:~1.5.4":
-  version: 1.5.5
-  resolution: "xmlhttprequest-ssl@npm:1.5.5"
-  checksum: 36a27087dd846d2e7130611e8e419c8cb3461aa97f685c77b10f5a9f335c5079ea0ca192ebb89c58448103e332d7b50d23fbf1f77045353bad4a0db2891a5592
+"xmlhttprequest-ssl@npm:~2.0.0":
+  version: 2.0.0
+  resolution: "xmlhttprequest-ssl@npm:2.0.0"
+  checksum: 1e98df67f004fec15754392a131343ea92e6ab5ac4d77e842378c5c4e4fd5b6a9134b169d96842cc19422d77b1606b8df84a5685562b3b698cb68441636f827e
   languageName: node
   linkType: hard
 
