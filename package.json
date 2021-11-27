@@ -1,6 +1,6 @@
 {
 	"name": "sunflowers",
-	"version": "0.2.52",
+	"version": "0.2.53",
 	"main": "./lib/cjs/index.js",
 	"module": "./lib/esm/index.js",
 	"types": "./lib/cjs/index.d.ts",
@@ -42,7 +42,7 @@
 		"react-transition-group": "^4.4.1",
 		"save": "^2.4.0",
 		"socket.io": "3.1.1",
-		"socket.io-client": "3.1.1",
+		"socket.io-client": "4.4.0",
 		"styled-components": "^5.2.0"
 	},
 	"devDependencies": {
@@ -111,5 +111,6 @@
 	},
 	"browser": {
 		"crypto": false
-	}
+	},
+	"packageManager": "yarn@3.1.1"
 }
