@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.55](https://github.com/lenacassandre/sunflowers/compare/v0.2.50...v0.2.55) (2021-11-29)
+
+
+### Features
+
+* **suncontext:** added dispatch to the context ([227ff18](https://github.com/lenacassandre/sunflowers/commit/227ff181918e87c5294d572706f8c62334d9f4ef))
+* **user.roles & user.permissions:** user roles are strings. Permissions added. 6 new user methods ([fdd5785](https://github.com/lenacassandre/sunflowers/commit/fdd578517a94ec6a77d3bdd5bcf6e25fe5bedb3d))
+
 ### [0.2.54](https://github.com/lenacassandre/sunflowers/compare/v0.2.52...v0.2.54) (2021-11-27)
 
 ### [0.2.52](https://github.com/lenacassandre/sunflowers/compare/v0.2.51...v0.2.52) (2021-11-25)
