@@ -19,7 +19,7 @@
 		"tsc-windows": "echo \"Remove lib folder\" && del /s /F /Q lib && echo \"Compile Web TSX files ans TS files for CJS\" && tsc -p tsconfig-cjs-dom.json && yarn copy-scss && echo \"Done.\"",
 		"commit": "git add . && yarn tsc && git cz",
 		"commit-windows": "git add . && yarn tsc-windows & git cz",
-		"release": "standard-version && git push --follow-tags origin main",
+		"release": "standard-version && git push --follow-tags origin HEAD",
 		"prepare": "husky install"
 	},
 	"license": "MIT",
