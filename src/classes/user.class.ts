@@ -14,11 +14,11 @@ export default class User extends Document {
         this.permissions = user.permissions || [];
     }
 
-    hasRole = (role: string) => this.roles.includes(role);
-    hasOneOfManyRoles = (roles: string[]) => roles.some(role => this.roles.includes(role));
-    hasManyRoles = (roles: string[]) => roles.every(role => this.roles.includes(role));
+    public hasRole = (role: string) => this.roles.includes(role);
+    public hasOneOfManyRoles = (roles: string[]) => roles.some(role => this.roles.includes(role));
+    public hasManyRoles = (roles: string[]) => roles.every(role => this.roles.includes(role));
 
-    hasPermission = (permission: string) => this.permissions.includes(permission);
-    hasOneOfManyPermissions = (permissions: string[]) => permissions.some(permission => this.permissions.includes(permission));
-    hasManyPermissions = (permissions: string[]) => permissions.every(permission => this.permissions.includes(permission));
+    public hasPermission = (permission: string) => this.permissions.includes(permission);
+    public hasOneOfManyPermissions = (permissions: string[]) => permissions.some(permission => this.permissions.includes(permission));
+    public hasManyPermissions = (permissions: string[]) => permissions.every(permission => this.permissions.includes(permission));
 }

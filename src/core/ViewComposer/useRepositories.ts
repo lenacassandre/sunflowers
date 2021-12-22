@@ -650,6 +650,8 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 				console.error(e)
 			}
 		})
+
+		socket.on("reset", resetAllRepositories)
 	}, [])
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
