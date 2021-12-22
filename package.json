@@ -1,12 +1,12 @@
 {
 	"name": "sunflowers",
 	"version": "0.2.55",
-	"main": "./lib/cjs/index.js",
+	"main": "./lib/esm/index.js",
 	"module": "./lib/esm/index.js",
-	"types": "./lib/cjs/index.d.ts",
-	"typings": "./lib/cjs/index.d.ts",
+	"types": "./lib/esm/index.d.ts",
+	"typings": "./lib/esm/index.d.ts",
 	"files": [
-		"lib/cjs/"
+		"lib/sem/"
 	],
 	"repository": {
 		"type": "git",
@@ -14,9 +14,9 @@
 	},
 	"scripts": {
 		"watch": "node watch.js",
-		"copy-scss": "copyfiles -u 1 \"./src/**/*.scss\" \"./lib/cjs\" && copyfiles -u 1 \"./src/**/*.scss\" \"./lib/esm\"",
-		"tsc": "echo \"Compile Web TSX files ans TS files for CJS\" && tsc -p tsconfig-cjs-dom.json && yarn copy-scss && echo \"Done.\"",
-		"tsc-windows": "echo \"Remove lib folder\" && del /s /F /Q lib && echo \"Compile Web TSX files ans TS files for CJS\" && tsc -p tsconfig-cjs-dom.json && yarn copy-scss && echo \"Done.\"",
+		"copy-scss": "copyfiles -u 1 \"./src/**/*.scss\" \"./lib/esm\"",
+		"tsc": "echo \"Compile Web TSX files ans TS files for ESM\" && tsc -p tsconfig-esm-dom.json && yarn copy-scss && echo \"Done.\"",
+		"tsc-windows": "echo \"Remove lib folder\" && del /s /F /Q lib && echo \"Compile Web TSX files ans TS files for ESM\" && tsc -p tsconfig-esm-dom.json && yarn copy-scss && echo \"Done.\"",
 		"commit": "git add . && yarn tsc && git cz",
 		"commit-windows": "git add . && yarn tsc-windows & git cz",
 		"release": "standard-version && git push --follow-tags origin HEAD",
@@ -33,6 +33,7 @@
 		"@types/styled-components": "^5.1.4",
 		"axios": "^0.24.0",
 		"dotenv": "^8.2.0",
+		"path": "^0.12.7",
 		"react": "17.0.2",
 		"react-dom": "17.0.2",
 		"react-native": "^0.63.3",
@@ -40,7 +41,9 @@
 		"react-scripts": "3.4.3",
 		"react-transition-group": "^4.4.1",
 		"socket.io": "3.1.1",
-		"socket.io-client": "4.4.0"
+		"socket.io-client": "4.4.0",
+		"styled-components": "^4.4.0",
+		"true-promise": "^1.0.7"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.11.6",

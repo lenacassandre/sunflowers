@@ -1,7 +1,7 @@
 import io from "socket.io-client";
 import log from '../utils/log'
 
-import { Promise } from '../classes/Promise'
+import { Promise } from 'true-promise'
 import { SocketError } from '../types'
 import axios from "axios";
 
@@ -101,7 +101,11 @@ export default class Socket {
 			}, 10 * 1000);
 		})
 
-		return Promise.race([socketPromise, timeoutPromise])
+		return new Promise((resolve, reject) => {
+			Promise.race([socketPromise, timeoutPromise])
+				.then((v => resolve(v.value)))
+				.catch(v => reject(v.value))
+		})
 	}
 
 	public on = <ResponseType = {}>(action: string, callback: (data: ResponseType) => void) => {

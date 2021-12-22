@@ -1,7 +1,7 @@
 import React from "react";
 import Repository from "./classes/repository.class";
 import Document from "./classes/document.class";
-import { Promise } from './classes/Promise'
+import { Promise } from 'true-promise'
 
 /**
  * N'importe quelle constructeur de classe
@@ -162,12 +162,15 @@ export declare type ViewSystem<
 export declare type SessionSystem<customUserModel> = {
 	user: customUserModel | null;
 	token: string | null;
+	organization: string | null;
 
 	logout: () => void;
 	login: (userName: string, password: string) => Promise<void, {error: string}>;
+	switchOrganization: (organizationId: string) => Promise<void, {error: string}>;
 
 	saveUser: (user: customUserModel) => void;
 	saveToken: (token: string) => void;
+	saveOrganization: (organizationId: string) => void;
 	saveSession: (token: string, user: customUserModel) => void;
 };
 

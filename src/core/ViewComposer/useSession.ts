@@ -9,7 +9,7 @@ import Socket from "../../service/socket";
 import log from "../../utils/log";
 import User from "../../classes/user.class";
 
-import { Promise } from '../../classes/Promise';
+import { Promise } from 'true-promise';
 
 const SessionRef:any = {}
 
@@ -23,18 +23,29 @@ export default function useSession<UserDocumentClass extends User>(
 	const [state, setState] = useState<{
 		user: UserDocumentClass | null
 		token: string | null
+		organization: string | null
 	}>({
 		user: null,
-		token: localStorage.getItem("token") || null
+		token: localStorage.getItem("token") || null,
+		organization: null
 	});
 
-	// Supprime la session enreigistrée ET le token
+	/**
+	 * Supprime la session enreigistrée ET le token
+	 */
 	function logout() {
 		log.useSession("Logout");
 		localStorage.clear();
-		setState({ user: null, token: null });
+		setState({ user: null, token: null, organization: null });
+		socket.emit<void>("connection/logout")
 	}
 
+	/**
+	 * TODO: doc
+	 * @param userName
+	 * @param password
+	 * @returns
+	 */
 	function login(userName: string, password: string): Promise<void, {error: string}> {
 		log.useSession("Login -", userName);
 
@@ -49,7 +60,7 @@ export default function useSession<UserDocumentClass extends User>(
 				return;
 			}
 
-			socket.emit<{token: string, user: UserDocumentClass}>("user/login", {userName, password})
+			socket.emit<{token: string, user: UserDocumentClass, organization: string}>("connection/login", {userName, password})
 				.then((response) => {
 					if (!response.token) {
 						reject({error: "Login Erreur : pas de token."});
@@ -62,7 +73,7 @@ export default function useSession<UserDocumentClass extends User>(
 					}
 
 					localStorage.setItem("token", response.token);
-					setState({ token: response.token, user: new UserClass(response.user) });
+					setState({ token: response.token, user: new UserClass(response.user), organization: response.organization });
 
 					setTimeout(resolve);
 				})
@@ -70,6 +81,21 @@ export default function useSession<UserDocumentClass extends User>(
 					reject(response);
 				});
 		})
+	}
+
+	/**
+	 * Link the session to another organization of the user
+	 * @param organizationId
+	 */
+	function switchOrganization(organizationId: string) {
+		log.useSession("switchOrganization", organizationId);
+
+		if (sessionRef.current?.user?.organizations.includes(organizationId)) {
+			socket.emit("connection/switchOrganization", organizationId)
+				.then(() => {
+					setState({...state, organization: organizationId})
+				})
+		}
 	}
 
 	/**
@@ -94,14 +120,24 @@ export default function useSession<UserDocumentClass extends User>(
 	}
 
 	/**
+	 * Save an organization id without request to the server.
+	 * (Usefull if you got the token from a custom controller)
+	 * @param organizationId
+	 */
+	function saveOrganization(organizationId: string) {
+		log.useSession("Save organizationId -", organizationId);-
+		setState({...state, organization: organizationId})
+	}
+
+	/**
 	 * Save a token and a user without request to the server.
 	 * (Usefull if you got the token from a custom controller)
 	 * @param token
 	 */
-	function saveSession(token: string, user: UserDocumentClass) {
+	function saveSession(token: string, user: UserDocumentClass, organization: string) {
 		log.useSession("Save session -", token, user);
 		localStorage.setItem("token", token);
-		setState({user, token})
+		setState({user, token, organization})
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////;
@@ -121,7 +157,7 @@ export default function useSession<UserDocumentClass extends User>(
 		else {
 			log.useSession("Bootstrap useEffect token - Verifying token");
 
-			const checkToken = () => socket.emit<{user: UserDocumentClass}>("user/verify", {token: currentToken})
+			const checkToken = () => socket.emit<{user: UserDocumentClass}>("connection/verify", {token: currentToken})
 				.then((response) => {
 					// Token non vérifié : suppression du l'utilisateur et du token enregistré
 					if (!response || !response.user) {
@@ -162,8 +198,10 @@ export default function useSession<UserDocumentClass extends User>(
 	SessionRef.token = state.token;
 	SessionRef.login = login;
 	SessionRef.logout = logout;
+	SessionRef.switchOrganization = switchOrganization;
 	SessionRef.saveUser = saveUser;
 	SessionRef.saveToken = saveToken;
+	SessionRef.saveOrganization = saveOrganization;
 	SessionRef.saveSession = saveSession
 
 	log.useSession({...SessionRef});

@@ -17,12 +17,11 @@ import sendWithToken from "./utils/sendWithToken";
 import stringToDate from "./utils/stringToDate";
 import timeoutPromise from "./utils/timeoutPromise";
 import randomId from "./utils/randomId";
-import { search } from "./utils/search";
+import { search } from "./utils/search";
 
 import Document from "./classes/document.class"
 import Repository from "./classes/repository.class"
 import User from "./classes/user.class"
-import {Promise} from "./classes/Promise"
 
 // Types
 export * from "./types";
@@ -55,5 +54,4 @@ export {
 	Repository,
 	Document,
 	User,
-	Promise,
 };

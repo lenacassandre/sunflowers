@@ -22,7 +22,7 @@ const arePathEquals = (path1: string, path2: string) => trimPath(path1).toLowerC
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////:
 // Renvoie un objet des paramètres de l'URL à partir de l'URL
-const getParamsObjectfromURL = (): {[key: string]: string} =>  {
+const getParamsObjectfromURL = (): {[key: string]: string} =>  {
 	const currentSearch = window.location.search;
 
 	return currentSearch.replace("?", "").split("&").reduce((
@@ -103,7 +103,7 @@ export default function useRouter<CustomUserModel extends User>(
 					if(typeof viewDeclarationPath === "string") { // Dans le cas où le chemin est une chaine de caractères.
 						return arePathEquals(viewDeclarationPath, path);
 					}
-					else if(Array.isArray(viewDeclarationPath)) { // Dans le cas où plusieurs chemin sont spécifiés dans un tableau.
+					else if(Array.isArray(viewDeclarationPath)) { // Dans le cas où plusieurs chemin sont spécifiés dans un tableau.
 						return viewDeclarationPath.some(p => arePathEquals(p, path));
 					}
 				}

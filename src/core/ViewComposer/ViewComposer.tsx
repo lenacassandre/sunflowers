@@ -32,7 +32,7 @@ import User from "../../classes/user.class";
 console.clear()
 
 import './ViewComposer.scss'
-import { Promise } from "../..";
+import { Promise } from "true-promise";
 
 //◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤//
 //◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣◤◣//
@@ -51,11 +51,14 @@ export const SunContext = React.createContext<ContextType<any>>({
 	session: {
 		user: null,
 		token: null,
+		organization: null,
 		login: (_userName, _password) => new Promise((_resolve, reject) => reject({error: "timeout"})),
 		logout: () => {},
+		switchOrganization: () => Promise.reject({error: "Session has not been initialize yet."}),
 		saveUser: (_user) => {},
 		saveSession: (_user, _session) => {},
-		saveToken: (_token) => {}
+		saveToken: (_token) => {},
+		saveOrganization: (organizationId) => {}
 	},
 	router: {
 		path: "",

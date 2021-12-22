@@ -7,7 +7,7 @@ import Document from '../../classes/document.class'
 import User from '../../classes/user.class'
 import Socket from "../../service/socket";
 
-import { Promise } from '../../classes/Promise'
+import { Promise } from 'true-promise'
 import { remove } from "./controllers/remove";
 import { post } from "./controllers/post";
 import { patch } from "./controllers/patch";
@@ -138,6 +138,35 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 	repositoriesRef.current = repositories;
 
 	log.useRepositories("repositories (state)");
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Get all the document the current user has access to
+	 */
+	const getAllDocuments = useCallback(() => {
+		for(let repoName in repositoriesRef.current) {
+			repositoriesRef.current[repoName].getAll().send()
+				.then(() => {})
+				.catch(() => {})
+		}
+	}, [])
+
+	/**
+	 * Empty all repositories, then get all documents
+	 */
+	const resetAllRepositories = useCallback(() => {
+		setRepositories(emptyRepositories);
+		setTimeout(() => {
+			getAllDocuments()
+		})
+	}, [emptyRepositories])
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Log du nombre de document dans chaque repo à chaque appel de la Hook
 	for(let repositoryName in repositoriesRef.current) {
@@ -617,7 +646,7 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 					}
 				}
 			}
-			catch(e) {
+			catch(e) {
 				console.error(e)
 			}
 		})
@@ -650,14 +679,9 @@ export default function useRepositories<UserType extends User>(socket: Socket, e
 
 		if(session.token && session.user) {
 			log.useRepositories("LOADING REPO", repositoriesRef.current)
-
-			for(let repoName in repositoriesRef.current) {
-				repositoriesRef.current[repoName].getAll().send()
-					.then(() => {})
-					.catch(() => {})
-			}
+			resetAllRepositories()
 		}
-	}, [session.user]);
+	}, [session.user, session.organization]);
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////

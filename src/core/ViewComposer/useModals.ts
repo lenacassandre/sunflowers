@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Promise } from "../../classes/Promise";
+import { Promise } from "true-promise";
 import {  Modals, CallModal, ModalForm, ModalDeclaration } from "../../types";
 
 import log from "../../utils/log";
